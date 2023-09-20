@@ -1,0 +1,199 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Project Information -->
+    <name>Moon Bot</name>
+    <description>
+        The Moon Bot Framework serves as the foundational wrapper for the Moon Bot suite, offering static implementations vital for Maven build cycles, shared resources, and project management tools.
+        It consolidates essential components like build configurations, shared dependencies, and project documentation (README, .gitignore) to streamline development and maintenance of the Moon Bot ecosystem.
+    </description>
+    <groupId>com.lunova</groupId>
+    <artifactId>moon-bot-parent</artifactId>
+    <version>0.2.2-SNAPSHOT</version>
+    <modules>
+        <module>core</module>
+    </modules>
+
+    <!-- Java version -->
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <packaging>pom</packaging>
+
+    <!-- Profiles -->
+    <profiles>
+        <profile>
+            <id>update-versions</id>
+            <activation>
+                <property>
+                    <name>autoUpdateVersions</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>versions-maven-plugin</artifactId>
+                        <version>2.16.1</version>
+                        <executions>
+                            <!-- Update parent version -->
+                            <execution>
+                                <id>update-parent</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>update-parent</goal>
+                                </goals>
+                                <configuration>
+                                    <allowSnapshots>true</allowSnapshots>
+                                </configuration>
+                            </execution>
+                            <!-- Update dependencies -->
+                            <execution>
+                                <id>update-dependencies</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>use-latest-versions</goal>
+                                </goals>
+                                <configuration>
+                                    <allowSnapshots>false</allowSnapshots>
+                                </configuration>
+                            </execution>
+                            <!-- Update plugins -->
+                            <execution>
+                                <id>update-plugins</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>use-latest-releases</goal>
+                                </goals>
+                                <configuration>
+                                    <allowSnapshots>false</allowSnapshots>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <!-- Build configurations -->
+    <build>
+        <plugins>
+            <plugin>
+
+                <!-- Maven Compiler Plugin -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                </configuration>
+
+            </plugin>
+
+            <!-- Google Formatter Plugin -->
+            <plugin>
+                <groupId>com.spotify.fmt</groupId>
+                <artifactId>fmt-maven-plugin</artifactId>
+                <version>2.21.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                        <phase>validate</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <style>google</style>
+                </configuration>
+            </plugin>
+
+            <!-- OSWAP Security Plugin -->
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>8.4.2</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- Security level to fail building on. 5 is directly in the middle. -->
+                    <failBuildOnCVSS>5</failBuildOnCVSS>
+                </configuration>
+            </plugin>
+
+            <!-- Maven Version Control Plugin -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.16.1</version>
+                <executions>
+                    <execution>
+                        <id>display-version-updates</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>display-parent-updates</goal>
+                            <goal>display-plugin-updates</goal>
+                            <goal>display-dependency-updates</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Maven Version Enforcer Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>3.2.5</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <!-- Dependencies -->
+    <dependencies>
+
+        <!-- JUnit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Mockito for unit testing -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.7.0</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+</project>
