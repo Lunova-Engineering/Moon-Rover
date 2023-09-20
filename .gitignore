@@ -22,3 +22,84 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+
+# Compiled bytecode
+*.class
+
+# Build artifacts and directories
+target/
+dist/
+build/
+
+# Maven related
+*.log
+*.tmp
+*.bak
+*.swp
+*~.nib
+*.bak
+*.swp
+*~
+*.log
+*.tmp
+*.bak
+*.swp
+*~.nib
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.kar
+*.der
+*~
+*~
+*.tokens
+*.tokens
+*.class
+*.class
+*.log
+*.ctxt
+*.jar
+*.war
+*.ear
+*.lastUpdated
+*.lastUpdated
+*.lastUpdated
+*.lastUpdated
+*.lastUpdated
+*.lastUpdated
+*.recommenders
+
+# Eclipse related
+.classpath
+.project
+.settings/
+bin/
+
+# IntelliJ IDEA related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# NetBeans related
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Other
+*.log
+*.bak
+*.swp
+*~.nib
+local.properties
