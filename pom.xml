@@ -10,5 +10,24 @@
         <maven.compiler.source>20</maven.compiler.source>
         <maven.compiler.target>20</maven.compiler.target>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>net.dv8tion</groupId>
+            <artifactId>JDA</artifactId>
+            <version>5.0.0-beta.12</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lunova</groupId>
+            <artifactId>Rift-Wrapper</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version> <!-- You might want to check for the latest version -->
+        </dependency>
+
+
+    </dependencies>
 
 </project>
