@@ -2,7 +2,6 @@
 
 Moon-Rover is a meticulously crafted Discord bot, designed exclusively for enhancing the experience of personal Discord communities. Developed with precision in Java and powered by the robust JDA framework, Moon-Rover seamlessly integrates advanced features like role assignment, dynamic custom commands, and efficient data retrieval mechanisms.
 
-![Moon-Rover Logo](URL_TO_YOUR_LOGO_HERE)  <!-- Replace with the link to your logo if you have one -->
 
 ## Features 🚀
 
