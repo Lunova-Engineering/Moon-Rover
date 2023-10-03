@@ -1,6 +1,6 @@
-package com.lunova.moonrover.logger.commands;
+package com.lunova.moonrover.commands;
 
-import com.lunova.moonrover.logger.commands.impl.Ping;
+import com.lunova.moonrover.commands.impl.Ping;
 
 import java.util.EnumSet;
 import java.util.Optional;

@@ -1,6 +1,6 @@
-package com.lunova.moonrover.logger.commands.impl;
+package com.lunova.moonrover.commands.impl;
 
-import com.lunova.moonrover.logger.commands.BotCommand;
+import com.lunova.moonrover.commands.BotCommand;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
