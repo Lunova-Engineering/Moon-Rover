@@ -1,17 +1,22 @@
-package com.lunova.moonrover;
+package com.lunova.moonbot;
 
-import com.lunova.moonrover.commands.CommandList;
-import com.lunova.moonrover.commands.CommandListener;
+import com.lunova.moonbot.commands.BotCommand;
+import com.lunova.moonbot.commands.CommandList;
+import com.lunova.moonbot.commands.CommandListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-public class DiscordBot {
+public class MoonBot {
     public static JDA jda;
 
     public static Guild guild;
@@ -27,7 +32,9 @@ public class DiscordBot {
         jda.awaitReady();
         guild = jda.getGuildById(Long.parseLong(args[1]));
 
-        CommandList.COMMANDS.forEach(command -> command.getCommand().register(guild.updateCommands()));
+        CommandListUpdateAction commands = guild.updateCommands();
+        List<SlashCommandData> list = CommandList.COMMANDS.stream().map(CommandList::getCommand).collect(Collectors.toList()).stream().map(BotCommand::getRegistry).collect(Collectors.toList());
+        commands.addCommands(list).queue();
     }
 
 }

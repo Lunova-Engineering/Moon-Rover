@@ -1,15 +1,17 @@
-package com.lunova.moonrover.commands;
+package com.lunova.moonbot.commands;
 
-import com.lunova.moonrover.commands.impl.Ping;
+import com.lunova.moonbot.commands.impl.Help;
+import com.lunova.moonbot.commands.impl.Ping;
 
 import java.util.EnumSet;
 import java.util.Optional;
 
 public enum CommandList {
-    PING(new Ping("ping"));
+    PING(new Ping("ping")),
+    HELP(new Help("help"));
 
     public static final EnumSet<CommandList> COMMANDS = EnumSet.allOf(CommandList.class);
-    private BotCommand botCommand;
+    private final BotCommand botCommand;
     CommandList(BotCommand botCommand) {
         this.botCommand = botCommand;
     }

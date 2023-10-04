@@ -1,9 +1,9 @@
-package com.lunova.moonrover.commands;
+package com.lunova.moonbot.commands;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.Command;
+import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.requests.RestAction;
-import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
 import java.util.List;
 
@@ -35,6 +35,6 @@ public abstract class BotCommand {
     }
 
 
-    public abstract void register(CommandListUpdateAction commandList);
+    public abstract SlashCommandData getRegistry();
     public abstract void execute(SlashCommandInteractionEvent event);
 }
