@@ -31,7 +31,7 @@ Moon-Rover is a meticulously crafted Discord bot, designed exclusively for enhan
 ## Getting Started 🌌
 
 1. **Prerequisites**: Ensure you have Java installed and set up on your machine.
-2. **Installation**: [Provide steps or link to installation guide]
+2. **Installation**: https://www.java.com/en/download/manual.jsp
 3. **Configuration**: [Brief about any configuration files or environment variables]
 4. **Running**: Use the above usage commands to run Moon-Rover.
 
