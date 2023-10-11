@@ -26,10 +26,12 @@ public class Help extends BotCommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        StringBuilder bldr = new StringBuilder();
-        bldr.append("***>>> ");
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setColor(Color.LIGHT_GRAY); // Color resembling code block background
 
-// Determine the length of the longest command
+        StringBuilder bldr = new StringBuilder();
+
+        // Determine the length of the longest command
         int maxCommandLength = 0;
         List<Command> allCommands = new ArrayList<>();
         allCommands.addAll(event.getJDA().retrieveCommands().complete());
@@ -42,17 +44,17 @@ public class Help extends BotCommand {
             }
         }
 
-// Append commands and descriptions with padding
+        // Append commands and descriptions with padding
         for (Command command : allCommands) {
-            bldr.append("/")
+            bldr.append("**/")
                     .append(command.getFullCommandName())
-                    .append(String.format("%" + (maxCommandLength - command.getFullCommandName().length() + 4) + "s", "")) // Padding
+                    .append("**\n*")
+                    //.append(String.format("%" + (maxCommandLength - command.getFullCommandName().length() + 4) + "s", "")) // Padding
                     .append(command.getDescription())
-                    .append("\n");
+                    .append("*\n\n");
         }
 
-        bldr.append("\n***");
-        event.reply(bldr.toString()).queue();
-
+        embedBuilder.setDescription(bldr.toString());
+        event.replyEmbeds(embedBuilder.build()).queue();
     }
 }

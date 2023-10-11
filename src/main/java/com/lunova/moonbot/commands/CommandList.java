@@ -23,7 +23,7 @@ public enum CommandList {
     public static Optional<? extends BotCommand> getCommand(String identifier) {
         return COMMANDS.stream()
                 .map(CommandList::getCommand)
-                .filter(command -> command.getIdentifier().equalsIgnoreCase(identifier))  // Map the CommandList enum to its BotCommand
+                .filter(command -> command.getName().equalsIgnoreCase(identifier))  // Map the CommandList enum to its BotCommand
                 .findFirst();
     }
 
