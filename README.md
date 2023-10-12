@@ -1,7 +1,8 @@
 # Moon-Rover 🌙
 
-Moon-Rover is a meticulously crafted Discord bot, designed exclusively for enhancing the experience of personal Discord communities. Developed with precision in Java and powered by the robust JDA framework, Moon-Rover seamlessly integrates advanced features like role assignment, dynamic custom commands, and efficient data retrieval mechanisms.
-
+Moon-Rover is a meticulously crafted Discord bot, designed exclusively for enhancing the experience of personal Discord
+communities. Developed with precision in Java and powered by the robust JDA framework, Moon-Rover seamlessly integrates
+advanced features like role assignment, dynamic custom commands, and efficient data retrieval mechanisms.
 
 ## Features 🚀
 
@@ -37,11 +38,13 @@ Moon-Rover is a meticulously crafted Discord bot, designed exclusively for enhan
 
 ## Contributing 🤝
 
-We welcome contributions from the developer community! If you'd like to contribute, please fork the repository and make changes as you'd like. Pull requests are warmly welcome.
+We welcome contributions from the developer community! If you'd like to contribute, please fork the repository and make
+changes as you'd like. Pull requests are warmly welcome.
 
 ## License 📜
 
-This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/Lunova-Engineering/Moon-Rover/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License - see
+the [LICENSE.md](https://github.com/Lunova-Engineering/Moon-Rover/blob/main/LICENSE) file for details.
 
 ## Acknowledgments 🌟
 

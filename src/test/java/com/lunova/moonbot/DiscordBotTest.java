@@ -1,21 +1,13 @@
 package com.lunova.moonbot;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.lunova.moonbot.movies.Movie;
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
+import com.lunova.moonbot.commands.CommandManager;
 
 public class DiscordBotTest {
-    public static void main(String[] args) {
-        InputStream inputStream = DiscordBotTest.class.getClassLoader().getResourceAsStream("movies.json");
+
+    public static void main(String[] args) throws Exception {
+        CommandManager.initializeCommands();
+        CommandManager.COMMANDS.stream().forEach(c -> System.out.println(c.getName()));
+/*        InputStream inputStream = DiscordBotTest.class.getClassLoader().getResourceAsStream("movies.json");
 
         if (inputStream == null) {
             throw new IllegalArgumentException("File not found!");
@@ -40,6 +32,7 @@ public class DiscordBotTest {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
+
 }
