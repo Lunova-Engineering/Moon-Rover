@@ -3,6 +3,7 @@ package com.lunova.moonbot.commands.impl;
 import com.lunova.moonbot.annotations.CommandAnnotation;
 import com.lunova.moonbot.commands.BotCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -11,6 +12,7 @@ import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -39,6 +41,8 @@ public class Help extends BotCommand {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
+        Optional<Guild> guild = Optional.ofNullable(event.getGuild());
+
         embedBuilder.setColor(Color.LIGHT_GRAY); // Color resembling code block background
 
         StringBuilder bldr = new StringBuilder();
@@ -47,7 +51,7 @@ public class Help extends BotCommand {
         int maxCommandLength = 0;
         List<Command> allCommands = new ArrayList<>();
         allCommands.addAll(event.getJDA().retrieveCommands().complete());
-        allCommands.addAll(event.getGuild().retrieveCommands().complete());
+        guild.ifPresent(g -> allCommands.addAll(g.retrieveCommands().complete()));
 
         for (Command command : allCommands) {
             int length = command.getFullCommandName().length();
