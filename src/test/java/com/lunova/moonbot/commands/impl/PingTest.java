@@ -16,6 +16,9 @@ public class PingTest {
     private SlashCommandInteractionEvent mockEvent;
     private ReplyCallbackAction mockReplyCallbackAction;
 
+    /**
+     * Sets up mocked instances and initial configurations before each test case.
+     */
     @BeforeEach
     public void setup() {
         pingCommand = new Ping("ping");
@@ -26,6 +29,13 @@ public class PingTest {
         when(mockEvent.reply("pong")).thenReturn(mockReplyCallbackAction);
     }
 
+    /**
+     * Test to verify that executing the Ping command responds with "pong".
+     * <p>
+     * This test ensures that when the {@code execute} method of the {@code Ping} class is called,
+     * the expected "pong" message is returned as a response.
+     * </p>
+     */
     @Test
     public void testExecute() {
         pingCommand.execute(mockEvent);
@@ -37,6 +47,12 @@ public class PingTest {
         verify(mockReplyCallbackAction, times(1)).queue();
     }
 
+    /**
+     * Test to ensure the command's registry data is correctly set.
+     * <p>
+     * This test checks if the command's name and description in the registry data match the expected values.
+     * </p>
+     */
     @Test
     public void testGetRegistryData() {
         SlashCommandData data = pingCommand.getRegistryData();
