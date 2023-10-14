@@ -11,21 +11,30 @@ import net.dv8tion.jda.api.entities.User;
  */
 public class LogMessage {
 
+    private final long time;
     private final User user;
-    private final LogEvent logEvent;
     private final String message;
 
     /**
      * Instantiates a new Log message.
      *
-     * @param user     the user
-     * @param logEvent the log event
-     * @param message  the message
+     * @param time    the time
+     * @param user    the user
+     * @param message the message
      */
-    public LogMessage(User user, LogEvent logEvent, String message) {
+    public LogMessage(long time, User user, String message) {
+        this.time = time;
         this.user = user;
-        this.logEvent = logEvent;
         this.message = message;
+    }
+
+    /**
+     * Gets time.
+     *
+     * @return the time
+     */
+    public long getTime() {
+        return time;
     }
 
     /**
@@ -35,15 +44,6 @@ public class LogMessage {
      */
     public User getUser() {
         return user;
-    }
-
-    /**
-     * Gets log event.
-     *
-     * @return the log event
-     */
-    public LogEvent getLogEvent() {
-        return logEvent;
     }
 
     /**
