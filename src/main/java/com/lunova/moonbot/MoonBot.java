@@ -1,6 +1,8 @@
 package com.lunova.moonbot;
 
 import com.lunova.moonbot.commands.CommandManager;
+import com.lunova.moonbot.messages.MessageManager;
+import com.lunova.moonbot.movies.logging.LogManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -37,7 +39,8 @@ public class MoonBot {
      * Currently, this set includes a command manager for handling command-related events.
      */
     private static final Set<ListenerAdapter> LISTENER_ADAPTERS = Set.of(
-            new CommandManager()
+            new CommandManager(),
+            new MessageManager()
     );
 
     /**
@@ -67,6 +70,7 @@ public class MoonBot {
         CommandManager.initializeCommands();
         CommandManager.deregisterAllInGuild(guild);
         CommandManager.registerAllInGuild(guild);
+        LogManager.initialize();
     }
 
 }
