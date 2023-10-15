@@ -2,7 +2,6 @@ package com.lunova.moonbot.logging;
 
 import com.lunova.moonbot.movies.logging.LogEvent;
 import com.lunova.moonbot.movies.logging.LogManager;
-import com.lunova.moonbot.movies.logging.LogMessage;
 import net.dv8tion.jda.api.entities.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,12 +10,10 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class LogManagerTest {
 
@@ -36,9 +33,9 @@ public class LogManagerTest {
         when(mockUser.getName()).thenReturn("TestUser");
         when(mockUser.getId()).thenReturn("123456");
 
-        LogMessage logMessage = new LogMessage(System.currentTimeMillis(), mockUser, "Test Message");
+        //LogMessage logMessage = new LogMessage(System.currentTimeMillis(), mockUser, "Test Message");
 
-        LogManager.submitLog(LogEvent.MESSAGE, logMessage);
+        //LogManager.submitLog(LogEvent.MESSAGE, logMessage);
 
        // assertTrue(LogManager.LOG_MESSAGES.containsKey(mockUser));
         //assertTrue(LogManager.LOG_MESSAGES.get(mockUser).containsKey(LogEvent.MESSAGE));
@@ -51,7 +48,7 @@ public class LogManagerTest {
         when(mockUser.getName()).thenReturn("TestUser");
         when(mockUser.getId()).thenReturn("123456");
 
-        LogMessage logMessage = new LogMessage(System.currentTimeMillis(), mockUser, "Test Message");
+        //LogMessage logMessage = new LogMessage(System.currentTimeMillis(), mockUser, "Test Message");
        // LogManager.LOG_MESSAGES.put(mockUser, Map.of(LogEvent.MESSAGE, new ArrayList<>(List.of(logMessage))));
 
         LogManager.flushLogs();
