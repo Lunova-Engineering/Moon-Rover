@@ -76,6 +76,7 @@ public class CommandManager extends ListenerAdapter {
                 Constructor<?> constructor = clazz.getConstructor(String.class);
                 BotCommand command = (BotCommand) constructor.newInstance(description);
 
+                CommandManager.COMMAND_LOGGER.info("Initialized command with name " + command.getName());
                 COMMANDS.add(command);
             }
         }

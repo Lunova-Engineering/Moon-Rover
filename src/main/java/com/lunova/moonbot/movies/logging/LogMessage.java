@@ -1,6 +1,6 @@
 package com.lunova.moonbot.movies.logging;
 
-import net.dv8tion.jda.api.entities.User;
+import java.io.File;
 
 /**
  * The type Log message.
@@ -11,39 +11,27 @@ import net.dv8tion.jda.api.entities.User;
  */
 public class LogMessage {
 
-    private final long time;
-    private final User user;
+    private final File file;
     private final String message;
 
     /**
      * Instantiates a new Log message.
      *
-     * @param time    the time
-     * @param user    the user
+     * @param file    the file
      * @param message the message
      */
-    public LogMessage(long time, User user, String message) {
-        this.time = time;
-        this.user = user;
+    public LogMessage(File file, String message) {
+        this.file = file;
         this.message = message;
     }
 
     /**
-     * Gets time.
+     * Gets file.
      *
-     * @return the time
+     * @return the file
      */
-    public long getTime() {
-        return time;
-    }
-
-    /**
-     * Gets user.
-     *
-     * @return the user
-     */
-    public User getUser() {
-        return user;
+    public File getFile() {
+        return file;
     }
 
     /**

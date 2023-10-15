@@ -1,32 +1,34 @@
 package com.lunova.moonbot.movies.logging;
 
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.Event;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * The type Log manager.
+ *
  * @author Drake - <a href="https://github.com/metorrite">GitHub</a>
- * @project Moon-Rover
+ * @project Moon -Rover
  * @since 10.13.2023
  */
 public class LogManager {
 
-    private static final Map<User, Map<LogEvent, ArrayList<LogMessage>>> LOG_MESSAGES = new HashMap<>();
+    private static final Map<LogEvent, ArrayList<LogMessage>> LOG_EVENTS = new HashMap<>();
 
     private static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newScheduledThreadPool(1);
 
-    private static final EnumSet<LogEvent> EVENTS = EnumSet.allOf(LogEvent.class);
 
-    private static final String BASE_DIR = "data" + File.separator + "logs";
-
+    /**
+     * Initialize.
+     */
     public static void initialize() {
         EXECUTOR_SERVICE.scheduleWithFixedDelay(new Runnable() {
             @Override
@@ -36,58 +38,42 @@ public class LogManager {
         }, 0, 30, TimeUnit.MINUTES);
     }
 
-    public static void submitLog(LogEvent event, LogMessage message) {
-        User user = message.getUser();
-
-        if(!LOG_MESSAGES.containsKey(user))
-             LOG_MESSAGES.put(user, new HashMap<>());
-        if(!LOG_MESSAGES.get(user).containsKey(event))
-            LOG_MESSAGES.get(user).put(event, new ArrayList<>());
-
-        LOG_MESSAGES.get(user).get(event).add(message);
+    /**
+     * Submit log.
+     *
+     * @param logEvent the log event
+     * @param event    the event
+     */
+    public static <T extends Event> void submitLog(LogEvent logEvent, T event) {
+        if(!LOG_EVENTS.containsKey(logEvent))
+            LOG_EVENTS.put(logEvent, new ArrayList<>());
+        LogMessage message = logEvent.getStrategy().getLogMessage(event);
+        LOG_EVENTS.get(logEvent).add(message);
     }
 
+    /**
+     * Flush logs.
+     */
     public static void flushLogs() {
-        // Iterate through each user
-        for (Map.Entry<User, Map<LogEvent, ArrayList<LogMessage>>> userEntry : LOG_MESSAGES.entrySet()) {
-            User user = userEntry.getKey();
-            Map<LogEvent, ArrayList<LogMessage>> userLogs = userEntry.getValue();
+        for (List<LogMessage> logMessages : LOG_EVENTS.values()) {
+            // Sort log messages based on file paths
+            logMessages.sort(Comparator.comparing(log -> log.getFile().getPath()));
 
-            // User directory
-            String userDirName = String.format("%s (%s)", user.getName(), user.getId());
-            File userDir = new File(BASE_DIR, userDirName);
+            // Write each log message to its associated file
+            for (LogMessage logMessage : logMessages) {
+                try {
+                    // Ensure parent directories exist
+                    Path parentDir = logMessage.getFile().toPath().getParent();
+                    if (Files.notExists(parentDir)) {
+                        Files.createDirectories(parentDir);
+                    }
 
-            // Ensure the user directory exists
-            if (!userDir.exists()) {
-                userDir.mkdirs();
-            }
+                    // Write to the file
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(logMessage.getFile(), true))) {
+                        writer.write(logMessage.getMessage());
+                        writer.newLine();  // To ensure messages are on separate lines
+                    }
 
-            // Iterate through each log event for the user
-            for (Map.Entry<LogEvent, ArrayList<LogMessage>> logEntry : userLogs.entrySet()) {
-                LogEvent event = logEntry.getKey();
-                ArrayList<LogMessage> messages = logEntry.getValue();
-
-                // Create StringBuilder for all log messages for this event
-                StringBuilder sb = new StringBuilder();
-
-                for (LogMessage logMessage : messages) {
-                    String formattedLog = String.format("[%s] [%s] %s%n",
-                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(logMessage.getTime())),
-                            event.name(),
-                            logMessage.getMessage()
-                    );
-                    sb.append(formattedLog);
-                }
-
-                // Write to file
-                File eventDir = new File(userDir, event.name());
-                if (!eventDir.exists()) {
-                    eventDir.mkdir();
-                }
-
-                File logFile = new File(eventDir, user.getName() + "_" + event.name() + "_log.txt");
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(logFile, true))) {
-                    writer.write(sb.toString());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
