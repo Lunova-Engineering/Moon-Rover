@@ -2,6 +2,7 @@ package com.lunova.moonbot.commands;
 
 import com.lunova.moonbot.annotations.CommandAnnotation;
 import com.lunova.moonbot.exceptions.CommandNotFoundException;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -41,6 +43,76 @@ public class CommandManager extends ListenerAdapter {
     public static final Logger COMMAND_LOGGER = LoggerFactory.getLogger(CommandManager.class);
 
     /**
+     * Registers all commands in the global command list to the provided JDA instance.
+     *
+     * @param jda The JDA instance where the commands will be registered.
+     */
+    public static void registerAllGlobally(JDA jda) {
+        jda.updateCommands().addCommands(COMMANDS.stream().map(BotCommand::getRegistryData).collect(Collectors.toList())).queue();
+    }
+
+    /**
+     * Deregisters (deletes) all commands from the provided JDA instance.
+     *
+     * @param jda The JDA instance from where the commands will be deregistered.
+     */
+    public static void deregisterAllGlobally(JDA jda) {
+        jda.retrieveCommands().queue(commands -> commands.forEach(command -> command.delete().queue()));
+    }
+
+    /**
+     * Registers a single command to the provided JDA instance.
+     *
+     * @param jda     The JDA instance where the command will be registered.
+     * @param command The command to register.
+     */
+    public static void registerGlobally(JDA jda, BotCommand command) {
+        jda.updateCommands().addCommands(Collections.singletonList(command.getRegistryData())).queue();
+    }
+
+    /**
+     * Deregisters (deletes) a single command from the provided JDA instance.
+     * Logs an error if the command is not found in the global command registry.
+     *
+     * @param jda     The JDA instance from where the command will be deregistered.
+     * @param command The command to deregister.
+     */
+    public static void deregisterGlobally(JDA jda, BotCommand command) {
+        jda.retrieveCommands().queue(commands -> {
+            commands.stream().filter(globalCommand -> globalCommand.getName().equalsIgnoreCase(command.getName())).findFirst().ifPresentOrElse(
+                    globalCommand -> globalCommand.delete().queue(),
+                    () -> COMMAND_LOGGER.error("Command with name " + command.getName() + " not found in global command registry."));
+        });
+    }
+
+    /**
+     * Registers a single command in the specified guild.
+     *
+     * @param guild   The guild where the command will be registered.
+     * @param command The command to register.
+     */
+    public static void registerInGuild(Guild guild, BotCommand command) {
+        guild.updateCommands().addCommands(Collections.singletonList(command.getRegistryData())).queue();
+    }
+
+    /**
+     * Deregisters (deletes) a single command from the specified guild.
+     * Logs an error if the command is not found in the guild's command registry.
+     *
+     * @param guild   The guild from where the command will be deregistered.
+     * @param command The command to deregister.
+     */
+    public static void deregisterInGuild(Guild guild, BotCommand command) {
+        guild.retrieveCommands().queue(commands -> {
+            commands.stream().filter(guildCommand -> guildCommand.getName().equalsIgnoreCase(command.getName())).findFirst().ifPresentOrElse(
+                    guildCommand -> guildCommand.delete().queue(),
+                    () -> COMMAND_LOGGER.error("Command with name " + command.getName() + " not found in guild command registry."));
+        });
+    }
+
+
+
+    /**
      * Registers all commands in the COMMANDS set to a specified guild.
      *
      * @param guild The target guild for the registration.
@@ -55,7 +127,7 @@ public class CommandManager extends ListenerAdapter {
      * @param guild The target guild for the deregistration.
      */
     public static void deregisterAllInGuild(Guild guild) {
-        guild.retrieveCommands().complete().forEach(command -> command.delete().queue());
+        guild.retrieveCommands().queue(commands -> commands.forEach(command -> command.delete().queue()));
     }
 
     /**
