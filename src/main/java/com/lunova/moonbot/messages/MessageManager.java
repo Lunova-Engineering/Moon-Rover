@@ -1,6 +1,6 @@
 package com.lunova.moonbot.messages;
 
-import com.lunova.moonbot.movies.logging.LogEvent;
+import com.lunova.moonbot.movies.logging.LogEventType;
 import com.lunova.moonbot.movies.logging.LogManager;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -12,7 +12,7 @@ public class MessageManager extends ListenerAdapter {
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         //LogManager.submitLog(LogEvent.MESSAGE, event);
         //System.out.println(event.getGuildChannel() + "\n" + event.getChannelType() + "\n" + event.getChannel() + "\n" + event.getMessage().getContentRaw());
-        LogManager.submitLog(LogEvent.MESSAGE, event);
+        LogManager.submitLog(LogEventType.MESSAGE, event);
     }
 
 }

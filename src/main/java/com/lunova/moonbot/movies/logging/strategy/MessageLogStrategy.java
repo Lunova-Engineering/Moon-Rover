@@ -1,6 +1,6 @@
 package com.lunova.moonbot.movies.logging.strategy;
 
-import com.lunova.moonbot.movies.logging.LogEvent;
+import com.lunova.moonbot.movies.logging.LogEventType;
 import com.lunova.moonbot.movies.logging.LogMessage;
 import com.lunova.moonbot.movies.logging.LogStrategy;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
@@ -51,7 +51,7 @@ public class MessageLogStrategy extends LogStrategy<MessageReceivedEvent> {
             Path logFilePath = getLogPath()
                     .resolve(event.getGuild().getName())
                     .resolve(event.getAuthor().getName())
-                    .resolve(LogEvent.MESSAGE.name())  // LogEvent directory
+                    .resolve(LogEventType.MESSAGE.name())  // LogEvent directory
                     .resolve(logFileName);  // Log file itself
 
             // Convert to File for LogMessage constructor
