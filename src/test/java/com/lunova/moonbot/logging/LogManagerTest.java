@@ -1,6 +1,6 @@
 package com.lunova.moonbot.logging;
 
-import com.lunova.moonbot.movies.logging.LogEvent;
+import com.lunova.moonbot.movies.logging.LogEventType;
 import com.lunova.moonbot.movies.logging.LogManager;
 import net.dv8tion.jda.api.entities.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,10 +57,10 @@ public class LogManagerTest {
         Path userDir = tempDirectory.resolve("TestUser (123456)");
         assertTrue(Files.exists(userDir));
 
-        Path eventDir = userDir.resolve(LogEvent.MESSAGE.name());
+        Path eventDir = userDir.resolve(LogEventType.MESSAGE.name());
         assertTrue(Files.exists(eventDir));
 
-        Path logFile = eventDir.resolve("TestUser_" + LogEvent.MESSAGE.name() + "_log.txt");
+        Path logFile = eventDir.resolve("TestUser_" + LogEventType.MESSAGE.name() + "_log.txt");
         assertTrue(Files.exists(logFile));
 
         String content = Files.readString(logFile);

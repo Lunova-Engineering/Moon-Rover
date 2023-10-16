@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * The type Log manager.
@@ -19,20 +17,34 @@ import java.util.concurrent.TimeUnit;
  * @project Moon -Rover
  * @since 10.13.2023
  */
-public class LogManager {
+public class LogManager extends Thread {
 
-    private static final Map<LogEvent, ArrayList<LogMessage>> LOG_EVENTS = new HashMap<>();
+    private static final Map<LogEventType, ArrayList<LogMessage>> LOG_MESSAGES = new ConcurrentHashMap<>();
+
+    private static final Queue<LogEvent> LOG_EVENTS = new ConcurrentLinkedQueue<>();
 
     private static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newScheduledThreadPool(1);
 
 
     /**
-     * Initialize.
+     * This method is run by the thread when it executes. Subclasses of {@code
+     * Thread} may override this method.
+     *
+     * <p> This method is not intended to be invoked directly. If this thread is a
+     * platform thread created with a {@link Runnable} task then invoking this method
+     * will invoke the task's {@code run} method. If this thread is a virtual thread
+     * then invoking this method directly does nothing.
+     *
+     * @implSpec The default implementation executes the {@link Runnable} task that
+     * the {@code Thread} was created with. If the thread was created without a task
+     * then this method does nothing.
      */
-    public static void initialize() {
+    @Override
+    public void run() {
         EXECUTOR_SERVICE.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
+
                 flushLogs();
             }
         }, 0, 30, TimeUnit.MINUTES);
@@ -41,21 +53,28 @@ public class LogManager {
     /**
      * Submit log.
      *
-     * @param logEvent the log event
+     * @param logEventType the log event
      * @param event    the event
      */
-    public static <T extends Event> void submitLog(LogEvent logEvent, T event) {
-        if(!LOG_EVENTS.containsKey(logEvent))
-            LOG_EVENTS.put(logEvent, new ArrayList<>());
-        LogMessage message = logEvent.getStrategy().getLogMessage(event);
-        LOG_EVENTS.get(logEvent).add(message);
+    public static <T extends Event> void submitLog(LogEventType logEventType, T event) {
+
+        LOG_EVENTS.add(new LogEvent(logEventType, event));
+
+        //LOG_MESSAGES.computeIfAbsent(logEventType, k -> new ArrayList<>());
+        //LOG_MESSAGES.get(logEventType).add(logEventType.getStrategy().getLogMessage(event));
+    }
+
+    private static void processLogEvents() {
+        while(LOG_EVENTS.poll() != null) {
+            LOG_EVENTS.
+        }
     }
 
     /**
      * Flush logs.
      */
     public static void flushLogs() {
-        for (List<LogMessage> logMessages : LOG_EVENTS.values()) {
+        for (List<LogMessage> logMessages : LOG_MESSAGES.values()) {
             // Sort log messages based on file paths
             logMessages.sort(Comparator.comparing(log -> log.getFile().getPath()));
 
