@@ -17,7 +17,7 @@ import java.util.concurrent.*;
  * @project Moon -Rover
  * @since 10.13.2023
  */
-public class LogManager extends Thread {
+public class LogManager {
 
     private static final Map<LogEventType, ArrayList<LogMessage>> LOG_MESSAGES = new ConcurrentHashMap<>();
 
@@ -25,78 +25,82 @@ public class LogManager extends Thread {
 
     private static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newScheduledThreadPool(1);
 
-
     /**
-     * This method is run by the thread when it executes. Subclasses of {@code
-     * Thread} may override this method.
-     *
-     * <p> This method is not intended to be invoked directly. If this thread is a
-     * platform thread created with a {@link Runnable} task then invoking this method
-     * will invoke the task's {@code run} method. If this thread is a virtual thread
-     * then invoking this method directly does nothing.
-     *
-     * @implSpec The default implementation executes the {@link Runnable} task that
-     * the {@code Thread} was created with. If the thread was created without a task
-     * then this method does nothing.
+     * Initializes the log manager by setting up scheduled tasks to process and flush logs.
+     * Additionally, ensures that any remaining logs are processed and flushed when the JVM
+     * shuts down, and the executor service is shut down gracefully.
      */
-    @Override
-    public void run() {
-        EXECUTOR_SERVICE.scheduleWithFixedDelay(new Runnable() {
-            @Override
-            public void run() {
-
-                flushLogs();
+    public static void initialize() {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            processLogEvents();
+            flushLogs();
+            EXECUTOR_SERVICE.shutdown();
+            try {
+                if (!EXECUTOR_SERVICE.awaitTermination(5, TimeUnit.MINUTES)) {
+                    EXECUTOR_SERVICE.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                EXECUTOR_SERVICE.shutdownNow();
             }
-        }, 0, 30, TimeUnit.MINUTES);
+        }));
+        EXECUTOR_SERVICE.scheduleWithFixedDelay(LogManager::processLogEvents, 0, 15, TimeUnit.SECONDS);
+        EXECUTOR_SERVICE.scheduleWithFixedDelay(LogManager::flushLogs, 0, 30, TimeUnit.MINUTES);
     }
 
+
     /**
-     * Submit log.
+     * Submits a new log event for processing.
      *
-     * @param logEventType the log event
-     * @param event    the event
+     * @param <T>          The type of event extending from {@link Event}
+     * @param logEventType The type of log event to be processed.
+     * @param event        The actual event data to be logged.
      */
     public static <T extends Event> void submitLog(LogEventType logEventType, T event) {
-
         LOG_EVENTS.add(new LogEvent(logEventType, event));
-
-        //LOG_MESSAGES.computeIfAbsent(logEventType, k -> new ArrayList<>());
-        //LOG_MESSAGES.get(logEventType).add(logEventType.getStrategy().getLogMessage(event));
-    }
-
-    private static void processLogEvents() {
-        while(LOG_EVENTS.poll() != null) {
-            LOG_EVENTS.
-        }
     }
 
     /**
-     * Flush logs.
+     * Flushes all accumulated log messages to their associated files on disk.
+     * This method ensures each log message is written to the appropriate file.
+     * Any log messages that have been successfully written are removed from the accumulated log messages.
      */
     public static void flushLogs() {
         for (List<LogMessage> logMessages : LOG_MESSAGES.values()) {
-            // Sort log messages based on file paths
             logMessages.sort(Comparator.comparing(log -> log.getFile().getPath()));
 
-            // Write each log message to its associated file
-            for (LogMessage logMessage : logMessages) {
+            Iterator<LogMessage> iterator = logMessages.iterator();
+            while (iterator.hasNext()) {
+                LogMessage logMessage = iterator.next();
                 try {
-                    // Ensure parent directories exist
                     Path parentDir = logMessage.getFile().toPath().getParent();
                     if (Files.notExists(parentDir)) {
                         Files.createDirectories(parentDir);
                     }
 
-                    // Write to the file
                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(logMessage.getFile(), true))) {
                         writer.write(logMessage.getMessage());
-                        writer.newLine();  // To ensure messages are on separate lines
+                        writer.newLine();
                     }
-
+                    iterator.remove();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
     }
+
+    /**
+     * Processes all queued log events and creates log messages from them.
+     * These log messages are grouped by their log event type and stored for flushing to disk.
+     */
+    private static void processLogEvents() {
+        LogEvent event;
+        while ((event = LOG_EVENTS.poll()) != null) {
+            LogMessage message = event.getLogEventType().getStrategy().getLogMessage(event.getEvent());
+            LOG_MESSAGES.computeIfAbsent(event.getLogEventType(), k -> new ArrayList<>());
+            LOG_MESSAGES.get(event.getLogEventType()).add(message);
+        }
+    }
+
+
 }
