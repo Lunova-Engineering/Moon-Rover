@@ -2,7 +2,7 @@ package com.lunova.moonbot.commands.impl;
 
 import com.lunova.moonbot.annotations.CommandAnnotation;
 import com.lunova.moonbot.commands.BotCommand;
-import com.lunova.moonbot.movies.logging.LogManager;
+import com.lunova.moonbot.logging.LogManager;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
