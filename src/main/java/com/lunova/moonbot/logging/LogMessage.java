@@ -1,4 +1,4 @@
-package com.lunova.moonbot.movies.logging;
+package com.lunova.moonbot.logging;
 
 import java.io.File;
 
@@ -12,6 +12,7 @@ import java.io.File;
 public class LogMessage {
 
     private final File file;
+
     private final String message;
 
     /**

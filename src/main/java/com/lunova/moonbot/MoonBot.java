@@ -1,8 +1,8 @@
 package com.lunova.moonbot;
 
 import com.lunova.moonbot.commands.CommandManager;
+import com.lunova.moonbot.logging.LogManager;
 import com.lunova.moonbot.messages.MessageManager;
-import com.lunova.moonbot.movies.logging.LogManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;

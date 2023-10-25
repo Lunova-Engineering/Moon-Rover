@@ -7,13 +7,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class PingTest {
 
     private Ping pingCommand;
+
     private SlashCommandInteractionEvent mockEvent;
+
     private ReplyCallbackAction mockReplyCallbackAction;
 
     /**
@@ -60,4 +62,5 @@ public class PingTest {
         assertEquals("ping", data.getName());
         assertEquals("Ping Moon-Bot and get a reply!", data.getDescription());
     }
+
 }

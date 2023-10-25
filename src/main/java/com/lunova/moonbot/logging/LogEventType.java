@@ -1,7 +1,9 @@
-package com.lunova.moonbot.movies.logging;
+package com.lunova.moonbot.logging;
 
-import com.lunova.moonbot.movies.logging.strategy.MessageLogStrategy;
+import com.lunova.moonbot.logging.strategy.CommandLogStrategy;
+import com.lunova.moonbot.logging.strategy.MessageLogStrategy;
 import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 /**
@@ -12,9 +14,11 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * @since 10.13.2023
  */
 public enum LogEventType {
-    MESSAGE(MessageReceivedEvent.class, new MessageLogStrategy());
+    MESSAGE(MessageReceivedEvent.class, new MessageLogStrategy()),
+    COMMAND(SlashCommandInteractionEvent.class, new CommandLogStrategy());
 
     private final Class<? extends Event> eventType;
+
     private final LogStrategy<? extends Event> strategy;
 
     <T extends Event> LogEventType(Class<T> eventType, LogStrategy<T> strategy) {

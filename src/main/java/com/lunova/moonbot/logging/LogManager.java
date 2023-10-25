@@ -1,12 +1,15 @@
-package com.lunova.moonbot.movies.logging;
+package com.lunova.moonbot.logging;
 
 import net.dv8tion.jda.api.events.Event;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -19,11 +22,16 @@ import java.util.concurrent.*;
  */
 public class LogManager {
 
+    /**
+     * TODO: Use MultiMap<K, V> from guava collections instead of Map. It does the same thing but already has the implementation. Need to ensure concurrency and thread safety with new collection type though.
+     */
     private static final Map<LogEventType, ArrayList<LogMessage>> LOG_MESSAGES = new ConcurrentHashMap<>();
 
     private static final Queue<LogEvent> LOG_EVENTS = new ConcurrentLinkedQueue<>();
 
     private static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newScheduledThreadPool(1);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogManager.class);
 
     /**
      * Initializes the log manager by setting up scheduled tasks to process and flush logs.
@@ -56,7 +64,18 @@ public class LogManager {
      * @param event        The actual event data to be logged.
      */
     public static <T extends Event> void submitLog(LogEventType logEventType, T event) {
-        LOG_EVENTS.add(new LogEvent(logEventType, event));
+        submitLog(OffsetDateTime.now(), logEventType, event);
+    }
+
+    /**
+     * Submits a new log event for processing.
+     *
+     * @param <T>          The type of event extending from {@link Event}
+     * @param logEventType The type of log event to be processed.
+     * @param event        The actual event data to be logged.
+     */
+    public static <T extends Event> void submitLog(OffsetDateTime timeStamp, LogEventType logEventType, T event) {
+        LOG_EVENTS.add(new LogEvent(timeStamp, logEventType, event));
     }
 
     /**
@@ -83,7 +102,7 @@ public class LogManager {
                     }
                     iterator.remove();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.error("Error occured while flushing logs!");
                 }
             }
         }
@@ -97,8 +116,7 @@ public class LogManager {
         LogEvent event;
         while ((event = LOG_EVENTS.poll()) != null) {
             LogMessage message = event.getLogEventType().getStrategy().getLogMessage(event.getEvent());
-            LOG_MESSAGES.computeIfAbsent(event.getLogEventType(), k -> new ArrayList<>());
-            LOG_MESSAGES.get(event.getLogEventType()).add(message);
+            LOG_MESSAGES.computeIfAbsent(event.getLogEventType(), k -> new ArrayList<>()).add(message);
         }
     }
 

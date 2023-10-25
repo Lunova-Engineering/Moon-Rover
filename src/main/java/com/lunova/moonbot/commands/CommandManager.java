@@ -2,6 +2,8 @@ package com.lunova.moonbot.commands;
 
 import com.lunova.moonbot.annotations.CommandAnnotation;
 import com.lunova.moonbot.exceptions.CommandNotFoundException;
+import com.lunova.moonbot.logging.LogEventType;
+import com.lunova.moonbot.logging.LogManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -111,14 +113,13 @@ public class CommandManager extends ListenerAdapter {
     }
 
 
-
     /**
      * Registers all commands in the COMMANDS set to a specified guild.
      *
      * @param guild The target guild for the registration.
      */
     public static void registerAllInGuild(Guild guild) {
-        guild.updateCommands().addCommands(COMMANDS.stream().map(BotCommand::getRegistryData).collect(Collectors.toList())).queue();
+        guild.updateCommands().addCommands(COMMANDS.stream().map(BotCommand::getRegistryData).collect(Collectors.toList())).complete();
     }
 
     /**
@@ -127,7 +128,8 @@ public class CommandManager extends ListenerAdapter {
      * @param guild The target guild for the deregistration.
      */
     public static void deregisterAllInGuild(Guild guild) {
-        guild.retrieveCommands().queue(commands -> commands.forEach(command -> command.delete().queue()));
+        guild.retrieveCommands().complete().forEach(command -> command.delete().complete());
+        //guild.retrieveCommands().queue(commands -> commands.forEach(command -> command.delete().queue()));
     }
 
     /**
@@ -172,7 +174,10 @@ public class CommandManager extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         Optional<BotCommand> command = COMMANDS.stream().filter(botCommand -> event.getFullCommandName().equalsIgnoreCase(botCommand.getName())).findFirst();
-        command.ifPresentOrElse(c -> c.execute(event), () -> {
+        command.ifPresentOrElse(c -> {
+            c.execute(event);
+            LogManager.submitLog(LogEventType.COMMAND, event);
+        }, () -> {
             try {
                 throw new CommandNotFoundException("Command with name: " + event.getFullCommandName() + " not found.");
             } catch (CommandNotFoundException e) {

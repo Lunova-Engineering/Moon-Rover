@@ -1,7 +1,5 @@
 package com.lunova.moonbot.logging;
 
-import com.lunova.moonbot.movies.logging.LogEventType;
-import com.lunova.moonbot.movies.logging.LogManager;
 import net.dv8tion.jda.api.entities.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,9 +20,9 @@ public class LogManagerTest {
 
     @BeforeEach
     public void setUp() {
-       // LogManager.LOG_MESSAGES.clear(); // Clear the static log messages map before each test.
+        // LogManager.LOG_MESSAGES.clear(); // Clear the static log messages map before each test.
         // Reset BASE_DIR in LogManager to point to our temporary directory. This might require you to adjust the access level of BASE_DIR or provide a setter.
-         //LogManager.BASE_DIR = tempDirectory.toString();
+        //LogManager.BASE_DIR = tempDirectory.toString();
     }
 
     @Test
@@ -37,7 +35,7 @@ public class LogManagerTest {
 
         //LogManager.submitLog(LogEvent.MESSAGE, logMessage);
 
-       // assertTrue(LogManager.LOG_MESSAGES.containsKey(mockUser));
+        // assertTrue(LogManager.LOG_MESSAGES.containsKey(mockUser));
         //assertTrue(LogManager.LOG_MESSAGES.get(mockUser).containsKey(LogEvent.MESSAGE));
         //assertEquals(1, LogManager.LOG_MESSAGES.get(mockUser).get(LogEvent.MESSAGE).size());
     }
@@ -49,7 +47,7 @@ public class LogManagerTest {
         when(mockUser.getId()).thenReturn("123456");
 
         //LogMessage logMessage = new LogMessage(System.currentTimeMillis(), mockUser, "Test Message");
-       // LogManager.LOG_MESSAGES.put(mockUser, Map.of(LogEvent.MESSAGE, new ArrayList<>(List.of(logMessage))));
+        // LogManager.LOG_MESSAGES.put(mockUser, Map.of(LogEvent.MESSAGE, new ArrayList<>(List.of(logMessage))));
 
         LogManager.flushLogs();
 
@@ -66,4 +64,5 @@ public class LogManagerTest {
         String content = Files.readString(logFile);
         assertTrue(content.contains("[MESSAGE] Test Message")); // Adjust this as needed based on your exact log format.
     }
+
 }

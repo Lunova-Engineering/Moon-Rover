@@ -1,4 +1,4 @@
-package com.lunova.moonbot.movies.logging;
+package com.lunova.moonbot.logging;
 
 import net.dv8tion.jda.api.events.Event;
 
@@ -20,4 +20,5 @@ public abstract class LogStrategy<T extends Event> {
     protected Path getLogPath() {
         return LOG_PATH;
     }
+
 }
