@@ -13,16 +13,9 @@
  * @author Drake - <a href="https://github.com/metorrite">GitHub</a>
  * @since 11.11.2023
  */
-module moon.bot.core {
-  // Placeholder for required modules. Replace with actual module names.
-  // requires java.logging;
-
-  // Placeholder for exported packages. Replace with actual package names.
-  // exports com.lunova.moonbot.core;
-
-  // Placeholder for services provided by this module. Replace with actual services.
-  // provides com.lunova.moonbot.core.api with com.lunova.moonbot.core.impl;
-
-  // Placeholder for services used by this module. Replace with actual services.
-  // uses com.lunova.moonbot.core.spi;
+module com.lunova.moonbot.core {
+  requires net.dv8tion.jda;
+  requires org.slf4j;
+  requires ch.qos.logback.classic;
+  requires ch.qos.logback.core;
 }

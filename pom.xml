@@ -11,7 +11,7 @@
     </description>
     <groupId>com.lunova</groupId>
     <artifactId>moon-bot-parent</artifactId>
-    <version>0.2.2-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
     <modules>
         <module>core</module>
     </modules>
@@ -114,6 +114,32 @@
                 </configuration>
             </plugin>
 
+            <!-- Checkstyle Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.3.1</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>10.12.5</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <configLocation>google_checks.xml</configLocation>
+                </configuration>
+            </plugin>
+
+
             <!-- OSWAP Security Plugin -->
             <plugin>
                 <groupId>org.owasp</groupId>
@@ -128,8 +154,11 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <!-- Security level to fail building on. 5 is directly in the middle. -->
+                    <!-- Security level to fail building on. 5 is directly in the middle.
                     <failBuildOnCVSS>5</failBuildOnCVSS>
+                    <suppressionFiles>
+                        <suppressionFile>OSWAP_suppression.xml</suppressionFile>
+                    </suppressionFiles> -->
                 </configuration>
             </plugin>
 
@@ -176,24 +205,55 @@
         </plugins>
     </build>
 
-    <!-- Dependencies -->
-    <dependencies>
+    <dependencyManagement>
+        <!-- Dependencies -->
+        <dependencies>
 
-        <!-- JUnit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-            <scope>test</scope>
-        </dependency>
+            <!-- JDA -->
+            <dependency>
+                <groupId>net.dv8tion</groupId>
+                <artifactId>JDA</artifactId>
+                <version>5.0.0-beta.18</version>
+            </dependency>
 
-        <!-- Mockito for unit testing -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>5.7.0</version>
-            <scope>test</scope>
-        </dependency>
+            <!-- SLF4J API -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>2.0.9</version>
+            </dependency>
 
-    </dependencies>
+            <!-- Logback Classic -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.4.11</version>
+            </dependency>
+
+            <!-- Logback Core -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>1.4.11</version>
+            </dependency>
+
+
+            <!-- JUnit -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.13.2</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- Mockito for unit testing -->
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>5.7.0</version>
+                <scope>test</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
 </project>

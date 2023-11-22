@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.2.xsd">
+    <suppress>
+        <notes><![CDATA[
+            Suppression for CVE-2022-24329 in kotlin-stdlib-jdk7-1.5.31.jar
+        ]]></notes>
+        <gav regex="true">^org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31$</gav>
+        <cve>CVE-2022-24329</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+            Suppression for CVE-2022-24329 in kotlin-stdlib-jdk8-1.5.31.jar
+        ]]></notes>
+        <gav regex="true">^org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31$</gav>
+        <cve>CVE-2022-24329</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+            Suppression for CVE-2022-24329 in kotlin-stdlib-common-1.5.31.jar
+        ]]></notes>
+        <gav regex="true">^org.jetbrains.kotlin:kotlin-stdlib-common:1.5.31$</gav>
+        <cve>CVE-2022-24329</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+            Suppression for CVE-2023-3635 in okio-jvm-3.0.0.jar
+        ]]></notes>
+        <gav regex="true">^com.squareup.okio:okio-jvm:3.0.0$</gav>
+        <cve>CVE-2023-3635</cve>
+    </suppress>
+</suppressions>

@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.lunova</groupId>
         <artifactId>moon-bot-parent</artifactId>
-        <version>0.2.2-SNAPSHOT</version>
+        <version>0.2.0-SNAPSHOT</version>
     </parent>
 
     <name>Moon Bot Core</name>
@@ -16,5 +16,34 @@
         This module encompasses the core logic of the bot, including initialization and execution processes, and sets the standard for plugin format and interaction within the Moon Bot ecosystem.
     </description>
     <artifactId>moon-bot-core</artifactId>
+
+    <!-- Dependencies -->
+    <dependencies>
+
+        <!-- JDA -->
+        <dependency>
+            <groupId>net.dv8tion</groupId>
+            <artifactId>JDA</artifactId>
+        </dependency>
+
+        <!-- SLF4J API -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <!-- Logback Classic -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <!-- Logback Core -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+        </dependency>
+
+    </dependencies>
 
 </project>
