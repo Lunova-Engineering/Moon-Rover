@@ -20,9 +20,6 @@ public class MoonBot {
   /** Logger for this class. */
   private static final Logger LOGGER = LoggerFactory.getLogger(MoonBot.class);
 
-  /** Singleton instance of bot configuration settings. */
-  private static final BotConfiguration BOT_CONFIGURATION = new BotConfiguration();
-
   /** JDA instance representing the Discord bot. */
   private static JDA instance;
 
@@ -49,7 +46,7 @@ public class MoonBot {
    */
   private static JDA constructBot() {
     try {
-      return JDABuilder.createDefault(BOT_CONFIGURATION.getProperty("AUTH_TOKEN")).build();
+      return JDABuilder.createDefault(BotConfiguration.getProperty("AUTH_TOKEN")).build();
     } catch (PropertyNotFoundException e) {
       LOGGER.error(e.getMessage(), e);
       LOGGER.error("Unable to locate bot authorization token. shutting down!");
