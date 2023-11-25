@@ -16,6 +16,7 @@ module com.lunova.moonbot.core {
   requires org.slf4j;
   requires ch.qos.logback.classic;
   requires ch.qos.logback.core;
+  requires com.google.common;
 
   exports com.lunova.moonbot.core;
   exports com.lunova.moonbot.core.exceptions;

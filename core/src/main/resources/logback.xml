@@ -2,11 +2,11 @@
     <property name="logLevel" value="INFO"/>
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>[%d{HH:mm:ss}] [%thread] [%logger{0}] [%level]  - %msg%n</pattern>
+            <pattern>[%d{HH:mm:ss}] [%thread] [%logger{0}] [%level] - %msg%n</pattern>
         </encoder>
     </appender>
 
     <root level="${logLevel}">
-        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>
