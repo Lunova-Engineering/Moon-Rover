@@ -28,7 +28,7 @@ public class BotConfiguration {
   /** Stores the bot key-value pairs for configuration properties. */
   private static final ImmutableMap<String, String> PROPERTY_TOKENS = readProperties();
 
-  /** Private constructor to prevent instantiation */
+  /** Private constructor to prevent instantiation. */
   private BotConfiguration() {}
 
   /**

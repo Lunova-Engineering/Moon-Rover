@@ -14,8 +14,9 @@
  * @since 11.25.2023
  */
 module moon.bot.plugin {
-  // requires net.dv8tion.jda;
+  requires net.dv8tion.jda;
   requires org.slf4j;
   requires ch.qos.logback.classic;
   requires ch.qos.logback.core;
+  requires com.lunova.moonbot.core;
 }
