@@ -1,13 +1,15 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <!-- Project Information -->
     <name>Moon Bot</name>
     <description>
-        The Moon Bot Framework serves as the foundational wrapper for the Moon Bot suite, offering static implementations vital for Maven build cycles, shared resources, and project management tools.
-        It consolidates essential components like build configurations, shared dependencies, and project documentation (README, .gitignore) to streamline development and maintenance of the Moon Bot ecosystem.
+        The Moon Bot Framework serves as the foundational wrapper for the Moon Bot suite, offering static
+        implementations vital for Maven build cycles, shared resources, and project management tools.
+        It consolidates essential components like build configurations, shared dependencies, and project documentation
+        (README, .gitignore) to streamline development and maintenance of the Moon Bot ecosystem.
     </description>
     <groupId>com.lunova</groupId>
     <artifactId>moon-bot-parent</artifactId>

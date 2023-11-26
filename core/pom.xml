@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -11,14 +11,24 @@
 
     <name>Moon Bot Core</name>
     <description>
-        Moon Bot Core is the central module of the Moon Bot framework, handling the majority of the bot's functional capabilities.
-        It offers a robust system for plugin integration, enabling third-party developers to create and integrate plugins seamlessly.
-        This module encompasses the core logic of the bot, including initialization and execution processes, and sets the standard for plugin format and interaction within the Moon Bot ecosystem.
+        Moon Bot Core is the central module of the Moon Bot framework, handling the majority of the bot's functional
+        capabilities.
+        It offers a robust system for plugin integration, enabling third-party developers to create and integrate
+        plugins seamlessly.
+        This module encompasses the core logic of the bot, including initialization and execution processes, and sets
+        the standard for plugin format and interaction within the Moon Bot ecosystem.
     </description>
     <artifactId>moon-bot-core</artifactId>
 
     <!-- Dependencies -->
     <dependencies>
+
+        <!-- Guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>32.1.3-jre</version>
+        </dependency>
 
         <!-- JDA -->
         <dependency>

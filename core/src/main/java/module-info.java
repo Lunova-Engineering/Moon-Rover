@@ -8,8 +8,6 @@
  * <p>Future modules can depend on this core module to build additional features and plugins for the
  * Moon Bot application.
  *
- * <p>
- *
  * @author Drake - <a href="https://github.com/metorrite">GitHub</a>
  * @since 11.11.2023
  */
@@ -18,4 +16,5 @@ module com.lunova.moonbot.core {
   requires org.slf4j;
   requires ch.qos.logback.classic;
   requires ch.qos.logback.core;
+  requires com.google.common;
 }
