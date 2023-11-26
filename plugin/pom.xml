@@ -28,11 +28,17 @@
     <!-- Dependencies -->
     <dependencies>
 
-        <!-- JDA -
+        <dependency>
+            <groupId>com.lunova</groupId>
+            <artifactId>moon-bot-core</artifactId>
+            <version>0.2.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- JDA -->
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-        </dependency>-->
+        </dependency>
 
         <!-- SLF4J API -->
         <dependency>
