@@ -66,3 +66,5 @@ replay_pid*
 
 *.properties
 javadoc/
+
+*.properties
