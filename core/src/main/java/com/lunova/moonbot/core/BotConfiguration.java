@@ -2,14 +2,13 @@ package com.lunova.moonbot.core;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
-import com.lunova.moonbot.core.exceptions.ConfigurationPropertyException;
+import com.lunova.moonbot.core.exceptions.ConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
-import com.lunova.moonbot.core.services.BotService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,11 +39,11 @@ public class BotConfiguration {
    *
    * @param key the key whose value should be retrieved
    * @return the value associated with the specified key
-   * @throws ConfigurationPropertyException if the key is not found in the configuration
+   * @throws ConfigurationException if the key is not found in the configuration
    */
-  public static String getProperty(String key) throws ConfigurationPropertyException {
+  public static String getProperty(String key) throws ConfigurationException {
     if (!PROPERTY_TOKENS.containsKey(key)) {
-      throw new ConfigurationPropertyException("Property with key '" + key + "' not found.");
+      throw new ConfigurationException("Property with key '" + key + "' not found.");
     }
     return PROPERTY_TOKENS.get(key);
   }

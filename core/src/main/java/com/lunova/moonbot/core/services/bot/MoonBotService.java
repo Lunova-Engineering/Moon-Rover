@@ -1,55 +1,43 @@
 package com.lunova.moonbot.core.services.bot;
 
 import com.lunova.moonbot.core.BotConfiguration;
-import com.lunova.moonbot.core.exceptions.ConfigurationPropertyException;
-import com.lunova.moonbot.core.exceptions.ServiceLoadingFailedException;
+import com.lunova.moonbot.core.exceptions.ConfigurationException;
+import com.lunova.moonbot.core.exceptions.ServiceLoadingException;
 import com.lunova.moonbot.core.services.BotService;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Drake - <a href="https://github.com/metorrite">GitHub</a>
  * @since 12.03.2023
  */
-public class MoonBotService implements BotService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(MoonBotService.class);
-
-    private static final String SERVICE_NAME = "Moon Bot Service";
+public class MoonBotService extends BotService {
 
     private static MoonBotService instance;
 
-    private JDA jda;
+    private JDA botSession;
 
-    private MoonBotService() {}
+    protected MoonBotService(String serviceName, boolean critical) {
+        super(serviceName, critical);
+    }
 
     public static MoonBotService getInstance() {
-        if (instance == null)
-            instance = new MoonBotService();
+        if (instance == null) instance = new MoonBotService("Moon Bot Service", true);
         return instance;
     }
 
-    public JDA getJda() {
-        return jda;
+    public JDA getBotSession() {
+        return botSession;
     }
 
     @Override
-    public void initialize() throws ServiceLoadingFailedException {
+    public void initialize() throws ServiceLoadingException {
         try {
-            jda = JDABuilder.createDefault(BotConfiguration.getProperty("AUTH_TOKEN")).build().awaitReady();
-        } catch (ConfigurationPropertyException e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new ServiceLoadingFailedException("Failed to load Moon Bot Service. Shutting down.", true);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            botSession = JDABuilder.createDefault(BotConfiguration.getProperty("AUTH_TOKEN")).build().awaitReady();
+        } catch (ConfigurationException | InterruptedException e) {
+            getLogger().error(e.getMessage(), e);
+            throw new ServiceLoadingException("Failed to load Moon Bot Service. Shutting down.", isCritical());
         }
-    }
-
-    @Override
-    public String getServiceName() {
-        return SERVICE_NAME;
     }
 
 }

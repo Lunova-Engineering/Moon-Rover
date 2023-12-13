@@ -1,22 +1,27 @@
 package com.lunova.moonbot.core.services.plugin;
 
-import com.lunova.moonbot.core.exceptions.ServiceLoadingFailedException;
+import com.lunova.moonbot.core.exceptions.ServiceLoadingException;
 import com.lunova.moonbot.core.services.BotService;
 
 /**
  * @author Drake - <a href="https://github.com/metorrite">GitHub</a>
  * @since 12.03.2023
  */
-public class PluginLoader implements BotService {
+public class PluginLoader extends BotService {
 
-    @Override
-    public void initialize() throws ServiceLoadingFailedException {
+    private static final PluginLoader INSTANCE = new PluginLoader("Plugin Loader Service");
 
+    public static PluginLoader getInstance() {
+        return INSTANCE;
+    }
+
+    protected PluginLoader(String serviceName) {
+        super(serviceName);
     }
 
     @Override
-    public String getServiceName() {
-        return null;
+    protected void initialize() throws ServiceLoadingException {
+
     }
 
 }

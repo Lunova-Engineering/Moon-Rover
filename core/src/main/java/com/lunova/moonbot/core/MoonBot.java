@@ -28,7 +28,7 @@ public class MoonBot {
    */
   public static void main(String[] args) {
     Thread.currentThread().setName("Moon-Bot Main");
-    ServiceManager.initialize();
+    ServiceManager.initializeServices();
   }
 
 }

@@ -16,7 +16,7 @@
     <version>0.2.0-SNAPSHOT</version>
     <modules>
         <module>core</module>
-        <module>plugin</module>
+        <module>moon-bot-plugin-base</module>
     </modules>
 
     <!-- Java version -->
