@@ -14,6 +14,8 @@
 module com.lunova.moonbot.core {
     exports com.lunova.moonbot.core.plugin;
     requires net.dv8tion.jda;
+    requires spark.core;
+    requires com.google.gson;
   requires org.slf4j;
   requires ch.qos.logback.classic;
   requires ch.qos.logback.core;

@@ -114,6 +114,7 @@
                 </executions>
                 <configuration>
                     <style>google</style>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
 

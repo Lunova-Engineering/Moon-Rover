@@ -2,6 +2,7 @@ package com.lunova.plugin;
 
 import com.lunova.moonbot.core.plugin.Plugin;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
 public class BasePlugin extends Plugin {
 
@@ -15,8 +16,8 @@ public class BasePlugin extends Plugin {
     }
 
     @Override
-    public void install(JDA session) {
-
+    public void install(JDA session, String guildId) {
+        session.getGuildById(guildId).updateCommands().addCommands(Commands.slash("ping", "Ping the bot")).queue();
     }
 
     @Override

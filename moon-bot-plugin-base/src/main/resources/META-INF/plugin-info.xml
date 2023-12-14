@@ -1,0 +1,5 @@
+<plugin-info>
+    <name>${project.artifactId}</name>
+    <version>${project.version}</version>
+    <mainClass>com.lunova.plugin.BasePlugin</mainClass>
+</plugin-info>
