@@ -13,11 +13,16 @@
  */
 module com.lunova.moonbot.core {
     exports com.lunova.moonbot.core.plugin;
+    exports com.lunova.moonbot.core.services.plugin;
+    exports com.lunova.moonbot.core.exceptions;
     requires net.dv8tion.jda;
     requires spark.core;
     requires com.google.gson;
+    opens com.lunova.moonbot.core.services.plugin to com.google.gson;
+
   requires org.slf4j;
   requires ch.qos.logback.classic;
   requires ch.qos.logback.core;
   requires com.google.common;
+    requires annotations;
 }

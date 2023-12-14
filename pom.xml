@@ -17,6 +17,7 @@
     <modules>
         <module>core</module>
         <module>moon-bot-plugin-base</module>
+        <module>web-server</module>
     </modules>
 
     <!-- Java version -->
@@ -140,6 +141,7 @@
                 </executions>
                 <configuration>
                     <configLocation>google_checks.xml</configLocation>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
 

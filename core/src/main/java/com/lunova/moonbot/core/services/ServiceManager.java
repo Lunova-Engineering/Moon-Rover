@@ -2,6 +2,7 @@ package com.lunova.moonbot.core.services;
 
 import com.lunova.moonbot.core.exceptions.ServiceLoadingException;
 import com.lunova.moonbot.core.services.bot.MoonBotService;
+import com.lunova.moonbot.core.services.plugin.PluginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +18,7 @@ public class ServiceManager {
 
     public static void initializeServices() {
         loadService(MoonBotService.getInstance());
+        loadService(PluginService.getInstance());
     }
 
     private static void loadService(BotService service) {

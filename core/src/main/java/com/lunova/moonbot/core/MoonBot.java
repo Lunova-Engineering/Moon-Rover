@@ -1,6 +1,7 @@
 package com.lunova.moonbot.core;
 
 import com.lunova.moonbot.core.services.ServiceManager;
+import com.lunova.moonbot.core.services.bot.MoonBotService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +30,7 @@ public class MoonBot {
   public static void main(String[] args) {
     Thread.currentThread().setName("Moon-Bot Main");
     ServiceManager.initializeServices();
+    MoonBotService.getInstance().getBotSession().getGuilds().forEach(guild -> guild.retrieveCommands().complete().forEach(command -> command.delete().queue()));
   }
 
 }
