@@ -18,11 +18,14 @@ module com.lunova.moonbot.core {
     requires net.dv8tion.jda;
     requires spark.core;
     requires com.google.gson;
+    requires jakarta.xml.bind;
+    requires jakarta.activation;
     opens com.lunova.moonbot.core.services.plugin to com.google.gson;
+    opens com.lunova.moonbot.core.plugin to jakarta.xml.bind;
 
-  requires org.slf4j;
-  requires ch.qos.logback.classic;
-  requires ch.qos.logback.core;
-  requires com.google.common;
+    requires org.slf4j;
+    requires ch.qos.logback.classic;
+    requires ch.qos.logback.core;
+    requires com.google.common;
     requires annotations;
 }

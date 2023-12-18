@@ -3,27 +3,24 @@ package com.lunova.moonbot.core.services.plugin;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import com.lunova.moonbot.core.exceptions.InvalidPluginRequestException;
-import com.lunova.moonbot.core.exceptions.PluginRoutineException;
+import com.lunova.moonbot.core.exceptions.PluginException;
+import com.lunova.moonbot.core.exceptions.PluginRequestException;
+import com.lunova.moonbot.core.exceptions.PluginServiceException;
 import com.lunova.moonbot.core.exceptions.ServiceLoadingException;
 import com.lunova.moonbot.core.plugin.Plugin;
+import com.lunova.moonbot.core.plugin.PluginInfo;
 import com.lunova.moonbot.core.services.BotService;
 import com.lunova.moonbot.core.services.bot.MoonBotService;
+import com.lunova.moonbot.core.utility.Utilities;
+import com.lunova.moonbot.core.utility.XMLParser;
+import jakarta.xml.bind.JAXBException;
 import net.dv8tion.jda.api.JDA;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Paths;
-import java.util.jar.JarFile;
 
 import static spark.Spark.port;
 import static spark.Spark.post;
@@ -37,14 +34,15 @@ public class PluginService extends BotService {
     private static final PluginService INSTANCE = new PluginService("Plugin Loader Service");
 
     private static final Gson GSON = new GsonBuilder().registerTypeAdapter(PluginRequest.class, new PluginRequestAdapter()).setPrettyPrinting().create();
-    private static final Logger LOGGER = LoggerFactory.getLogger(PluginService.class);
 
-    public static PluginService getInstance() {
-        return INSTANCE;
-    }
+    private static final Logger LOGGER = LoggerFactory.getLogger(PluginService.class);
 
     protected PluginService(String serviceName) {
         super(serviceName);
+    }
+
+    public static PluginService getInstance() {
+        return INSTANCE;
     }
 
     @Override
@@ -56,14 +54,16 @@ public class PluginService extends BotService {
                 try {
                     String requestBody = request.body();
                     PluginRequest pluginRequest = GSON.fromJson(requestBody, PluginRequest.class);
-                    if(validatePluginRequest(pluginRequest))
-                        processPluginRequest(pluginRequest);
+                    Plugin plugin = executePluginRequest(pluginRequest);
+                    processPluginRequest(pluginRequest, plugin);
+                    PluginManager.registerPlugin(plugin, pluginRequest.guildId());
                     return "Plugin installed Successfully!";
-                } catch (JsonSyntaxException | InvalidPluginRequestException | PluginRoutineException e) {
+                } catch (JsonSyntaxException | PluginRequestException | PluginException e) {
                     response.status(400);
                     return e.getMessage();
-                } catch (Exception e) {
+                } catch (PluginServiceException e) {
                     response.status(500);
+                    LOGGER.error(e.getMessage(), e);
                     return "Internal server error: " + e.getMessage();
                 }
             });
@@ -72,78 +72,62 @@ public class PluginService extends BotService {
         }
     }
 
-    private boolean validatePluginRequest(PluginRequest request) throws InvalidPluginRequestException {
-        //TODO write a function to validate the PluginRequest that Gson converted from json ensuring all data is present and is not malformed or missing information
+    private Plugin executePluginRequest(PluginRequest request) throws PluginRequestException, PluginServiceException, PluginException {
         if (request.guildId() == null || request.guildId().trim().isEmpty()) {
-            throw new InvalidPluginRequestException("Guild ID is missing or empty");
+            throw new PluginRequestException("Guild ID is missing or empty");
         }
         if (request.pluginAction() == null) {
-            throw new InvalidPluginRequestException("Plugin action is missing");
+            throw new PluginRequestException("Plugin action is missing");
         }
         if (request.pluginUrl() == null || request.pluginUrl().trim().isEmpty()) {
-            throw new InvalidPluginRequestException("Plugin URL is missing or empty");
+            throw new PluginRequestException("Plugin URL is missing or empty");
         }
-        return true;
+        if (MoonBotService.getInstance().getBotSession().getGuildById(request.guildId()) == null) {
+            throw new PluginServiceException("Guild not found in registry");
+        }
+        return loadPlugin(request);
     }
 
-
-
-    private void processPluginRequest(PluginRequest request) throws PluginRoutineException {
+    private Plugin loadPlugin(PluginRequest request) throws PluginServiceException, PluginException {
         try {
 
-            Plugin plugin = loadPlugin(request.pluginUrl());
-            JDA session = MoonBotService.getInstance().getBotSession();
+            URLClassLoader classLoader = Utilities.createJarClassLoader(request.pluginUrl());
+            PluginInfo pluginInfo = XMLParser.parsePluginInfo("META-INF/plugin-info.xml", classLoader);
+            Class<?> pluginClass = Class.forName(pluginInfo.getMainClass(), true, classLoader);
 
-            switch(request.pluginAction()) {
-                case INSTALL:
-                    plugin.executeInstallRoutine(session, request.guildId());
-                case UNINSTALL:
-                    plugin.executeUninstallRoutine(session, request.guildId());
-                case ENABLE:
-                case DISABLE:
-                default:
-                    break;
-
-            }
-
-        } catch (Exception e) {
-            throw new PluginRoutineException(e.getMessage());
-            //TODO: Write a custom exception for Plugin Routine Exceptions when the routine is run but an error occurs preventing the full routine from executing
-        }
-    }
-
-    private Plugin loadPlugin(String jarPath) throws IOException, ParserConfigurationException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, SAXException {
-        // Step 1: Dynamically add JAR to the classpath
-        URL jarURL = Paths.get(jarPath).toUri().toURL();
-        URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{jarURL}, getClass().getClassLoader());
-
-        // Step 2: Read meta-information
-        try (JarFile jarFile = new JarFile(jarPath)) {
-            // Assuming meta-info is in 'META-INF/plugin-info.xml'
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(jarFile.getInputStream(jarFile.getEntry("META-INF/plugin-info.xml")));
-
-            // Process the XML to find the class name (implement this part based on your XML structure)
-            String pluginClassName = doc.getElementsByTagName("mainClass").item(0).getTextContent(); // Extract class name from XML
-            System.out.println(pluginClassName);
-            // Step 3: Load the plugin class
-            Class<?> pluginClass = classLoader.loadClass(pluginClassName);
-
-            // Step 4: Verify that it's a subclass of PluginClass
             if (Plugin.class.isAssignableFrom(pluginClass)) {
-                // Step 5: Instantiate and execute plugin routine
-                Plugin pluginInstance = (Plugin) pluginClass.getDeclaredConstructor().newInstance();
-                return pluginInstance;
-/*                JDA session = MoonBotService.getInstance().getBotSession();
-                pluginInstance.beforeInstall(session); // Assuming this is your plugin routine method
-                pluginInstance.install(session, guildId);
-                pluginInstance.afterInstall(session);
-                System.out.println("Installed");
-                PluginManager.registerPlugin(pluginInstance);*/
+                return (Plugin) pluginClass.getDeclaredConstructor().newInstance();
             } else {
                 throw new IllegalArgumentException("Loaded class is not a subclass of PluginClass");
             }
+        } catch (IOException | JAXBException | ClassNotFoundException | NoSuchMethodException | IllegalAccessException |
+                 InvocationTargetException | InstantiationException e) {
+            throw new PluginServiceException("Error loading plugin: " + e.getMessage(), e);
+        } catch (IllegalArgumentException e) {
+            throw new PluginException(e.getMessage(), e);
         }
     }
+
+    //check throwing of plugin exception. Install and Uninstall routines already throw exception, no need to catch and rethrow here. Should throw service exception up to web server.
+    private void processPluginRequest(PluginRequest request, Plugin plugin) throws PluginException {
+        try {
+            JDA session = MoonBotService.getInstance().getBotSession();
+            switch (request.pluginAction()) {
+                case INSTALL:
+                    plugin.executeInstallRoutine(session, request.guildId());
+                    break;
+                case UNINSTALL:
+                    plugin.executeUninstallRoutine(session, request.guildId());
+                    break;
+                case ENABLE:
+                case DISABLE:
+                default:
+                    throw new PluginServiceException("Unexpected internal server error.");
+            }
+        } catch (Exception e) {
+            throw new PluginException("Error running " + request.pluginAction().toString() + " routine: " + e.getMessage(), e);
+        }
+    }
+
+
 }

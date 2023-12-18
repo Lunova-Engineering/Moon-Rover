@@ -1,6 +1,6 @@
 package com.lunova.moonbot.core.plugin;
 
-import com.lunova.moonbot.core.exceptions.PluginRoutineException;
+import com.lunova.moonbot.core.exceptions.PluginException;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -23,7 +23,7 @@ public abstract class Plugin extends ListenerAdapter {
         return version;
     }
 
-    public void executeInstallRoutine(JDA session, String guildId) throws PluginRoutineException {
+    public void executeInstallRoutine(JDA session, String guildId) throws PluginException {
         try {
             if(pluginInstallState.equals(PluginInstallState.NONE)) {
                 pluginInstallState = PluginInstallState.PRE_INSTALL;
@@ -39,11 +39,11 @@ public abstract class Plugin extends ListenerAdapter {
             }
             pluginInstallState = PluginInstallState.COMPLETE;
         } catch (Exception e) {
-            throw new PluginRoutineException(e.getMessage());
+            throw new PluginException("Error executing plugin install routine for plugin " + name + " version: " + version , e);
         }
     }
 
-    public void executeUninstallRoutine(JDA session, String guildId) throws PluginRoutineException {
+    public void executeUninstallRoutine(JDA session, String guildId) throws PluginException {
         try {
             if(pluginInstallState.equals(PluginInstallState.NONE)) {
                 pluginInstallState = PluginInstallState.PRE_UNINSTALL;
@@ -59,14 +59,11 @@ public abstract class Plugin extends ListenerAdapter {
             }
             pluginInstallState = PluginInstallState.COMPLETE;
         } catch (Exception e) {
-            throw new PluginRoutineException(e.getMessage());
+            throw new PluginException("Error executing plugin uninstall routine for plugin " + name + " version: " + version , e);
         }
     }
 
-    public void beforeInstall(JDA session, String guildId) {
-
-    }
-
+    public void beforeInstall(JDA session, String guildId) {}
     public void afterInstall(JDA session, String guildId) {
 
     }

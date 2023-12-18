@@ -13,14 +13,14 @@ public class BasePlugin extends Plugin {
     }
 
     @Override
-    public void install(JDA session, String guildId) {
-        session.getGuildById(guildId).updateCommands().addCommands(Commands.slash("ping", "Ping the bot")).queue();
-        System.out.println("Updated guild commands!");
+    public void uninstall(JDA session, String guildId) {
+        session.getGuildById(guildId).retrieveCommands().complete().forEach(c -> c.delete().queue());
     }
 
     @Override
-    public void uninstall(JDA session, String guildId) {
-
+    public void install(JDA session, String guildId) {
+        session.getGuildById(guildId).updateCommands().addCommands(Commands.slash("ping", "Ping the bot")).queue();
+        System.out.println("Updated guild commands!");
     }
 
     @Override
