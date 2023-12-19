@@ -10,4 +10,5 @@ module web.server {
     requires com.google.common;
     requires com.lunova.moonbot.core;
     requires com.google.gson;
+    requires jdk.httpserver;
 }
