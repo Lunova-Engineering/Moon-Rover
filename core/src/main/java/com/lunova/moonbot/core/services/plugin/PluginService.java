@@ -12,7 +12,7 @@ import com.lunova.moonbot.core.plugin.PluginInfo;
 import com.lunova.moonbot.core.services.BotService;
 import com.lunova.moonbot.core.services.bot.MoonBotService;
 import com.lunova.moonbot.core.utility.Utilities;
-import com.lunova.moonbot.core.utility.XMLParser;
+import com.lunova.moonbot.core.utility.XmlParser;
 import jakarta.xml.bind.JAXBException;
 import net.dv8tion.jda.api.JDA;
 import org.slf4j.Logger;
@@ -92,7 +92,7 @@ public class PluginService extends BotService {
         try {
 
             URLClassLoader classLoader = Utilities.createJarClassLoader(request.pluginUrl());
-            PluginInfo pluginInfo = XMLParser.parsePluginInfo("META-INF/plugin-info.xml", classLoader);
+            PluginInfo pluginInfo = XmlParser.parsePluginInfo("META-INF/plugin-info.xml", classLoader);
             Class<?> pluginClass = Class.forName(pluginInfo.getMainClass(), true, classLoader);
 
             if (Plugin.class.isAssignableFrom(pluginClass)) {

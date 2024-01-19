@@ -8,37 +8,38 @@ import java.io.StringReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Manages the configuration for the bot.
- *
- * <p>This class loads configuration properties from a file and provides access to them. It uses a
- * static initializer block to ensure properties are loaded when the class is first used.
- *
- * @author Drake - <a href="https://github.com/metorrite">GitHub</a>
- * @since 11.22.2023
+ * The BotConfiguration class is responsible for loading and providing access to configuration
+ * properties. It encapsulates the properties handling mechanism by reading them from a server
+ * configuration file and providing them as an ImmutableMap.
  */
 public class BotConfiguration {
-
-  /** Logger for this class. */
+  /**
+   * LOGGER is a static final Logger instance used throughout the BotConfiguration class to log
+   * important information and error messages related to the configuration loading and accessing
+   * processes.
+   */
   private static final Logger LOGGER = LoggerFactory.getLogger(BotConfiguration.class);
 
-  /** Stores the bot key-value pairs for configuration properties. */
+  /**
+   * PROPERTY_TOKENS is a static final ImmutableMap that stores the properties loaded from the
+   * configuration file. It's populated at class initialization time by reading the properties file
+   * and transforming its contents into an immutable map.
+   */
   private static final ImmutableMap<String, String> PROPERTY_TOKENS = readProperties();
 
-  /** Private constructor to prevent instantiation. */
+  /** Private constructor to prevent instantiation of this utility class. */
   private BotConfiguration() {}
 
   /**
-   * Retrieves the property value for a specified key.
+   * Retrieves the property value associated with the specified key from the application's
+   * configuration.
    *
-   * <p>This method throws a {@code PropertyNotFoundException} if the key is not found.
-   *
-   * @param key the key whose value should be retrieved
-   * @return the value associated with the specified key
+   * @param key the property key
+   * @return the property value as a String
    * @throws ConfigurationException if the key is not found in the configuration
    */
   public static String getProperty(String key) throws ConfigurationException {
@@ -49,19 +50,16 @@ public class BotConfiguration {
   }
 
   /**
-   * Reads properties from a configuration file and stores them.
+   * Reads properties from the server configuration file and returns them as an ImmutableMap. Logs a
+   * warning for any property with a null or empty value and logs errors for issues accessing the
+   * file.
    *
-   * <p>This method uses Guava's {@link Resources} to read the file. It logs an error if the file
-   * cannot be found or if an error occurs during reading or parsing, and logs a warning if the key
-   * is associated with a null value or an empty string.
+   * @return an ImmutableMap of property keys to values
    */
   private static ImmutableMap<String, String> readProperties() {
     ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
     try {
-      URL resourceUrl = Resources.getResource("server_configuration.properties");
-      String text = Resources.toString(resourceUrl, StandardCharsets.UTF_8);
-      Properties properties = new Properties();
-      properties.load(new StringReader(text));
+      Properties properties = loadPropertiesFromFile("server_configuration.properties");
       for (String key : properties.stringPropertyNames()) {
         String value = properties.getProperty(key);
         if (value != null && !value.isEmpty()) {
@@ -78,5 +76,21 @@ public class BotConfiguration {
       return ImmutableMap.of();
     }
     return builder.build();
+  }
+
+  /**
+   * Loads properties from a file into a Properties object. It reads the file using the classpath
+   * and converts it into a string which is then loaded into Properties.
+   *
+   * @param fileName the name of the file to load the properties from
+   * @return a Properties object containing the loaded properties
+   * @throws IOException if there is an issue reading or parsing the file
+   */
+  private static Properties loadPropertiesFromFile(String fileName) throws IOException {
+    URL resourceUrl = Resources.getResource(fileName);
+    String text = Resources.toString(resourceUrl, StandardCharsets.UTF_8);
+    Properties properties = new Properties();
+    properties.load(new StringReader(text));
+    return properties;
   }
 }

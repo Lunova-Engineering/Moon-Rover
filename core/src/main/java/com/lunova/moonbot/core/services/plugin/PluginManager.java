@@ -1,30 +1,71 @@
 package com.lunova.moonbot.core.services.plugin;
 
 import com.lunova.moonbot.core.plugin.Plugin;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
- * @author Drake - <a href="https://github.com/metorrite">GitHub</a>
- * @since 12.14.2023
+ * Manages the lifecycle and association of plugins to guilds within the bot system. It provides
+ * functionalities to register and deregister plugins for specific guilds and maintains a global
+ * list of all plugins and a map associating them with the guilds.
+ *
+ * <p>Plugins are identified and managed based on their name and version. The manager ensures that
+ * plugins are appropriately added or removed from guilds, maintaining the integrity of the plugin
+ * ecosystem within the bot.
  */
 public class PluginManager {
 
-    private static final Map<String, List<Plugin>> p2 = new HashMap<>();
-    public static final List<Plugin> plugins = new ArrayList<>();
+  /** A global list of all registered plugins. */
+  public static final List<com.lunova.moonbot.core.plugin.Plugin> PLUGIN_LIST = new ArrayList<>();
 
-    public static void registerPlugin(Plugin plugin, String guildId) {
-        // Find a plugin with the same name and version
-        Optional<Plugin> existingPlugin = plugins.stream()
-                .filter(p -> p.getName().equals(plugin.getName()) && p.getVersion().equals(plugin.getVersion()))
-                .findFirst();
+  /** A map associating guild IDs with their respective list of plugins. */
+  private static final Map<String, List<Plugin>> PLUGIN_MAP = new HashMap<>();
 
-        Plugin pluginToUse = existingPlugin.orElseGet(() -> {
-            plugins.add(plugin); // Add new plugin to the list if not found
-            return plugin; // Use the new plugin
-        });
+  /**
+   * Registers a plugin for a specific guild identified by its ID. If the plugin is not already in
+   * the global list, it is added. The plugin is then associated with the specified guild in the
+   * plugin map.
+   *
+   * @param plugin The plugin to register.
+   * @param guildId The ID of the guild where the plugin is to be registered.
+   */
+  public static void registerPlugin(com.lunova.moonbot.core.plugin.Plugin plugin, String guildId) {
+    Optional<Plugin> existingPlugin =
+        PLUGIN_LIST.stream()
+            .filter(
+                p ->
+                    p.getName().equals(plugin.getName())
+                        && p.getVersion().equals(plugin.getVersion()))
+            .findFirst();
 
-        // Add or update the plugin list for the guildId in p2 map
-        p2.computeIfAbsent(guildId, k -> new ArrayList<>()).add(pluginToUse);
+    com.lunova.moonbot.core.plugin.Plugin pluginToUse =
+        existingPlugin.orElseGet(
+            () -> {
+              PLUGIN_LIST.add(plugin);
+              return plugin;
+            });
+
+    PLUGIN_MAP.computeIfAbsent(guildId, k -> new java.util.ArrayList<>()).add(pluginToUse);
+  }
+
+  /**
+   * Deregisters a plugin from a specific guild identified by its ID. The method removes the plugin
+   * association from the guild in the plugin map.
+   *
+   * @param plugin The plugin to deregister.
+   * @param guildId The ID of the guild from which the plugin is to be deregistered.
+   * @return true if the plugin was successfully deregistered, false otherwise.
+   */
+  public static boolean deregisterPlugin(
+      com.lunova.moonbot.core.plugin.Plugin plugin, String guildId) {
+    List<Plugin> guildPlugins = PLUGIN_MAP.get(guildId);
+    if (guildPlugins != null) {
+      return guildPlugins.removeIf(
+          p -> p.getName().equals(plugin.getName()) && p.getVersion().equals(plugin.getVersion()));
     }
+    return false;
+  }
 }
