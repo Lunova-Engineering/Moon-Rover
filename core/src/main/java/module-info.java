@@ -12,7 +12,7 @@
  * @since 11.11.2023
  */
 module com.lunova.moonbot.core {
-  exports com.lunova.moonbot.core.plugin;
+  exports com.lunova.moonbot.core.services.plugin to com.fasterxml.jackson.databind;
 
   requires net.dv8tion.jda;
   requires spark.core;
@@ -35,4 +35,7 @@ module com.lunova.moonbot.core {
   requires org.hibernate.validator;
   requires org.apache.httpcomponents.httpclient;
   requires org.apache.httpcomponents.httpcore;
+  requires com.fasterxml.jackson.core;
+  requires com.fasterxml.jackson.annotation;
+  requires com.fasterxml.jackson.databind;
 }
