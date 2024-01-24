@@ -179,6 +179,11 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>2.16.1</version>
+                <configuration>
+                    <rulesUri>file://${project.basedir}/rules.xml</rulesUri>
+                    <allowSnapshots>false</allowSnapshots>
+                    <allowDowngrade>true</allowDowngrade> <!-- Enable downgrading -->
+                </configuration>
                 <executions>
                     <execution>
                         <id>display-version-updates</id>
@@ -225,7 +230,7 @@
             <dependency>
                 <groupId>net.dv8tion</groupId>
                 <artifactId>JDA</artifactId>
-                <version>5.0.0-beta.19</version>
+                <version>5.0.0-beta.20</version>
             </dependency>
 
             <!-- SLF4J API -->

@@ -124,6 +124,69 @@
             </dependency>
 
 
+            <!-- Maven Resolver API -->
+            <dependency>
+                <groupId>org.apache.maven.resolver</groupId>
+                <artifactId>maven-resolver-api</artifactId>
+                <version>2.0.0-alpha-6</version>
+            </dependency>
+
+            <!-- Maven Resolver Implementation -->
+            <dependency>
+                <groupId>org.apache.maven.resolver</groupId>
+                <artifactId>maven-resolver-impl</artifactId>
+                <version>2.0.0-alpha-6</version>
+            </dependency>
+
+            <!-- Maven Resolver SPI -->
+            <dependency>
+                <groupId>org.apache.maven.resolver</groupId>
+                <artifactId>maven-resolver-spi</artifactId>
+                <version>2.0.0-alpha-6</version>
+            </dependency>
+
+            <!-- Maven Resolver Util -->
+            <dependency>
+                <groupId>org.apache.maven.resolver</groupId>
+                <artifactId>maven-resolver-util</artifactId>
+                <version>2.0.0-alpha-6</version>
+            </dependency>
+
+            <!-- SLF4J Simple Binding for logging (for development purposes) -->
+<!--            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>2.1.0-alpha1</version>
+            </dependency>-->
+
+            <!-- Aether Transport File -->
+            <dependency>
+                <groupId>org.apache.maven.resolver</groupId>
+                <artifactId>maven-resolver-transport-file</artifactId>
+                <version>2.0.0-alpha-6</version>
+            </dependency>
+
+            <!-- Aether Transport HTTP -->
+            <dependency>
+                <groupId>org.apache.maven.resolver</groupId>
+                <artifactId>maven-resolver-transport-http</artifactId>
+                <version>2.0.0-alpha-2</version>
+            </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-resolver-provider</artifactId>
+            <version>4.0.0-alpha-12</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.resolver/maven-resolver-supplier -->
+        <dependency>
+            <groupId>org.apache.maven.resolver</groupId>
+            <artifactId>maven-resolver-supplier</artifactId>
+            <version>2.0.0-alpha-6</version>
+        </dependency>
+
+
     </dependencies>
 
 </project>

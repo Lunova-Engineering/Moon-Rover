@@ -1,6 +1,5 @@
 package com.lunova.moonbot.core.utility.json;
 
-import com.lunova.moonbot.core.services.plugin.loader.PluginRequestValidator;
 import jakarta.validation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,7 @@ import java.util.Set;
  */
 public class JsonGenericValidator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PluginRequestValidator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonGenericValidator.class);
     private static final ValidatorFactory VALIDATOR_FACTORY = Validation.buildDefaultValidatorFactory();
     private static final Validator VALIDATOR = VALIDATOR_FACTORY.getValidator();
 
