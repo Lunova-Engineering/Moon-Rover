@@ -16,7 +16,8 @@
     <version>0.2.0-SNAPSHOT</version>
     <modules>
         <module>core</module>
-        <module>plugin</module>
+        <module>plugins</module>
+        <module>network</module>
     </modules>
 
     <!-- Java version -->
@@ -89,6 +90,11 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.0</version>
+            </plugin>
+            <plugin>
 
                 <!-- Maven Compiler Plugin -->
                 <groupId>org.apache.maven.plugins</groupId>
@@ -114,6 +120,7 @@
                 </executions>
                 <configuration>
                     <style>google</style>
+                    <skip>false</skip>
                 </configuration>
             </plugin>
 
@@ -139,6 +146,7 @@
                 </executions>
                 <configuration>
                     <configLocation>google_checks.xml</configLocation>
+                    <skip>false</skip>
                 </configuration>
             </plugin>
 
@@ -157,6 +165,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <skip>true</skip>
                     <!-- Security level to fail building on. 5 is directly in the middle.
                     <failBuildOnCVSS>5</failBuildOnCVSS>
                     <suppressionFiles>
@@ -170,6 +179,11 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>2.16.1</version>
+                <configuration>
+                    <rulesUri>file://${project.basedir}/rules.xml</rulesUri>
+                    <allowSnapshots>false</allowSnapshots>
+                    <allowDowngrade>true</allowDowngrade> <!-- Enable downgrading -->
+                </configuration>
                 <executions>
                     <execution>
                         <id>display-version-updates</id>
@@ -216,28 +230,28 @@
             <dependency>
                 <groupId>net.dv8tion</groupId>
                 <artifactId>JDA</artifactId>
-                <version>5.0.0-beta.18</version>
+                <version>5.0.0-beta.20</version>
             </dependency>
 
             <!-- SLF4J API -->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>2.0.9</version>
+                <version>2.1.0-alpha1</version>
             </dependency>
 
             <!-- Logback Classic -->
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.4.11</version>
+                <version>1.4.14</version>
             </dependency>
 
             <!-- Logback Core -->
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
-                <version>1.4.11</version>
+                <version>1.4.14</version>
             </dependency>
 
 
@@ -253,7 +267,7 @@
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
-                <version>5.7.0</version>
+                <version>5.9.0</version>
                 <scope>test</scope>
             </dependency>
 

@@ -10,10 +10,10 @@ package com.lunova.moonbot.core.exceptions;
  * @author Drake - <a href="https://github.com/metorrite">GitHub</a>
  * @since 11.22.2023
  */
-public class PropertyNotFoundException extends Exception {
+public class ConfigurationException extends Exception {
 
   /** Constructs a {@code PropertyNotFoundException} with a default message. */
-  public PropertyNotFoundException() {
+  public ConfigurationException() {
     this("Property not found.");
   }
 
@@ -26,7 +26,7 @@ public class PropertyNotFoundException extends Exception {
    * @param message the detail message which provides more information about the reason for the
    *     exception
    */
-  public PropertyNotFoundException(String message) {
+  public ConfigurationException(String message) {
     super(message);
   }
 }
