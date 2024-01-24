@@ -14,6 +14,10 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
  */
 public abstract class Plugin extends ListenerAdapter {
 
+  //TODO: Investigate for JSON serializing and deserializing information for consistient plugin state upon restarts.
+  //TODO: Future the JSON will be written to a file or a string value and sent to the database and retrieved for continuity.
+  //TODO: IDK about that but we will see...
+
   /** The name of the plugin. */
   private final String name;
 
