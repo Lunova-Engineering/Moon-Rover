@@ -1,6 +1,6 @@
 package com.lunova.plugin;
 
-import com.lunova.moonbot.core.plugin.Plugin;
+import com.lunova.moonbot.core.api.plugin.Plugin;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;

@@ -3,7 +3,7 @@ package com.lunova.moonbot.core.services.plugin;
 import com.lunova.moonbot.core.exceptions.JsonDeserializationException;
 import com.lunova.moonbot.core.exceptions.PluginRequestException;
 import com.lunova.moonbot.core.exceptions.ServiceLoadingException;
-import com.lunova.moonbot.core.plugin.Plugin;
+import com.lunova.moonbot.core.api.plugin.Plugin;
 import com.lunova.moonbot.core.services.BotService;
 import com.lunova.moonbot.core.services.bot.MoonBotService;
 import com.lunova.moonbot.core.services.plugin.loader.PluginLoader;

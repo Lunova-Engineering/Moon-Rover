@@ -69,7 +69,7 @@
             <property name="tokens" value="PACKAGE_DEF, IMPORT, STATIC_IMPORT"/>
         </module>
         <module name="EmptyBlock">
-            <property name="option" value="TEXT"/>
+            <property name="setting" value="TEXT"/>
             <property name="tokens"
                       value="LITERAL_TRY, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_SWITCH"/>
         </module>
@@ -93,7 +93,7 @@
         </module>
         <module name="RightCurly">
             <property name="id" value="RightCurlyAlone"/>
-            <property name="option" value="alone"/>
+            <property name="setting" value="alone"/>
             <property name="tokens"
                       value="CLASS_DEF, METHOD_DEF, CTOR_DEF, LITERAL_FOR, LITERAL_WHILE, STATIC_INIT,
                     INSTANCE_INIT, ANNOTATION_DEF, ENUM_DEF, INTERFACE_DEF, RECORD_DEF,
@@ -150,29 +150,29 @@
         <module name="SeparatorWrap">
             <property name="id" value="SeparatorWrapDot"/>
             <property name="tokens" value="DOT"/>
-            <property name="option" value="nl"/>
+            <property name="setting" value="nl"/>
         </module>
         <module name="SeparatorWrap">
             <property name="id" value="SeparatorWrapComma"/>
             <property name="tokens" value="COMMA"/>
-            <property name="option" value="EOL"/>
+            <property name="setting" value="EOL"/>
         </module>
         <module name="SeparatorWrap">
             <!-- ELLIPSIS is EOL until https://github.com/google/styleguide/issues/259 -->
             <property name="id" value="SeparatorWrapEllipsis"/>
             <property name="tokens" value="ELLIPSIS"/>
-            <property name="option" value="EOL"/>
+            <property name="setting" value="EOL"/>
         </module>
         <module name="SeparatorWrap">
             <!-- ARRAY_DECLARATOR is EOL until https://github.com/google/styleguide/issues/258 -->
             <property name="id" value="SeparatorWrapArrayDeclarator"/>
             <property name="tokens" value="ARRAY_DECLARATOR"/>
-            <property name="option" value="EOL"/>
+            <property name="setting" value="EOL"/>
         </module>
         <module name="SeparatorWrap">
             <property name="id" value="SeparatorWrapMethodRef"/>
             <property name="tokens" value="METHOD_REF"/>
-            <property name="option" value="nl"/>
+            <property name="setting" value="nl"/>
         </module>
         <module name="PackageName">
             <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
@@ -296,7 +296,7 @@
                     RECORD_DEF"/>
         </module>
         <module name="OperatorWrap">
-            <property name="option" value="NL"/>
+            <property name="setting" value="NL"/>
             <property name="tokens"
                       value="BAND, BOR, BSR, BXOR, DIV, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR,
                     LT, MINUS, MOD, NOT_EQUAL, PLUS, QUESTION, SL, SR, STAR, METHOD_REF,

@@ -28,7 +28,7 @@ public class EventDispatcher extends ListenerAdapter {
    */
   @Override
   public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
-    PluginManager.PLUGIN_LIST.forEach(plugin -> plugin.onSlashCommandInteraction(event));
+   // PluginManager.PLUGIN_LIST.forEach(plugin -> plugin.onSlashCommandInteraction(event));
     // Note: The super call is commented out as typically, the parent method does nothing,
     // but you might enable it if the parent class's behavior is required in future JDA versions.
     // super.onSlashCommandInteraction(event);
