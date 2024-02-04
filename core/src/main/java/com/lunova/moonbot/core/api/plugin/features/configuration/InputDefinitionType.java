@@ -1,6 +1,6 @@
-package com.lunova.moonbot.core.api.plugin.configuration;
+package com.lunova.moonbot.core.api.plugin.features.configuration;
 
-public enum OptionType {
+public enum DefinitionType {
     INTEGER,
     STRING,
     BOOLEAN,
