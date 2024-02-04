@@ -1,6 +1,6 @@
 package com.lunova.moonbot.core.api.plugin.features.configuration;
 
-public enum DefinitionType {
+public enum InputDefinitionType {
     INTEGER,
     STRING,
     BOOLEAN,

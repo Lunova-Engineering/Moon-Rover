@@ -1,8 +1,6 @@
-package com.lunova.moonbot.core.api.plugin.configuration;
+package com.lunova.moonbot.core.api.plugin.features.configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -56,65 +54,58 @@ import java.util.Set;
  */
 
 
-@JsonSerialize(using = SettingSerializer.class)
-@JsonDeserialize(using = SettingDeserializer.class)
+/*@JsonSerialize(using = SettingSerializer.class)
+@JsonDeserialize(using = SettingDeserializer.class)*/
 public final class Setting implements Serializable {
     @JsonProperty
     private final String name;
     @JsonProperty
-    private final String description;
-    @JsonProperty
-    private final OptionType optionType;
-    @JsonProperty
     private final boolean required;
     @JsonProperty
+    private final String description;
+    @JsonProperty
     private final Object defaultValue;
+    @JsonProperty
+    private OptionDefinition optionDefinition;
+    @JsonProperty
+    private final InputDefinition inputDefinition;
 
     public static class Builder {
         private String name;
-        private OptionType optionType;
+        private boolean required;
+        private String description;
         private Object defaultValue;
-        private String description = "No description available";
-        private boolean required = false;
+        private OptionDefinition optionDefinition;
+        private InputDefinition inputDefinition;
 
         private final Set<Setting> settingsQueue = new HashSet<>();
 
-        public Builder withOption(String name, OptionType optionType, Object defaultValue) {
+        public Builder(String name, boolean required, InputDefinition inputDefinition) {
+
+        }
+
+
+        public Builder withOption(String name, InputDefinition inputDefinition) {
             this.name = name;
-            this.optionType = optionType;
-            this.defaultValue = defaultValue;
+            this.inputDefinition = inputDefinition;
             return this;
         }
 
-        private void resetBuilder() {
-            this.name = "DEFAULT_NAME";
-            this.optionType = OptionType.STRING;
-            this. defaultValue = "DEFAULT_VALUE";
-            this.description = "No description available";
-            this.required = false;
-        }
+/*        private void resetBuilder() {
 
-        public Builder setDescription(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public Builder setRequired(boolean required) {
-            this.required = required;
-            return this;
         }
 
         public Builder queue() {
             settingsQueue.add(build());
             resetBuilder();
             return this;
-        }
+        }*/
 
         public Setting build() {
             return new Setting(this);
         }
 
-        public Set<Setting> getOptionQueue() {
+/*        public Set<Setting> getOptionQueue() {
             return settingsQueue;
         }
 
@@ -129,7 +120,7 @@ public final class Setting implements Serializable {
             builder.registerAllOption(settingsQueue);
             settingsQueue.clear();
             return builder.build();
-        }
+        }*/
 
 
 
@@ -138,30 +129,35 @@ public final class Setting implements Serializable {
 
     private Setting(Builder builder) {
         this.name = builder.name;
-        this.optionType = builder.optionType;
+        this.required = builder.required;
+        this.inputDefinition = builder.inputDefinition;
+
         this.defaultValue = builder.defaultValue;
         this.description = builder.description;
-        this.required = builder.required;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public OptionType getOptionType() {
-        return optionType;
-    }
-
     public boolean isRequired() {
         return required;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public Object getDefaultValue() {
         return defaultValue;
+    }
+
+    public OptionDefinition getOptionDefinition() {
+        return optionDefinition;
+    }
+
+    public InputDefinition getInputDefinition() {
+        return inputDefinition;
     }
 
 }

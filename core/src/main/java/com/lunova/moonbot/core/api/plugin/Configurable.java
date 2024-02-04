@@ -1,8 +1,11 @@
-package com.lunova.moonbot.core.api.plugin.configuration;
+package com.lunova.moonbot.core.api.plugin;
+
+import com.google.common.base.Optional;
+import com.lunova.moonbot.core.api.plugin.features.configuration.SettingGroup;
 
 public interface Configurable {
 
-    default SettingGroup getSettingGroup() {
-        return SettingGroup.empty();
+    default Optional<SettingGroup> getSettingGroup() {
+        return Optional.absent();
     }
 }
