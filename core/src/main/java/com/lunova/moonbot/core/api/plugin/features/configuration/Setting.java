@@ -1,9 +1,10 @@
 package com.lunova.moonbot.core.api.plugin.features.configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lunova.moonbot.core.api.plugin.features.configuration.definitions.SettingDefinition;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * TODO AND NOTES
@@ -56,56 +57,87 @@ import java.io.Serializable;
 /*@JsonSerialize(using = SettingSerializer.class)
 @JsonDeserialize(using = SettingDeserializer.class)*/
 public final class Setting implements Serializable {
-    @JsonProperty("settingName")
-    private final String key;
-    @JsonProperty("settingRequired")
+    @JsonProperty
+    private final String name;
+    @JsonProperty
     private final boolean required;
-    @JsonProperty("settingDefinition")
-    private final SettingDefinition settingDefinition;
-
-    //optional
-    @JsonProperty("settingDescription")
+    @JsonProperty
     private final String description;
-    @JsonProperty("settingDefault")
+    @JsonProperty
     private final Object defaultValue;
-
+    @JsonProperty
+    private OptionDefinition optionDefinition;
+    @JsonProperty
+    private final InputDefinition inputDefinition;
 
     public static class Builder {
-        private final String key;
-        private final boolean required;
-        private final SettingDefinition settingDefinition;
+        private String name;
+        private boolean required;
         private String description;
         private Object defaultValue;
+        private OptionDefinition optionDefinition;
+        private InputDefinition inputDefinition;
 
+        private final Set<Setting> settingsQueue = new HashSet<>();
 
-        public Builder(String key, boolean required, SettingDefinition settingDefinition) {
-            this.key = key;
-            this.required = required;
-            this.settingDefinition = settingDefinition;
+        public Builder(String name, boolean required, InputDefinition inputDefinition) {
+
         }
+
+
+        public Builder withOption(String name, InputDefinition inputDefinition) {
+            this.name = name;
+            this.inputDefinition = inputDefinition;
+            return this;
+        }
+
+/*        private void resetBuilder() {
+
+        }
+
+        public Builder queue() {
+            settingsQueue.add(build());
+            resetBuilder();
+            return this;
+        }*/
 
         public Setting build() {
             return new Setting(this);
         }
+
+/*        public Set<Setting> getOptionQueue() {
+            return settingsQueue;
+        }
+
+        public SettingGroup buildOptionGroup() {
+            return buildOptionGroup(false);
+        }
+
+        public SettingGroup buildOptionGroup(boolean queue) {
+            if(queue)
+                queue();
+            SettingGroup.Builder builder = new SettingGroup.Builder();
+            builder.registerAllOption(settingsQueue);
+            settingsQueue.clear();
+            return builder.build();
+        }*/
+
 
 
     }
 
 
     private Setting(Builder builder) {
-        this.key = builder.key;
+        this.name = builder.name;
         this.required = builder.required;
-        this.settingDefinition = builder.settingDefinition;
+        this.inputDefinition = builder.inputDefinition;
+
         this.defaultValue = builder.defaultValue;
         this.description = builder.description;
     }
 
-    public SettingDefinition getSettingDefinition() {
-        return settingDefinition;
-    }
-
-    public String getKey() {
-        return key;
+    public String getName() {
+        return name;
     }
 
     public boolean isRequired() {
@@ -120,5 +152,12 @@ public final class Setting implements Serializable {
         return defaultValue;
     }
 
+    public OptionDefinition getOptionDefinition() {
+        return optionDefinition;
+    }
+
+    public InputDefinition getInputDefinition() {
+        return inputDefinition;
+    }
 
 }
