@@ -58,7 +58,7 @@ public class PluginService extends BotService {
     try {
       //int port = Integer.parseInt(BotConfiguration.getProperty("WEB_SERVER_PORT"));
       int port = 8080;
-      //TODO: Add specific configuration exception to catch block.
+      //TODO: Add specific settings exception to catch block.
       port(port);
       post("/plugin-action",
           (request, response) -> {

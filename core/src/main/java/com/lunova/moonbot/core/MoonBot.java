@@ -1,10 +1,10 @@
 package com.lunova.moonbot.core;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.lunova.moonbot.core.api.plugin.examples.Item;
+import com.lunova.moonbot.core.exceptions.JsonSerializationException;
 import com.lunova.moonbot.core.services.ServiceManager;
 import com.lunova.moonbot.core.services.bot.MoonBotService;
+import com.lunova.moonbot.core.utility.json.JsonHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,10 +41,12 @@ public class MoonBot {
         .forEach(
             guild ->
                 guild.retrieveCommands().complete().forEach(command -> command.delete().queue()));
-    Item item = new Item();
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    String json = gson.toJson(item.defineSettingGroup());
-    //System.out.println(item.defineSettingGroup().getOptions().stream().findAny().get().getInputDefinition().getInputDefinitionType().toString());
-    System.out.println(json);
+    Item item = new Item("Item Feature");
+      try {
+          String json = JsonHandler.serialize(item);
+        System.out.println(json);
+      } catch (JsonSerializationException e) {
+          throw new RuntimeException(e);
+      }
   }
 }

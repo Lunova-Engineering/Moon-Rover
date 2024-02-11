@@ -10,7 +10,7 @@ public class DefaultPlugin extends Plugin {
 
   @Override
   protected void registerFeatures() {
-    getFeatureManager().registerSingleFeature(new CommandFeature());
+    getFeatureManager().registerSingleFeature(new CommandFeature("Commands"));
   }
 
 }

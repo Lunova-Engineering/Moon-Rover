@@ -2,6 +2,9 @@ package com.lunova.moonbot.core.utility.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.guava.GuavaModule;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.lunova.moonbot.core.exceptions.JsonDeserializationException;
 import com.lunova.moonbot.core.exceptions.JsonSerializationException;
 import jakarta.validation.ConstraintViolationException;
@@ -10,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 public class JsonHandler {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).registerModules(new GuavaModule(), new Jdk8Module());
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonHandler.class);
 

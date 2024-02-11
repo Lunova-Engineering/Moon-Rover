@@ -28,16 +28,26 @@ module com.lunova.moonbot.core {
       jakarta.xml.bind;
   exports com.lunova.moonbot.core.services.plugin.resolver to com.fasterxml.jackson.databind;
   opens com.lunova.moonbot.core.services.plugin.resolver to com.google.gson, org.hibernate.validator;
-  exports com.lunova.moonbot.core.api.plugin.features.configuration;
-  opens com.lunova.moonbot.core.api.plugin.features.configuration to jakarta.xml.bind, com,com.google.gson;
+  exports com.lunova.moonbot.core.api.plugin.features.settings;
+  opens com.lunova.moonbot.core.api.plugin.features.settings to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
   exports com.lunova.moonbot.core.api.plugin.examples;
-  opens com.lunova.moonbot.core.api.plugin.examples to jakarta.xml.bind, com.google.gson;
+  opens com.lunova.moonbot.core.api.plugin.examples to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
   exports com.lunova.moonbot.core.api.plugin.features;
-  opens com.lunova.moonbot.core.api.plugin.features to jakarta.xml.bind, com.google.gson;
+  opens com.lunova.moonbot.core.api.plugin.features to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
   exports com.lunova.moonbot.core.api.plugin.common;
-  opens com.lunova.moonbot.core.api.plugin.common to jakarta.xml.bind, com.google.gson;
+  opens com.lunova.moonbot.core.api.plugin.common to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
+  exports com.lunova.moonbot.core.api.plugin.features.settings.definitions;
+  opens com.lunova.moonbot.core.api.plugin.features.settings.definitions to com.fasterxml.jackson.databind, com.google.gson, jakarta.xml.bind;
 
-    requires org.slf4j;
+  exports com.lunova.moonbot.core.api.plugin.features.settings.transformation;
+  exports com.lunova.moonbot.core.api.plugin.features.settings.definitions.input;
+  opens com.lunova.moonbot.core.api.plugin.features.settings.definitions.input to com.fasterxml.jackson.databind, com.google.gson, jakarta.xml.bind;
+  exports com.lunova.moonbot.core.api.plugin.features.settings.definitions.impl;
+  opens com.lunova.moonbot.core.api.plugin.features.settings.definitions.impl to com.fasterxml.jackson.databind, com.google.gson, jakarta.xml.bind;
+  exports com.lunova.moonbot.core.api.plugin.features.settings.definitions.input.impl;
+  opens com.lunova.moonbot.core.api.plugin.features.settings.definitions.input.impl to com.fasterxml.jackson.databind, com.google.gson, jakarta.xml.bind;
+
+  requires org.slf4j;
   requires ch.qos.logback.classic;
   requires ch.qos.logback.core;
   requires com.google.common;
@@ -58,4 +68,6 @@ module com.lunova.moonbot.core {
   requires org.apache.maven.resolver.transport.file;
   requires org.apache.maven.resolver.transport.http;
   requires org.apache.maven.resolver.supplier;
+  requires com.fasterxml.jackson.datatype.guava;
+  requires com.fasterxml.jackson.datatype.jdk8;
 }

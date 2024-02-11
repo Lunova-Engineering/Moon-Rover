@@ -1,1 +1,1 @@
-package com.lunova.moonbot.core.api.plugin.features.configuration;
+package com.lunova.moonbot.core.api.plugin.features.settings;

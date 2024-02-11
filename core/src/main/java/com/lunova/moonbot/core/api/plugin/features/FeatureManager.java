@@ -20,12 +20,12 @@ public final class FeatureManager {
     public void registerFeatureContainer(FeatureContainer container) {
         if (!isSealed) {
             ImmutableSet<Feature> unique = container.getFeatures().stream().filter(feature ->
-                    features.contains(feature.getClass().asSubclass(Feature.class)))
+                    !features.contains(feature.getClass()))
                     .collect(ImmutableSet.toImmutableSet());
             if(unique.isEmpty())
                 return;
             unique.forEach(feature -> {
-                features.add(feature.getClass().asSubclass(Feature.class));
+                features.add(feature.getClass());
             });
             containers.add(container);
         } else {

@@ -2,7 +2,7 @@ package com.lunova.moonbot.core.api.plugin.features;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
-import com.lunova.moonbot.core.api.plugin.features.configuration.SettingGroup;
+import com.lunova.moonbot.core.api.plugin.features.settings.SettingGroup;
 
 import java.util.Iterator;
 

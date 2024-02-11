@@ -6,6 +6,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class CommandFeature extends Feature {
 
+    public CommandFeature(String name) {
+        super(name);
+    }
+
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         super.onSlashCommandInteraction(event);
