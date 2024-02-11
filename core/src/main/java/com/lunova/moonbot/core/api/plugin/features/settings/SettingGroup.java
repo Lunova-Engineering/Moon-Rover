@@ -1,9 +1,11 @@
 package com.lunova.moonbot.core.api.plugin.features.configuration;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableSet;
 
 public class SettingGroup {
 
+    @JsonProperty("settingGroupSettings")
     private final ImmutableSet<Setting> settings;
 
     public static class Builder {
@@ -26,7 +28,7 @@ public class SettingGroup {
         this.settings = builder.settings;
     }
 
-    public ImmutableSet<Setting> getOptions() {
+    public ImmutableSet<Setting> getSettings() {
         return settings;
     }
 
