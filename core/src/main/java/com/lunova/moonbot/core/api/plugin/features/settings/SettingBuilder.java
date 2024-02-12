@@ -9,20 +9,18 @@ import java.util.Collection;
 
 public class SettingBuilder {
 
-    public <T, IO extends Input<T>, R> IO createInput(Class<T> output, Class<IO> inputClass, Class<R> returnType) {
-
-    }
 
     public static void createUserSetting() {
 
     }
 
-    public static <T, I> Setting<T> createSelectionSetting(Class<I> inputType, Class<T> outputType, String key, boolean required, String label, Collection<?> collection) {
-        Input<I, T> input = InputFactory.createInput(inputType, outputType);
+    public static <T, I> Setting<T> createSelectionSetting(Class<I> inputReturnType, Class<T> outputType, String key, boolean required, String label, InputType inputType, Collection<?> collection) {
+        Input<I, T> input = InputFactory.createInput(inputType, inputReturnType, outputType);
         SelectionSettingDefinition<I, T> definition = new SelectionSettingDefinition<>(label, new ArrayList<String>(10), input);
         Setting.Builder<I, T> builder = new Setting.Builder<I, T>(key, required, definition);
         return builder.build();
     }
+
 
     public static void createToggleSetting() {
 
@@ -34,7 +32,7 @@ public class SettingBuilder {
 
 
 
-    public  <T> Setting<T> createSetting(Class<T> outputType, String key, boolean required, InputType inputType) {
+/*    public  <T> Setting<T> createSetting(Class<T> outputType, String key, boolean required, InputType inputType) {
       // Input<Role> input = createInput(Role.class, SelectionInput.class, String.class);
 
         Input<String, T> input = InputFactory.createInput(String.class, outputType);
@@ -43,5 +41,5 @@ public class SettingBuilder {
         Setting.Builder<T> builder = new Setting.Builder<>(key, required, definition);
 
         return builder.build();
-    }
+    }*/
 }

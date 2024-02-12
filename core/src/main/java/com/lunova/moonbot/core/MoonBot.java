@@ -35,12 +35,12 @@ public class MoonBot {
   public static void main(String[] args) {
     Thread.currentThread().setName("Moon-Bot Main");
     ServiceManager.initializeServices();
-    MoonBotService.getInstance()
+/*    MoonBotService.getInstance()
         .getBotSession()
         .getGuilds()
         .forEach(
             guild ->
-                guild.retrieveCommands().complete().forEach(command -> command.delete().queue()));
+                guild.retrieveCommands().complete().forEach(command -> command.delete().queue()));*/
     Item item = new Item("Item Feature");
       try {
           String json = JsonHandler.serialize(item);

@@ -8,6 +8,7 @@ public class SettingDefinition<I, T> {
     @JsonProperty("inputLabel")
     private final String label;
 
+    @JsonProperty("input")
     private final Input<I, T> input;
 
     //Return type and object to match with @Setting key for K,V  pair?
@@ -17,6 +18,7 @@ public class SettingDefinition<I, T> {
         this.label = label;
         this.input = input;
     }
+
 
     public String getLabel() {
         return label;
