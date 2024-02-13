@@ -18,9 +18,9 @@ public class FeatureSerializer extends StdSerializer<Feature> {
         gen.writeStringField("name", value.getName());
         // Serialize SettingGroup if present
         if (value.getSettingGroup().isPresent()) {
-            gen.writeObjectField("settingGroup", value.getSettingGroup().get());
+            gen.writeObjectField("settings", value.getSettingGroup().get());
         } else {
-            gen.writeNullField("settingGroup");
+            gen.writeNullField("settings");
         }
         gen.writeEndObject(); // end 'feature' object
         gen.writeEndObject(); // end wrapping object

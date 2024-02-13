@@ -1,11 +1,13 @@
 package com.lunova.moonbot.core.api.plugin.features.settings;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.ImmutableSet;
 
+@JsonSerialize(using = SettingGroupSerializer.class)
 public class SettingGroup {
 
-    @JsonProperty("settings")
+    @JsonIgnore
     private final ImmutableSet<Setting<?>> settings;
 
     public static class Builder {

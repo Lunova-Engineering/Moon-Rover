@@ -21,7 +21,6 @@ public abstract class Feature extends ListenerAdapter implements FeatureComponen
         return name;
     }
 
-    @JsonProperty("settingGroup")
     @Override
     public final Optional<SettingGroup> getSettingGroup() {
         return Optional.fromNullable(defineSettingGroup(new SettingGroup.Builder()));

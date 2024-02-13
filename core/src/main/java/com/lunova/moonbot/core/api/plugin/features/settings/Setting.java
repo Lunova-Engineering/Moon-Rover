@@ -1,6 +1,9 @@
 package com.lunova.moonbot.core.api.plugin.features.settings;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.reflect.TypeToken;
+import com.lunova.moonbot.core.api.plugin.features.settings.input.Input;
 import com.lunova.moonbot.core.api.plugin.features.settings.transformation.Transformation;
 
 import java.io.Serializable;
@@ -48,7 +51,7 @@ import java.io.Serializable;
  * Settings and Options
  * Redefine the structure of Options structure to give better naming conventions. Options should be Renamed to Settings and Settings should have new Objects permitted
  * called Options that represent options that would modify the behavior of the setting, for example.
- * SettingBuilder.newSetting("NAME", DESCRIPTION) - This portion would create a new setting (container almost) for modification
+ * SettingCreator.newSetting("NAME", DESCRIPTION) - This portion would create a new setting (container almost) for modification
  * .addOption(new OptionData(DATA TYPE,STRING NAME OF OPTION, STRING OF DESCRIPTION.
  */
 
@@ -60,32 +63,37 @@ public final class Setting<T> implements Serializable {
     private final String key;
     @JsonProperty("required")
     private final boolean required;
-    @JsonProperty("definition")
-    private final SettingDefinition<?, T> settingDefinition;
+    @JsonProperty("input")
+    private final Input<?, T> input;
 
     //optional
     @JsonProperty("description")
     private final String description;
-    @JsonProperty("default")
-    private final T defaultValue;
+   @JsonIgnore
+    private final TypeToken<?> returnType;
 
 
     public static class Builder<I, T> {
         private final String key;
         private final boolean required;
-        private final SettingDefinition<I, T> settingDefinition;
+        private final Input<I, T> input;
         private String description;
-        private T defaultValue;
+        private final TypeToken<T> returnType;
 
 
-        public Builder(String key, boolean required, SettingDefinition<I, T> settingDefinition) {
+        public Builder(String key, boolean required, Input<I, T> input) {
             this.key = key;
             this.required = required;
-            this.settingDefinition = settingDefinition;
+            this.input = input;
+            this.returnType = new TypeToken<T>(){};
         }
 
         public Builder<I, T> withTransformation(Transformation<I, T> transformation) {
-            settingDefinition.getInput().setTransformation(transformation);
+            input.setTransformation(transformation);
+            return this;
+        }
+
+        public Builder<I, T> withValidation() {
             return this;
         }
 
@@ -100,13 +108,13 @@ public final class Setting<T> implements Serializable {
     private Setting(Builder<?, T> builder) {
         this.key = builder.key;
         this.required = builder.required;
-        this.settingDefinition = builder.settingDefinition;
-        this.defaultValue = builder.defaultValue;
+        this.input = builder.input;
+        this.returnType = builder.returnType;
         this.description = builder.description;
     }
 
-    public SettingDefinition<?, T> getSettingDefinition() {
-        return settingDefinition;
+    public Input<?, T> getInput() {
+        return input;
     }
 
     public String getKey() {
@@ -121,8 +129,8 @@ public final class Setting<T> implements Serializable {
         return description;
     }
 
-    public Object getDefaultValue() {
-        return defaultValue;
+    public TypeToken<?> getReturnType() {
+        return returnType;
     }
 
 

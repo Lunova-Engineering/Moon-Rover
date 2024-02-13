@@ -1,7 +1,9 @@
 package com.lunova.moonbot.core.api.plugin.features.settings.input;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum InputType {
 
     //User Inputs
@@ -28,14 +30,10 @@ public enum InputType {
     TOGGLE_SWITCH(DataType.BOOLEAN),
     CHECKBOX(DataType.BOOLEAN);
 
-    @JsonProperty("returnInputType")
+    @JsonProperty("returnType")
     private final DataType dataType;
 
     InputType(DataType dataType) {
-        this.dataType = dataType;
-    }
-
-    InputType(DataType dataType, Class<String> stringClass) {
         this.dataType = dataType;
     }
 
