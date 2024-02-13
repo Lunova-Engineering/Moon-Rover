@@ -1,7 +1,6 @@
-package com.lunova.moonbot.core.api.plugin.features.settings.definitions.input;
+package com.lunova.moonbot.core.api.plugin.features.settings.input;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lunova.moonbot.core.api.plugin.features.settings.definitions.DataType;
 
 public enum InputType {
 

@@ -1,7 +1,7 @@
-package com.lunova.moonbot.core.api.plugin.features.settings.definitions.impl;
+package com.lunova.moonbot.core.api.plugin.features.settings.definitions;
 
 import com.lunova.moonbot.core.api.plugin.features.settings.input.Input;
-import com.lunova.moonbot.core.api.plugin.features.settings.definitions.SettingDefinition;
+import com.lunova.moonbot.core.api.plugin.features.settings.SettingDefinition;
 
 import java.util.ArrayList;
 import java.util.Collection;

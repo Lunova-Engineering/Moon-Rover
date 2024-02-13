@@ -1,7 +1,7 @@
 package com.lunova.moonbot.core.api.plugin.features.settings;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lunova.moonbot.core.api.plugin.features.settings.definitions.SettingDefinition;
+import com.lunova.moonbot.core.api.plugin.features.settings.transformation.Transformation;
 
 import java.io.Serializable;
 
@@ -56,18 +56,18 @@ import java.io.Serializable;
 /*@JsonSerialize(using = SettingSerializer.class)
 @JsonDeserialize(using = SettingDeserializer.class)*/
 public final class Setting<T> implements Serializable {
-    @JsonProperty("settingName")
+    @JsonProperty("name")
     private final String key;
-    @JsonProperty("settingRequired")
+    @JsonProperty("required")
     private final boolean required;
-    @JsonProperty("settingDefinition")
+    @JsonProperty("definition")
     private final SettingDefinition<?, T> settingDefinition;
 
     //optional
-    @JsonProperty("settingDescription")
+    @JsonProperty("description")
     private final String description;
-    @JsonProperty("settingDefault")
-    private final Object defaultValue;
+    @JsonProperty("default")
+    private final T defaultValue;
 
 
     public static class Builder<I, T> {
@@ -75,13 +75,18 @@ public final class Setting<T> implements Serializable {
         private final boolean required;
         private final SettingDefinition<I, T> settingDefinition;
         private String description;
-        private Object defaultValue;
+        private T defaultValue;
 
 
         public Builder(String key, boolean required, SettingDefinition<I, T> settingDefinition) {
             this.key = key;
             this.required = required;
             this.settingDefinition = settingDefinition;
+        }
+
+        public Builder<I, T> withTransformation(Transformation<I, T> transformation) {
+            settingDefinition.getInput().setTransformation(transformation);
+            return this;
         }
 
         public Setting<T> build() {

@@ -1,4 +1,4 @@
-package com.lunova.moonbot.core.api.plugin.features.settings.definitions;
+package com.lunova.moonbot.core.api.plugin.features.settings;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lunova.moonbot.core.api.plugin.features.settings.input.Input;

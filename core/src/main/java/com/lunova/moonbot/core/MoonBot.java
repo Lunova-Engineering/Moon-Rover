@@ -1,6 +1,9 @@
 package com.lunova.moonbot.core;
 
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.lunova.moonbot.core.api.plugin.examples.Item;
+import com.lunova.moonbot.core.api.plugin.features.Feature;
+import com.lunova.moonbot.core.api.plugin.features.FeatureSerializer;
 import com.lunova.moonbot.core.exceptions.JsonSerializationException;
 import com.lunova.moonbot.core.services.ServiceManager;
 import com.lunova.moonbot.core.services.bot.MoonBotService;
@@ -42,6 +45,9 @@ public class MoonBot {
             guild ->
                 guild.retrieveCommands().complete().forEach(command -> command.delete().queue()));*/
     Item item = new Item("Item Feature");
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(Feature.class, new FeatureSerializer());
+
       try {
           String json = JsonHandler.serialize(item);
         System.out.println(json);
