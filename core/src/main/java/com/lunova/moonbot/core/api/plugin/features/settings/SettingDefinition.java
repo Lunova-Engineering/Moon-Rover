@@ -1,7 +1,7 @@
 package com.lunova.moonbot.core.api.plugin.features.settings.definitions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lunova.moonbot.core.api.plugin.features.settings.Input;
+import com.lunova.moonbot.core.api.plugin.features.settings.input.Input;
 
 public class SettingDefinition<I, T> {
 

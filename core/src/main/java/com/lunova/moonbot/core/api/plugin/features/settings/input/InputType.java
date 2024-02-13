@@ -32,8 +32,11 @@ public enum InputType {
     @JsonProperty("returnInputType")
     private final DataType dataType;
 
-
     InputType(DataType dataType) {
+        this.dataType = dataType;
+    }
+
+    InputType(DataType dataType, Class<String> stringClass) {
         this.dataType = dataType;
     }
 
