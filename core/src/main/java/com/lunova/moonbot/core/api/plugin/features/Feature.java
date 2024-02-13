@@ -11,10 +11,13 @@ public abstract class Feature extends ListenerAdapter implements FeatureComponen
 
     @JsonProperty("name")
     private final String name;
+    @JsonProperty
+    private final SettingGroup settingGroup;
 
 
     public Feature(String name) {
         this.name = name;
+        this.settingGroup = defineSettingGroup(new SettingGroup.Builder());
     }
 
     public final String getName() {
@@ -23,7 +26,7 @@ public abstract class Feature extends ListenerAdapter implements FeatureComponen
 
     @Override
     public final Optional<SettingGroup> getSettingGroup() {
-        return Optional.fromNullable(defineSettingGroup(new SettingGroup.Builder()));
+        return Optional.fromNullable(settingGroup);
     }
 
     protected SettingGroup defineSettingGroup(SettingGroup.Builder builder) {

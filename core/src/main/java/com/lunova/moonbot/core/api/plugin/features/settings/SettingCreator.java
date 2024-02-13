@@ -18,7 +18,7 @@ public final class SettingCreator {
 
     public static <I, O> Setting.Builder<I, O> createSelectionSetting(Class<I> input, Class<O> output, String settingKey, boolean required, String label, InputType inputType, Collection<?> options) {
         SelectionInput<I, O> selectionInput = new SelectionInput<>(inputType, label, options);
-        return new Setting.Builder<>(settingKey, required, selectionInput);
+        return new Setting.Builder<>(settingKey, required, selectionInput).withTyping(input, output);
     }
 
     public static <I, O> void testFoo(TypeToken<I> input, TypeToken<O> output) {

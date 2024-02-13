@@ -71,6 +71,8 @@ public final class Setting<T> implements Serializable {
     private final String description;
    @JsonIgnore
     private final TypeToken<?> returnType;
+   private final Class<?> returnT;
+   private final Class<?> inputT;
 
 
     public static class Builder<I, T> {
@@ -79,7 +81,8 @@ public final class Setting<T> implements Serializable {
         private final Input<I, T> input;
         private String description;
         private final TypeToken<T> returnType;
-
+        private Class<?> returnT;
+        private Class<?> inputT;
 
         public Builder(String key, boolean required, Input<I, T> input) {
             this.key = key;
@@ -90,6 +93,13 @@ public final class Setting<T> implements Serializable {
 
         public Builder<I, T> withTransformation(Transformation<I, T> transformation) {
             input.setTransformation(transformation);
+            return this;
+        }
+
+        public Builder<I, T> withTyping(Class<?> input, Class<?> output) {
+            inputT = input;
+            returnT = output;
+            System.out.println(input.getTypeName() +"\n"+output.getTypeName() + " - builder");
             return this;
         }
 
@@ -111,6 +121,8 @@ public final class Setting<T> implements Serializable {
         this.input = builder.input;
         this.returnType = builder.returnType;
         this.description = builder.description;
+        this.inputT = builder.inputT;
+        this.returnT = builder.returnT;
     }
 
     public Input<?, T> getInput() {
@@ -133,5 +145,12 @@ public final class Setting<T> implements Serializable {
         return returnType;
     }
 
+    public Class<?> getReturnT() {
+        return returnT;
+    }
+
+    public Class<?> getInputT() {
+        return inputT;
+    }
 
 }
