@@ -1,5 +1,7 @@
 package com.lunova.moonbot.core.utility.json;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -14,14 +16,17 @@ import org.slf4j.LoggerFactory;
 
 public class JsonHandler {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).registerModules(new GuavaModule(), new Jdk8Module());
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+            .enable(SerializationFeature.INDENT_OUTPUT).setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
+            .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
+            .registerModules(new GuavaModule(), new Jdk8Module());
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonHandler.class);
 
     public static String serialize(Object obj) throws JsonSerializationException, ConstraintViolationException {
         try {
             JsonGenericValidator.validateObject(obj);
-            return OBJECT_MAPPER.writeValueAsString(obj);
+            return OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
         } catch (JsonProcessingException e) {
             throw new JsonSerializationException(e.getMessage(), e);
         }

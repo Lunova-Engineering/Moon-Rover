@@ -1,9 +1,7 @@
 package com.lunova.moonbot.core.api.plugin.features.settings.input;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum InputType {
 
     //User Inputs

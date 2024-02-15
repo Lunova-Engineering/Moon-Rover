@@ -1,19 +1,25 @@
 package com.lunova.moonbot.core.api.plugin.features;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableSet;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+
 public final class FeatureManager {
 
+    @JsonProperty("containers")
     private final Set<FeatureContainer> containers = new HashSet<>();
+    @JsonIgnore
     private final Set<Class<? extends FeatureComponent>> features = new HashSet<>();
+    @JsonIgnore
     private boolean isSealed = false;
 
     public void registerSingleFeature(Feature feature) {
-        FeatureContainer container = FeatureComponentFactory.createContainerWith(feature.getName(), feature);
+        FeatureContainer container = FeatureComponentFactory.createContainerWith(feature.getName() + " Container", feature);
         registerFeatureContainer(container);
     }
 

@@ -1,21 +1,27 @@
 package com.lunova.moonbot.core.api.plugin.features;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.lunova.moonbot.core.api.plugin.features.settings.SettingGroup;
 
 import java.util.Iterator;
 
+//@JsonSerialize(using = FeatureContainerSerializer.class)
 public final class FeatureContainer implements FeatureComponent {
 
-    private final ImmutableSet<Feature> features;
-    private final SettingGroup settings;
+    @JsonProperty("name")
     private final String name;
+    @JsonProperty("features")
+    private final ImmutableSet<Feature> features;
+    @JsonProperty("settingGroup")
+    private final SettingGroup settings;
 
     protected static class Builder {
+
+        private final String name;
         private final ImmutableSet.Builder<Feature> builder = new ImmutableSet.Builder<>();
         private SettingGroup settings;
-        private final String name;
 
         public Builder(String name) {
             this.name = name;
@@ -62,12 +68,12 @@ public final class FeatureContainer implements FeatureComponent {
         this.settings = builder.settings;
     }
 
-    public ImmutableSet<Feature> getFeatures() {
-        return features;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public ImmutableSet<Feature> getFeatures() {
+        return features;
     }
 
     @Override

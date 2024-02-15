@@ -1,10 +1,9 @@
 package com.lunova.moonbot.core.api.plugin.features.settings;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.reflect.TypeToken;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.lunova.moonbot.core.api.plugin.features.settings.input.Input;
 import com.lunova.moonbot.core.api.plugin.features.settings.transformation.Transformation;
+import com.lunova.moonbot.core.api.plugin.features.settings.validation.Validation;
 
 import java.io.Serializable;
 
@@ -54,60 +53,56 @@ import java.io.Serializable;
  * SettingCreator.newSetting("NAME", DESCRIPTION) - This portion would create a new setting (container almost) for modification
  * .addOption(new OptionData(DATA TYPE,STRING NAME OF OPTION, STRING OF DESCRIPTION.
  */
+@JsonPropertyOrder({"key", "inputClass", "outputClass", "description", "required", "input"})
+public final class Setting<SO> implements Serializable {
 
-
-/*@JsonSerialize(using = SettingSerializer.class)
-@JsonDeserialize(using = SettingDeserializer.class)*/
-public final class Setting<T> implements Serializable {
-    @JsonProperty("name")
     private final String key;
-    @JsonProperty("required")
     private final boolean required;
-    @JsonProperty("input")
-    private final Input<?, T> input;
+    private final Input<?, SO> input;
 
-    //optional
-    @JsonProperty("description")
     private final String description;
-   @JsonIgnore
-    private final TypeToken<?> returnType;
-   private final Class<?> returnT;
-   private final Class<?> inputT;
+
+    private final Class<?> inputClass;
+    private final Class<?> outputClass;
 
 
-    public static class Builder<I, T> {
+    public static class Builder<BI, BO> {
         private final String key;
         private final boolean required;
-        private final Input<I, T> input;
+        private final Input<BI, BO> input;
         private String description;
-        private final TypeToken<T> returnType;
-        private Class<?> returnT;
-        private Class<?> inputT;
+        private Class<?> inputClass;
+        private Class<?> outputClass;
 
-        public Builder(String key, boolean required, Input<I, T> input) {
+        public Builder(String key, boolean required, Input<BI, BO> input) {
             this.key = key;
             this.required = required;
             this.input = input;
-            this.returnType = new TypeToken<T>(){};
         }
 
-        public Builder<I, T> withTransformation(Transformation<I, T> transformation) {
+        public Builder<BI, BO> withTransformation(Transformation<BI, BO> transformation) {
             input.setTransformation(transformation);
             return this;
         }
 
-        public Builder<I, T> withTyping(Class<?> input, Class<?> output) {
-            inputT = input;
-            returnT = output;
+        public Builder<BI, BO> withTyping(Class<?> input, Class<?> output) {
+            inputClass = input;
+            outputClass = output;
             System.out.println(input.getTypeName() +"\n"+output.getTypeName() + " - builder");
             return this;
         }
 
-        public Builder<I, T> withValidation() {
+        public Builder<BI, BO> setDescription(String description) {
+            this.description = description;
             return this;
         }
 
-        public Setting<T> build() {
+        public <V extends Validation<BI>> Builder<BI, BO> withValidation(V validation) {
+            input.setValidation(validation);
+            return this;
+        }
+
+        public Setting<BO> build() {
             return new Setting<>(this);
         }
 
@@ -115,17 +110,16 @@ public final class Setting<T> implements Serializable {
     }
 
 
-    private Setting(Builder<?, T> builder) {
+    private Setting(Builder<?, SO> builder) {
         this.key = builder.key;
         this.required = builder.required;
         this.input = builder.input;
-        this.returnType = builder.returnType;
         this.description = builder.description;
-        this.inputT = builder.inputT;
-        this.returnT = builder.returnT;
+        this.inputClass = builder.inputClass;
+        this.outputClass = builder.outputClass;
     }
 
-    public Input<?, T> getInput() {
+    public Input<?, SO> getInput() {
         return input;
     }
 
@@ -141,16 +135,11 @@ public final class Setting<T> implements Serializable {
         return description;
     }
 
-    public TypeToken<?> getReturnType() {
-        return returnType;
+    public Class<?> getInputClass() {
+        return inputClass;
     }
 
-    public Class<?> getReturnT() {
-        return returnT;
+    public Class<?> getOutputClass() {
+        return outputClass;
     }
-
-    public Class<?> getInputT() {
-        return inputT;
-    }
-
 }

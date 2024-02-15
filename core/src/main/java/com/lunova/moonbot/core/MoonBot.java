@@ -1,12 +1,12 @@
 package com.lunova.moonbot.core;
 
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.lunova.moonbot.core.api.plugin.Plugin;
+import com.lunova.moonbot.core.api.plugin.examples.BasePlugin;
 import com.lunova.moonbot.core.api.plugin.examples.Item;
-import com.lunova.moonbot.core.api.plugin.features.Feature;
-import com.lunova.moonbot.core.api.plugin.features.FeatureSerializer;
 import com.lunova.moonbot.core.api.plugin.features.settings.Setting;
-import com.lunova.moonbot.core.api.plugin.features.settings.SettingGroup;
-import com.lunova.moonbot.core.api.plugin.features.settings.SettingGroupSerializer;
+import com.lunova.moonbot.core.api.plugin.features.settings.input.DataType;
+import com.lunova.moonbot.core.api.plugin.features.settings.input.Input;
+import com.lunova.moonbot.core.api.plugin.features.settings.transformation.Transformation;
 import com.lunova.moonbot.core.exceptions.JsonSerializationException;
 import com.lunova.moonbot.core.services.ServiceManager;
 import com.lunova.moonbot.core.services.bot.MoonBotService;
@@ -48,22 +48,43 @@ public class MoonBot {
             guild ->
                 guild.retrieveCommands().complete().forEach(command -> command.delete().queue()));*/
     Item item = new Item("Item Feature");
-    SimpleModule module = new SimpleModule();
-    module.addSerializer(Feature.class, new FeatureSerializer());
-    module.addSerializer(SettingGroup.class, new SettingGroupSerializer());
-    JsonHandler.registerModule(module);
+    Plugin base = new BasePlugin();
+    base.getFeatureManager().registerSingleFeature(item);
+    base.getFeatureManager().seal();
       try {
-          String json = JsonHandler.serialize(item);
-        //System.out.println(item.getSettingGroup().get().getSettings().stream().findFirst().get().getInput().getType().getDataType().getClazz());
-        //System.out.println(item.getSettingGroup().get().getSettings().stream().findFirst().get().getReturnType().getType().toString());
-        Setting<?> setting = item.getSettingGroup().get().getSettings().stream().findFirst().get();
-        System.out.println(setting.getInputT().getTypeName());
-        System.out.println(setting.getReturnT().getTypeName());
-        //setting.getInput().getTransformation().get().transform(value2);
+          String json = JsonHandler.serialize(base);
+          Setting<?> name = base.getFeatureManager().getFeatures().stream().findFirst().get().getSettingGroup().get().getSettings().stream().findFirst().get();
+         // foo(base, "Minecraft");
+        //System.out.println(name);
         System.out.println(json);
       } catch (JsonSerializationException e) {
           throw new RuntimeException(e);
       }
+  }
+
+  public static void foo(Plugin base, Object res) throws ClassNotFoundException {
+    Class<?> output = Class.forName("net.dv8tion.jda.api.entities.Role"); //Object.getOutputClassName(); can also do assignment during JSON deserialization
+    DataType dataType = DataType.STRING; // Object.getDataType();
+    Class<?> roleClass = Class.forName("net.dv8tion.jda.api.entities.Role");
+    System.out.println(roleClass.descriptorString());
+    //here is the key for the plugin and container and feauter and setting to find it in the map or whatever in the server registry;
+    //lets say we found it Plugin plugin = getPluginFromKey(); getFeatureManager(); getFeatures() or getFeature(FEATURE_KEY); getSetting(SETTING_KEY);
+    getT(base.getFeatureManager().getFeatures().stream().findFirst().get().getSettingGroup().get().getSettings().stream().findFirst().get(), dataType, res, output);
+
+    //after deserializing the web response (or during serialization or loading of a plugin?)
+
+
+  }
+
+  public static void doT(Setting<?> setting, Object obj) throws ClassNotFoundException {
+  }
+
+  private static <I, O> void getT(Setting<?> setting, DataType dataType, I response, Class<O> output) {
+    Setting<O> castedSetting = (Setting<O>) setting;
+    Input<I, O> castedInput = (Input<I, O>) castedSetting.getInput();
+    Transformation<I, O> trans = castedInput.getTransformation().get();;
+    O returnO = trans.transform(response);
+    trans.processTransformation(returnO);
   }
 
 }

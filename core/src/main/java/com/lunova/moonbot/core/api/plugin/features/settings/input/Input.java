@@ -2,52 +2,67 @@ package com.lunova.moonbot.core.api.plugin.features.settings.input;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.google.common.base.Optional;
-import com.google.gson.reflect.TypeToken;
+import com.lunova.moonbot.core.api.plugin.features.settings.input.impl.RangeSliderInput;
+import com.lunova.moonbot.core.api.plugin.features.settings.input.impl.SelectionInput;
+import com.lunova.moonbot.core.api.plugin.features.settings.input.impl.ToggleInput;
+import com.lunova.moonbot.core.api.plugin.features.settings.input.impl.UserInput;
 import com.lunova.moonbot.core.api.plugin.features.settings.transformation.Transformation;
 import com.lunova.moonbot.core.api.plugin.features.settings.validation.Validation;
 
-public class Input<I, O>  {
+//@JsonSerialize(using = InputSerializer.class)
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = SelectionInput.class),
+    @JsonSubTypes.Type(value = UserInput.class),
+    @JsonSubTypes.Type(value = RangeSliderInput.class),
+    @JsonSubTypes.Type(value = ToggleInput.class)
+        })
+public class Input<II, IO>  {
+//TODO: Protect this class from modification, user should not be able to alter this class instance in the object
 
-    @JsonProperty("format")
     private final InputFormat format;
-    @JsonProperty("type")
     private final InputType type;
-    @JsonProperty("label")
     private final String label;
 
-    @JsonIgnore
-    private final TypeToken<I> inputType;
 
     @JsonIgnore
-    private Transformation<I, O> transformation;
-    @JsonIgnore
-    private Validation validation;
+    private Transformation<II, IO> transformation;
+    @JsonProperty("validations")
+    private Validation<II> validation;
 
     public Input(InputFormat format, InputType type, String label) {
         this.format = format;
         this.type = type;
         this.label = label;
-        this.inputType = new TypeToken<I>(){};
     }
 
-    public Optional<Transformation<I, O>> getTransformation() {
+    public Optional<Transformation<II, IO>> getTransformation() {
         return Optional.fromNullable(transformation);
     }
 
-    public void setTransformation(Transformation<I, O> transformation) {
+    public void setTransformation(Transformation<II, IO> transformation) {
         this.transformation = transformation;
     }
 
-    public void withValidation(Validation validation) {
-
+    public InputFormat getFormat() {
+        return format;
     }
 
-    public TypeToken<I> getInputType() {
-        return inputType;
+    public String getLabel() {
+        return label;
     }
 
-    public InputType getType() {
+    public Optional<Validation<II>> getValidation() {
+        return Optional.fromNullable(validation);
+    }
+
+    public Input<II, IO> setValidation(Validation<II> validation) {
+        this.validation = validation;
+        return this;
+    }
+
+    public InputType getInputType() {
         return type;
     }
 

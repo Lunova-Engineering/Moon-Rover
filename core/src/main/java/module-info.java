@@ -25,7 +25,7 @@ module com.lunova.moonbot.core {
   opens com.lunova.moonbot.core.services.plugin to
       com.google.gson, org.hibernate.validator;
   opens com.lunova.moonbot.core.api.plugin to
-      jakarta.xml.bind;
+          jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
   exports com.lunova.moonbot.core.services.plugin.resolver to com.fasterxml.jackson.databind;
   opens com.lunova.moonbot.core.services.plugin.resolver to com.google.gson, org.hibernate.validator;
   exports com.lunova.moonbot.core.api.plugin.features.settings;
@@ -36,6 +36,8 @@ module com.lunova.moonbot.core {
   opens com.lunova.moonbot.core.api.plugin.features to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
   exports com.lunova.moonbot.core.api.plugin.common;
   opens com.lunova.moonbot.core.api.plugin.common to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
+opens com.lunova.moonbot.core.api.plugin.features.settings.validation.rules to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
+opens com.lunova.moonbot.core.api.plugin.features.settings.validation to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
 
   exports com.lunova.moonbot.core.api.plugin.features.settings.transformation;
   exports com.lunova.moonbot.core.api.plugin.features.settings.validation;
@@ -43,6 +45,7 @@ module com.lunova.moonbot.core {
   opens com.lunova.moonbot.core.api.plugin.features.settings.input to com.fasterxml.jackson.databind, com.google.gson, jakarta.xml.bind;
 exports com.lunova.moonbot.core.api.plugin.features.settings.input.impl;
 opens com.lunova.moonbot.core.api.plugin.features.settings.input.impl to com.fasterxml.jackson.databind, com.google.gson, jakarta.xml.bind;
+    exports com.lunova.moonbot.core.api.plugin.features.settings.validation.rules;
     requires org.slf4j;
   requires ch.qos.logback.classic;
   requires ch.qos.logback.core;
