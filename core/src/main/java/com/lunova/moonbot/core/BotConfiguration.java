@@ -12,21 +12,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The BotConfiguration class is responsible for loading and providing access to configuration
+ * The BotConfiguration class is responsible for loading and providing access to settings
  * properties. It encapsulates the properties handling mechanism by reading them from a server
- * configuration file and providing them as an ImmutableMap.
+ * settings file and providing them as an ImmutableMap.
  */
 public class BotConfiguration {
   /**
    * LOGGER is a static final Logger instance used throughout the BotConfiguration class to log
-   * important information and error messages related to the configuration loading and accessing
+   * important information and error messages related to the settings loading and accessing
    * processes.
    */
   private static final Logger LOGGER = LoggerFactory.getLogger(BotConfiguration.class);
 
   /**
    * PROPERTY_TOKENS is a static final ImmutableMap that stores the properties loaded from the
-   * configuration file. It's populated at class initialization time by reading the properties file
+   * settings file. It's populated at class initialization time by reading the properties file
    * and transforming its contents into an immutable map.
    */
   private static final ImmutableMap<String, String> PROPERTY_TOKENS = readProperties();
@@ -36,11 +36,11 @@ public class BotConfiguration {
 
   /**
    * Retrieves the property value associated with the specified key from the application's
-   * configuration.
+   * settings.
    *
    * @param key the property key
    * @return the property value as a String
-   * @throws ConfigurationException if the key is not found in the configuration
+   * @throws ConfigurationException if the key is not found in the settings
    */
   public static String getProperty(String key) throws ConfigurationException {
     if (!PROPERTY_TOKENS.containsKey(key)) {
@@ -50,7 +50,7 @@ public class BotConfiguration {
   }
 
   /**
-   * Reads properties from the server configuration file and returns them as an ImmutableMap. Logs a
+   * Reads properties from the server settings file and returns them as an ImmutableMap. Logs a
    * warning for any property with a null or empty value and logs errors for issues accessing the
    * file.
    *
@@ -72,7 +72,7 @@ public class BotConfiguration {
       LOGGER.error("Configuration file not found.", e);
       return ImmutableMap.of();
     } catch (IOException e) {
-      LOGGER.error("Error reading or parsing the configuration file.", e);
+      LOGGER.error("Error reading or parsing the settings file.", e);
       return ImmutableMap.of();
     }
     return builder.build();

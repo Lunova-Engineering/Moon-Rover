@@ -132,7 +132,7 @@ public enum MessageStatus {
     /**
      * 305 Use Proxy: Use to indicate that the requested resource must be accessed through a proxy.
      * Example: The client requests a resource, but it must be accessed through a proxy, which is provided in the response.
-     * @deprecated This response code is no longer used; it was deprecated due to security concerns regarding in-band configuration of a proxy.
+     * @deprecated This response code is no longer used; it was deprecated due to security concerns regarding in-band settings of a proxy.
      */
     _305_USE_PROXY(305, "Use Proxy", "Deprecated. Indicates that the requested resource is available only through a proxy, the address for which is provided in the response."),
 
@@ -359,10 +359,10 @@ public enum MessageStatus {
     _505_HTTP_VERSION_NOT_SUPPORTED(505, "HTTP Version Not Supported", "Indicates that the server does not support the HTTP protocol version used in the request."),
 
     /**
-     * 506 Variant Also Negotiates: Use when the server has an internal configuration error.
+     * 506 Variant Also Negotiates: Use when the server has an internal settings error.
      * Example: The server's response is not properly configured for content negotiation, leading to a circular reference.
      */
-    _506_VARIANT_ALSO_NEGOTIATES(506, "Variant Also Negotiates", "Indicates that the server has an internal configuration error."),
+    _506_VARIANT_ALSO_NEGOTIATES(506, "Variant Also Negotiates", "Indicates that the server has an internal settings error."),
 
     /**
      * 507 Insufficient Storage: Use when the server is unable to store the representation needed to complete the request.

@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 
 /**
  * Singleton service responsible for managing the Discord bot session via the JDA library. This
- * service handles the initialization and configuration of the bot session, including setting up
+ * service handles the initialization and settings of the bot session, including setting up
  * event listeners and enabling gateway intents for Discord events.
  *
  * <p>It extends {@link BotService}, providing specific functionality for the bot's operation within
