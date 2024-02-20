@@ -1,11 +1,10 @@
 package com.lunova.moonbot.core.services.plugin;
 
+import com.lunova.moonbot.core.api.plugin.Plugin;
 import com.lunova.moonbot.core.exceptions.JsonDeserializationException;
 import com.lunova.moonbot.core.exceptions.PluginRequestException;
 import com.lunova.moonbot.core.exceptions.ServiceLoadingException;
-import com.lunova.moonbot.core.plugin.Plugin;
 import com.lunova.moonbot.core.services.BotService;
-import com.lunova.moonbot.core.services.bot.MoonBotService;
 import com.lunova.moonbot.core.services.plugin.loader.PluginLoader;
 import com.lunova.moonbot.core.utility.json.JsonHandler;
 import jakarta.validation.ConstraintViolationException;
@@ -59,7 +58,7 @@ public class PluginService extends BotService {
     try {
       //int port = Integer.parseInt(BotConfiguration.getProperty("WEB_SERVER_PORT"));
       int port = 8080;
-      //TODO: Add specific configuration exception to catch block.
+      //TODO: Add specific settings exception to catch block.
       port(port);
       post("/plugin-action",
           (request, response) -> {
@@ -75,14 +74,14 @@ public class PluginService extends BotService {
               //PluginResolver resolver = PluginResolverUtils.createDefaultResolver();
               //resolver.downloadArtifact(pluginRequest.pluginGroupId(), pluginRequest.pluginArtifactId(), pluginRequest.pluginVersion());
               Plugin plugin = PluginLoader.loadPlugin(new File("/Users/drakeforness/Documents/Github/Moon-Bot/plugins/default/target/moon-bot-plugin-default-0.2.0-SNAPSHOT.jar").toURI().toURL());
-              plugin.executeInstallRoutine(MoonBotService.getInstance().getBotSession(), "993720567729492080");
+              //plugin.executeInstallRoutine(MoonBotService.getInstance().getBotSession(), "993720567729492080");
 
               //Execute request
               //check for plugin in class path + cache
               //if not found submit download request
               //once jar is obtained load jar
               //continue executing request
-              //install, unisntall, disable, enable, on correct server
+              //install, uninstall, disable, enable, on correct server
 
             } catch(JsonDeserializationException e) {
               response.status(500);

@@ -1,9 +1,9 @@
 package com.lunova.moonbot.core.exceptions;
 
 /**
- * Custom exception thrown when a required property is not found in the configuration.
+ * Custom exception thrown when a required property is not found in the settings.
  *
- * <p>This exception is used to indicate that a key expected in the bot configuration is missing. It
+ * <p>This exception is used to indicate that a key expected in the bot settings is missing. It
  * extends {@link Exception}, making it a checked exception that must be either caught or declared
  * in the method signature.
  *

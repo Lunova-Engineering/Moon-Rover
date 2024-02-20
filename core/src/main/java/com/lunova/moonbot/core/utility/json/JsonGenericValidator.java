@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Set;
 
 /**
- * Utility class for validating objects using Jakarta Bean Validation.
+ * Utility class for validating objects using Jakarta Bean Validator.
  * <p>
  * This class provides a generic method to validate any given object
  * against constraints defined in its class definition.
@@ -44,7 +44,7 @@ public class JsonGenericValidator {
      * @param <T> the type of the object with violations
      */
     private static <T> void logViolations(Set<ConstraintViolation<T>> violations) {
-        LOGGER.debug("Validation Errors:");
+        LOGGER.debug("Validator Errors:");
         violations.forEach(violation ->
                 LOGGER.debug("Field: {}, Value: {}, Constraint: {}",
                         violation.getPropertyPath(), violation.getInvalidValue(), violation.getMessage()));

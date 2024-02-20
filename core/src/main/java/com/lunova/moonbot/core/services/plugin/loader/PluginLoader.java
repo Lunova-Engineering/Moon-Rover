@@ -1,6 +1,6 @@
 package com.lunova.moonbot.core.services.plugin.loader;
 
-import com.lunova.moonbot.core.plugin.Plugin;
+import com.lunova.moonbot.core.api.plugin.Plugin;
 
 import java.net.URL;
 import java.net.URLClassLoader;
