@@ -4,13 +4,14 @@ import com.lunova.moonbot.core.exceptions.ServiceLoadingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
  * Abstract base class for all bot services, providing common structure and behavior for service
  * initialization, state management, and shutdown handling. This class should be extended by
  * specific services that implement the necessary initialization and shutdown procedures.
  *
  * <p>Services derived from this class can be marked as 'critical', indicating that their failure
- * could have significant implications for the bot's operation.
+ * could have significant implications for the bot operation.
  *
  * @author Drake - <a href="https://github.com/metorrite">GitHub</a>
  * @since 12.03.2023

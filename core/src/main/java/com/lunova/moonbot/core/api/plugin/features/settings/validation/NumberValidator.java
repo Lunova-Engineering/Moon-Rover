@@ -8,10 +8,10 @@ import com.lunova.moonbot.core.api.plugin.features.settings.validation.rules.Ran
 import java.util.ArrayList;
 import java.util.List;
 
-public class NumberValidation<T extends Number> extends Validation<T> {
+public class NumberValidator<T extends Number> extends Validator<T> {
 
-    protected NumberValidation(Builder<T> builder) {
-        super(DataType.NUMBER, builder.rules);
+    protected NumberValidator(Builder<T> builder) {
+        super("NUMBER_VALIDATOR", DataType.NUMBER, builder.rules);
     }
 
     public static class Builder<T extends Number> {
@@ -49,8 +49,8 @@ public class NumberValidation<T extends Number> extends Validation<T> {
             return this;
         }
 
-        public NumberValidation<T> build() {
-            return new NumberValidation<T>(this);
+        public NumberValidator<T> build() {
+            return new NumberValidator<T>(this);
         }
     }
 

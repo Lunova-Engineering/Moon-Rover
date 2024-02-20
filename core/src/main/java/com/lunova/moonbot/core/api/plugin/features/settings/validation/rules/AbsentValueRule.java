@@ -4,7 +4,11 @@ import com.lunova.moonbot.core.api.plugin.features.settings.validation.Validatio
 
 import java.util.Objects;
 
-public class AbsentValueRule<T> implements ValidationRule<T> {
+public class AbsentValueRule<T> extends ValidationRule<T> {
+
+    public AbsentValueRule() {
+        super("ABSTRACT_VALUE_RULE");
+    }
 
     @Override
     public boolean validateRule(Object target) {

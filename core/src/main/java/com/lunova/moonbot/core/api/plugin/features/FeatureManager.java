@@ -2,23 +2,23 @@ package com.lunova.moonbot.core.api.plugin.features;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.lunova.moonbot.core.api.tokens.TokenGenerator;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 public final class FeatureManager {
 
     @JsonProperty("containers")
     private final Set<FeatureContainer> containers = new HashSet<>();
-    @JsonIgnore
-    private final Set<Class<? extends FeatureComponent>> features = new HashSet<>();
+    @JsonProperty("registeredComponents")
+    private final Map<Class<? extends FeatureComponent>, UUID> features = new HashMap<>();
     @JsonIgnore
     private boolean isSealed = false;
 
-    public void registerSingleFeature(Feature feature) {
+    public void registerFeature(Feature feature) {
         FeatureContainer container = FeatureComponentFactory.createContainerWith(feature.getName() + " Container", feature);
         registerFeatureContainer(container);
     }
@@ -26,12 +26,12 @@ public final class FeatureManager {
     public void registerFeatureContainer(FeatureContainer container) {
         if (!isSealed) {
             ImmutableSet<Feature> unique = container.getFeatures().stream().filter(feature ->
-                    !features.contains(feature.getClass()))
+                    !features.containsKey(feature.getClass()))
                     .collect(ImmutableSet.toImmutableSet());
             if(unique.isEmpty())
                 return;
             unique.forEach(feature -> {
-                features.add(feature.getClass());
+                features.put(feature.getClass(), TokenGenerator.generateToken());
             });
             containers.add(container);
         } else {
@@ -47,8 +47,6 @@ public final class FeatureManager {
         containers.forEach(this::registerFeatureContainer);
     }
 
-
-
     public void seal() {
         isSealed = true;
     }
@@ -63,7 +61,11 @@ public final class FeatureManager {
                 .collect(ImmutableSet.toImmutableSet());
     }
 
+    public ImmutableMap<Class<? extends FeatureComponent>, UUID> getFeatureMap() {
+        return ImmutableMap.copyOf(features);
+    }
+
     public ImmutableSet<Class<? extends FeatureComponent>> getRegisteredFeatures() {
-        return ImmutableSet.copyOf(features);
+        return ImmutableSet.copyOf(features.keySet());
     }
 }

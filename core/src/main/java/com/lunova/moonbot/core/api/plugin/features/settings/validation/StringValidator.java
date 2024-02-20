@@ -12,10 +12,10 @@ import java.util.List;
  * ContentValidationRule: More complex content validations that might involve checking against a database or third-party service (e.g., profanity filter, copyright material).
  *
  */
-public class StringValidation extends Validation<String> {
+public class StringValidator extends Validator<String> {
 
-    private StringValidation(Builder builder) {
-        super(DataType.STRING, builder.rules);
+    private StringValidator(Builder builder) {
+        super("STRING_VALIDATOR", DataType.STRING, builder.rules);
     }
 
     public static class Builder {
@@ -57,8 +57,8 @@ public class StringValidation extends Validation<String> {
             return this;
         }
 
-        public StringValidation build() {
-            return new StringValidation(this);
+        public StringValidator build() {
+            return new StringValidator(this);
         }
     }
 

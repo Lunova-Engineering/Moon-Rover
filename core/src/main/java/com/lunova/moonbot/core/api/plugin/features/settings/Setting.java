@@ -3,7 +3,7 @@ package com.lunova.moonbot.core.api.plugin.features.settings;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.lunova.moonbot.core.api.plugin.features.settings.input.Input;
 import com.lunova.moonbot.core.api.plugin.features.settings.transformation.Transformation;
-import com.lunova.moonbot.core.api.plugin.features.settings.validation.Validation;
+import com.lunova.moonbot.core.api.plugin.features.settings.validation.Validator;
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ import java.io.Serializable;
  *Value Range for Numerical Options:
  * For numerical options (like integers or floats), provide a way to specify minimum and maximum values. This is particularly useful for settings like volume control, timeout durations, or limits on certain resources.
  *
- * Regex Validation for String Options:
+ * Regex Validator for String Options:
  * Allow developers to specify a regular expression for validating string inputs. This can be used to ensure that inputs like usernames, URLs, or custom command prefixes meet certain criteria.
  *
  * List and Enum Types:
@@ -39,7 +39,7 @@ import java.io.Serializable;
  * Help Text and Documentation:
  * Provide a way for developers to add help text or links to documentation for each option, aiding end-users in understanding what each settings option does.
  *
- * Validation Messages:
+ * Validator Messages:
  * Customizable messages for when a user enters an invalid value, guiding them on the correct format or expected values.
  *
  * UI Hints:
@@ -97,7 +97,7 @@ public final class Setting<SO> implements Serializable {
             return this;
         }
 
-        public <V extends Validation<BI>> Builder<BI, BO> withValidation(V validation) {
+        public <V extends Validator<BI>> Builder<BI, BO> withValidation(V validation) {
             input.setValidation(validation);
             return this;
         }

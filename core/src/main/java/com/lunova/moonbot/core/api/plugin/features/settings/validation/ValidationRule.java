@@ -1,9 +1,16 @@
 package com.lunova.moonbot.core.api.plugin.features.settings.validation;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+public abstract class ValidationRule<T> {
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
-public interface ValidationRule<T> {
+     private final String identifier;
 
-     boolean validateRule(T target);
+     public ValidationRule(String identifier) {
+          this.identifier = identifier;
+     }
+
+     public String getIdentifier() {
+          return identifier;
+     }
+
+     protected abstract boolean validateRule(T target);
 }

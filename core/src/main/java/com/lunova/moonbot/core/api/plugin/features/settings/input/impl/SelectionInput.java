@@ -7,11 +7,12 @@ import com.lunova.moonbot.core.api.plugin.features.settings.input.InputType;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class SelectionInput<I, O> extends Input<I, O> {
 
     @JsonProperty("options")
-    private final ArrayList<String> inputOptions = new ArrayList<>();
+    private final List<String> inputOptions = new ArrayList<>();
 
     public SelectionInput(InputType inputType, String label, Collection<?> inputOptions) {
         super(InputFormat.PRE_DEFINED, inputType, label);

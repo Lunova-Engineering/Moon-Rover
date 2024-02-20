@@ -4,11 +4,12 @@ import com.lunova.moonbot.core.api.plugin.features.settings.validation.Validatio
 
 import java.util.regex.Pattern;
 
-public class RegexValidationRule implements ValidationRule<String> {
+public class RegexValidationRule extends ValidationRule<String> {
 
     private final Pattern regex;
 
     public RegexValidationRule(String regex) {
+        super("REGEX_RULE");
         this.regex = Pattern.compile(regex);
     }
 

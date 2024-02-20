@@ -10,9 +10,13 @@ import com.lunova.moonbot.core.api.plugin.features.settings.transformation.Trans
 import com.lunova.moonbot.core.exceptions.JsonSerializationException;
 import com.lunova.moonbot.core.services.ServiceManager;
 import com.lunova.moonbot.core.services.bot.MoonBotService;
+import com.lunova.moonbot.core.services.files.FileService;
 import com.lunova.moonbot.core.utility.json.JsonHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.nio.file.Paths;
 
 /**
  * Entry point for the MoonBot Discord bot. Initializes and manages the bot's operations using the
@@ -49,14 +53,18 @@ public class MoonBot {
                 guild.retrieveCommands().complete().forEach(command -> command.delete().queue()));*/
     Item item = new Item("Item Feature");
     Plugin base = new BasePlugin();
-    base.getFeatureManager().registerSingleFeature(item);
+    base.getFeatureManager().registerFeature(item);
     base.getFeatureManager().seal();
       try {
           String json = JsonHandler.serialize(base);
+          String uuids = JsonHandler.serialize(base.getFeatureManager().getFeatureMap());
           Setting<?> name = base.getFeatureManager().getFeatures().stream().findFirst().get().getSettingGroup().get().getSettings().stream().findFirst().get();
          // foo(base, "Minecraft");
         //System.out.println(name);
         System.out.println(json);
+        System.out.println("\n\n\n\n");
+        System.out.println(uuids);
+        FileService.getInstance().writeFile(uuids, Paths.get(System.getProperty("user.dir"), "data", File.separator, "plugins", File.separator, "example", File.separator, "settings", "uuid.json"));
       } catch (JsonSerializationException e) {
           throw new RuntimeException(e);
       }
@@ -82,7 +90,7 @@ public class MoonBot {
   private static <I, O> void getT(Setting<?> setting, DataType dataType, I response, Class<O> output) {
     Setting<O> castedSetting = (Setting<O>) setting;
     Input<I, O> castedInput = (Input<I, O>) castedSetting.getInput();
-    Transformation<I, O> trans = castedInput.getTransformation().get();;
+    Transformation<I, O> trans = castedInput.getTransformation().get();
     O returnO = trans.transform(response);
     trans.processTransformation(returnO);
   }

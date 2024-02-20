@@ -81,7 +81,7 @@ public class PluginService extends BotService {
               //if not found submit download request
               //once jar is obtained load jar
               //continue executing request
-              //install, unisntall, disable, enable, on correct server
+              //install, uninstall, disable, enable, on correct server
 
             } catch(JsonDeserializationException e) {
               response.status(500);

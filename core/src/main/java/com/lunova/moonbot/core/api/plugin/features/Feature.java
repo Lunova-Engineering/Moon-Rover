@@ -2,6 +2,7 @@ package com.lunova.moonbot.core.api.plugin.features;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Optional;
+import com.lunova.moonbot.core.api.plugin.ToggleState;
 import com.lunova.moonbot.core.api.plugin.features.settings.SettingGroup;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -12,6 +13,8 @@ public abstract class Feature extends ListenerAdapter implements FeatureComponen
     private final String name;
     @JsonProperty("settingGroup")
     private final SettingGroup settingGroup;
+    @JsonProperty("toggleState")
+    private ToggleState toggleState;
 
 
     public Feature(String name) {

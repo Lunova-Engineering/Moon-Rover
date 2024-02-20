@@ -2,7 +2,7 @@ package com.lunova.moonbot.core.services;
 
 /**
  * Represents the possible states of a service within the bot application. Each state indicates a
- * specific phase in the service lifecycle, from initialization to shutdown.
+ * specific phase in the service lifecycle, from initialization to shut down.
  *
  * <p>Services transition through these states as they are started, initialized, and potentially
  * shut down. This enumeration aids in managing and understanding the current status of any given

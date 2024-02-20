@@ -9,7 +9,7 @@ import com.lunova.moonbot.core.api.plugin.features.settings.input.impl.Selection
 import com.lunova.moonbot.core.api.plugin.features.settings.input.impl.ToggleInput;
 import com.lunova.moonbot.core.api.plugin.features.settings.input.impl.UserInput;
 import com.lunova.moonbot.core.api.plugin.features.settings.transformation.Transformation;
-import com.lunova.moonbot.core.api.plugin.features.settings.validation.Validation;
+import com.lunova.moonbot.core.api.plugin.features.settings.validation.Validator;
 
 //@JsonSerialize(using = InputSerializer.class)
 @JsonSubTypes({
@@ -29,7 +29,7 @@ public class Input<II, IO>  {
     @JsonIgnore
     private Transformation<II, IO> transformation;
     @JsonProperty("validations")
-    private Validation<II> validation;
+    private Validator<II> validator;
 
     public Input(InputFormat format, InputType type, String label) {
         this.format = format;
@@ -53,12 +53,12 @@ public class Input<II, IO>  {
         return label;
     }
 
-    public Optional<Validation<II>> getValidation() {
-        return Optional.fromNullable(validation);
+    public Optional<Validator<II>> getValidation() {
+        return Optional.fromNullable(validator);
     }
 
-    public Input<II, IO> setValidation(Validation<II> validation) {
-        this.validation = validation;
+    public Input<II, IO> setValidation(Validator<II> validator) {
+        this.validator = validator;
         return this;
     }
 

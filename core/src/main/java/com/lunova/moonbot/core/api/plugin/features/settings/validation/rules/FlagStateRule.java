@@ -2,11 +2,12 @@ package com.lunova.moonbot.core.api.plugin.features.settings.validation.rules;
 
 import com.lunova.moonbot.core.api.plugin.features.settings.validation.ValidationRule;
 
-public class FlagStateRule implements ValidationRule<Boolean> {
+public class FlagStateRule extends ValidationRule<Boolean> {
 
-    private boolean flag;
+    private final boolean flag;
 
     public FlagStateRule(boolean flag) {
+        super("FLAG_STATE_RULE");
         this.flag = flag;
     }
 

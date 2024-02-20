@@ -26,7 +26,7 @@ public class JsonHandler {
     public static String serialize(Object obj) throws JsonSerializationException, ConstraintViolationException {
         try {
             JsonGenericValidator.validateObject(obj);
-            return OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+            return OBJECT_MAPPER.writer(new GsonPrettyPrinter()).writeValueAsString(obj);
         } catch (JsonProcessingException e) {
             throw new JsonSerializationException(e.getMessage(), e);
         }
@@ -45,6 +45,8 @@ public class JsonHandler {
             throw new JsonDeserializationException(e.getMessage(), e);
         }
     }
+
+
 
 
 }
