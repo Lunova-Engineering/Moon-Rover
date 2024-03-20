@@ -3,11 +3,11 @@ package com.lunova.moonbot.core.exceptions;
 /**
  * Represents an exception that is thrown during the service loading process. This exception extends
  * the standard Java {@link Exception} class and includes functionality to denote whether the
- * failure is considered fatal. This class is particularly useful in a context where services are
+ * failure is considered fatal. This class is particularly useful in a context where servold are
  * dynamically loaded, and failures can occur due to various reasons like misconfiguration, missing
  * resources, or incompatible service versions.
  *
- * <p>Use this exception to indicate and handle errors related to the loading of services, which can
+ * <p>Use this exception to indicate and handle errors related to the loading of servold, which can
  * be a critical part of the application's initialization and runtime. The inclusion of a 'fatal'
  * flag allows consuming code to differentiate between recoverable errors and severe issues that
  * might warrant a different handling approach or even a system shutdown.

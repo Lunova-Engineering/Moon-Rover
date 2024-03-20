@@ -8,9 +8,10 @@ import com.lunova.moonbot.core.api.plugin.features.settings.input.InputType;
 import com.lunova.moonbot.core.api.plugin.features.settings.transformation.Transformation;
 import com.lunova.moonbot.core.api.plugin.features.settings.validation.NumberValidator;
 import com.lunova.moonbot.core.api.plugin.features.settings.validation.StringValidator;
-import com.lunova.moonbot.core.services.bot.MoonBotService;
+import com.lunova.moonbot.core.servold.bot.MoonBotService;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.GenericEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class Item extends Feature {
@@ -22,6 +23,11 @@ public class Item extends Feature {
     @Override
     public void onGenericEvent(@NotNull GenericEvent event) {
         event.getJDA().shutdown();
+    }
+
+    @Override
+    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+        super.onMessageReceived(event);
     }
 
     @Override

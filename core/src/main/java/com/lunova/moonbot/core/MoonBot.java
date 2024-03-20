@@ -1,30 +1,22 @@
 package com.lunova.moonbot.core;
 
 import com.lunova.moonbot.core.api.plugin.Plugin;
-import com.lunova.moonbot.core.api.plugin.examples.BasePlugin;
-import com.lunova.moonbot.core.api.plugin.examples.Item;
 import com.lunova.moonbot.core.api.plugin.features.settings.Setting;
 import com.lunova.moonbot.core.api.plugin.features.settings.input.DataType;
 import com.lunova.moonbot.core.api.plugin.features.settings.input.Input;
 import com.lunova.moonbot.core.api.plugin.features.settings.transformation.Transformation;
-import com.lunova.moonbot.core.exceptions.JsonSerializationException;
-import com.lunova.moonbot.core.services.ServiceManager;
-import com.lunova.moonbot.core.services.bot.MoonBotService;
-import com.lunova.moonbot.core.services.files.FileService;
-import com.lunova.moonbot.core.utility.json.JsonHandler;
+import com.lunova.moonbot.core.service.ServiceManager;
+import com.lunova.moonbot.core.servold.bot.MoonBotService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.nio.file.Paths;
-
 /**
  * Entry point for the MoonBot Discord bot. Initializes and manages the bot's operations using the
- * JDA library. Responsible for configuring the bot, initializing services, and cleaning up previous
- * session commands. Utilizes {@link ServiceManager} for service handling and {@link MoonBotService}
+ * JDA library. Responsible for configuring the bot, initializing servold, and cleaning up previous
+ * session commands. Utilizes {@link com.lunova.moonbot.core.servold.ServiceManager} for service handling and {@link MoonBotService}
  * for bot session management.
  *
- * <p>Upon start, sets the main thread's name, initializes core services, and manages bot session
+ * <p>Upon start, sets the main thread's name, initializes core servold, and manages bot session
  * and guild commands.
  *
  * @author Drake - <a href="https://github.com/metorrite">GitHub</a>
@@ -36,22 +28,25 @@ public class MoonBot {
   private static final Logger LOGGER = LoggerFactory.getLogger(MoonBot.class);
 
   /**
-   * Initializes the bot application. Sets the main thread's name, initializes services, and manages
+   * Initializes the bot application. Sets the main thread's name, initializes servold, and manages
    * bot session. Clears previous session's commands for a fresh start. Errors during initialization
    * and runtime are logged.
    *
    * @param args The command-line arguments.
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InterruptedException {
     Thread.currentThread().setName("Moon-Bot Main");
-    ServiceManager.initializeServices();
+    //ServiceManager.initializeServices();
+    ServiceManager.initialize();
+    Thread.sleep(30000);
+    System.exit(0);
 /*    MoonBotService.getInstance()
         .getBotSession()
         .getGuilds()
         .forEach(
             guild ->
                 guild.retrieveCommands().complete().forEach(command -> command.delete().queue()));*/
-    Item item = new Item("Item Feature");
+/*    Item item = new Item("Item Feature");
     Plugin base = new BasePlugin();
     base.getFeatureManager().registerFeature(item);
     base.getFeatureManager().seal();
@@ -67,7 +62,7 @@ public class MoonBot {
         FileService.getInstance().writeFile(uuids, Paths.get(System.getProperty("user.dir"), "data", File.separator, "plugins", File.separator, "example", File.separator, "settings", "uuid.json"));
       } catch (JsonSerializationException e) {
           throw new RuntimeException(e);
-      }
+      }*/
   }
 
   public static void foo(Plugin base, Object res) throws ClassNotFoundException {
