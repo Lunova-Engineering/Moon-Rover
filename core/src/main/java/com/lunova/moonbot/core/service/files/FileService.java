@@ -1,10 +1,10 @@
 package com.lunova.moonbot.core.service.files;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.lunova.moonbot.core.service.executors.DefaultUncaughtExceptionHandler;
 import com.lunova.moonbot.core.service.Service;
-import com.lunova.moonbot.core.service.executors.ServiceExecutor;
 import com.lunova.moonbot.core.service.ServiceInfo;
+import com.lunova.moonbot.core.service.executors.DefaultUncaughtExceptionHandler;
+import com.lunova.moonbot.core.service.executors.ServiceExecutor;
 import com.lunova.moonbot.core.service.tasks.TaskPriority;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,7 @@ public class FileService extends Service<ServiceExecutor> {
                 .setPriority(Thread.NORM_PRIORITY)
                 .setUncaughtExceptionHandler(new DefaultUncaughtExceptionHandler())
                 .build();
-        return new ServiceExecutor(1, 1, 5, TimeUnit.MINUTES, new PriorityBlockingQueue<Runnable>(10), f);
+        return new ServiceExecutor(1, 1, 5, TimeUnit.MINUTES, new PriorityBlockingQueue<Runnable>(1000), f);
     }
 
 

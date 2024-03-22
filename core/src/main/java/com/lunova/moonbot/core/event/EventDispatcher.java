@@ -1,6 +1,7 @@
 package com.lunova.moonbot.core.event;
 
-import com.lunova.moonbot.core.servold.plugin.PluginManager;
+
+import com.lunova.moonbot.core.service.plugin.PluginManager;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;

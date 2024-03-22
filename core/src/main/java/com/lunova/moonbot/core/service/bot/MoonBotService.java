@@ -9,7 +9,6 @@ import com.lunova.moonbot.core.service.ServiceInfo;
 import com.lunova.moonbot.core.service.executors.ServiceExecutor;
 import com.lunova.moonbot.core.service.tasks.RunnableServiceTask;
 import com.lunova.moonbot.core.service.tasks.TaskPriority;
-import com.lunova.moonbot.core.servold.BotService;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -20,14 +19,7 @@ import java.util.EnumSet;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Singleton service responsible for managing the Discord bot session via the JDA library. This
- * service handles the initialization and settings of the bot session, including setting up
- * event listeners and enabling gateway intents for Discord events.
- *
- * <p>It extends {@link BotService}, providing specific functionality for the bot's operation within
- * the Discord environment.
- */
+
 @ServiceInfo(name = "Moon Bot Service", critical = true)
 public class MoonBotService extends Service<ServiceExecutor> {
 
@@ -81,9 +73,7 @@ public class MoonBotService extends Service<ServiceExecutor> {
                           .build()
                           .awaitReady();
         } catch (ConfigurationException | InterruptedException e) {
-          //getLogger().error(e.getMessage(), e);
-          //throw new ServiceLoadingException(
-          //  "Failed to load Moon Bot Service. Shutting down.", isCritical());
+
         }
       }
     };

@@ -8,7 +8,8 @@ import com.lunova.moonbot.core.api.plugin.features.settings.input.InputType;
 import com.lunova.moonbot.core.api.plugin.features.settings.transformation.Transformation;
 import com.lunova.moonbot.core.api.plugin.features.settings.validation.NumberValidator;
 import com.lunova.moonbot.core.api.plugin.features.settings.validation.StringValidator;
-import com.lunova.moonbot.core.servold.bot.MoonBotService;
+import com.lunova.moonbot.core.service.ServiceManager;
+import com.lunova.moonbot.core.service.bot.MoonBotService;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -42,11 +43,11 @@ public class Item extends Feature {
 
     @Override
     public SettingGroup defineSettingGroup(SettingGroup.Builder builder) {
-        Setting<Role> setting = SettingCreator.createSelectionSetting(String.class, Role.class, "choose_permission", true, "Select Role: ", InputType.DROP_DOWN, MoonBotService.getInstance().getBotSession().getGuilds().getFirst().getRoles().stream().map(Role::getName).toList())
+        Setting<Role> setting = SettingCreator.createSelectionSetting(String.class, Role.class, "choose_permission", true, "Select Role: ", InputType.DROP_DOWN, ServiceManager.getService(MoonBotService.class).getBotSession().getGuilds().getFirst().getRoles().stream().map(Role::getName).toList())
                 .withTransformation(new Transformation<>() {
                     @Override
                     public Role transform(String object) {
-                        return MoonBotService.getInstance().getBotSession().getGuilds().getFirst().getRolesByName(object, true).getFirst();
+                        return ServiceManager.getService(MoonBotService.class).getBotSession().getGuilds().getFirst().getRolesByName(object, true).getFirst();
                     }
 
                     @Override
@@ -60,7 +61,7 @@ public class Item extends Feature {
                 .withTransformation(new Transformation<>() {
                     @Override
                     public Role transform(Boolean object) {
-                        return object ? MoonBotService.getInstance().getBotSession().getGuilds().getFirst().getRoles().getFirst() : MoonBotService.getInstance().getBotSession().getGuilds().getFirst().getRoles().getLast();
+                        return object ? ServiceManager.getService(MoonBotService.class).getBotSession().getGuilds().getFirst().getRoles().getFirst() : ServiceManager.getService(MoonBotService.class).getBotSession().getGuilds().getFirst().getRoles().getLast();
                     }
 
                     @Override

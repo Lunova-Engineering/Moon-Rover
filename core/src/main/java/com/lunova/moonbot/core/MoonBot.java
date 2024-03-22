@@ -6,14 +6,14 @@ import com.lunova.moonbot.core.api.plugin.features.settings.input.DataType;
 import com.lunova.moonbot.core.api.plugin.features.settings.input.Input;
 import com.lunova.moonbot.core.api.plugin.features.settings.transformation.Transformation;
 import com.lunova.moonbot.core.service.ServiceManager;
-import com.lunova.moonbot.core.servold.bot.MoonBotService;
+import com.lunova.moonbot.core.service.bot.MoonBotService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Entry point for the MoonBot Discord bot. Initializes and manages the bot's operations using the
  * JDA library. Responsible for configuring the bot, initializing servold, and cleaning up previous
- * session commands. Utilizes {@link com.lunova.moonbot.core.servold.ServiceManager} for service handling and {@link MoonBotService}
+ * session commands. Utilizes {} for service handling and {@link MoonBotService}
  * for bot session management.
  *
  * <p>Upon start, sets the main thread's name, initializes core servold, and manages bot session
@@ -36,10 +36,9 @@ public class MoonBot {
    */
   public static void main(String[] args) throws InterruptedException {
     Thread.currentThread().setName("Moon-Bot Main");
-    //ServiceManager.initializeServices();
     ServiceManager.initialize();
-    Thread.sleep(30000);
-    System.exit(0);
+    Thread.sleep(60000);
+    System.exit(9);
 /*    MoonBotService.getInstance()
         .getBotSession()
         .getGuilds()

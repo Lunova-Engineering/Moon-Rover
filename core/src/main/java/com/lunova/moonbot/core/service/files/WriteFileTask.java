@@ -19,7 +19,7 @@ public class WriteFileTask extends RunnableServiceTask {
 
     @Override
     protected void onRun() {
-        logger.info(data);
+        logger.info("PRIORITY: {} - ORIGINATOR {} - DATA: {}", getTaskPriority().name(), getOriginator().getName(), data);
     }
 
 }

@@ -17,6 +17,7 @@ public abstract class RunnableServiceTask extends ServiceTask implements Runnabl
         try {
             setStartTime(System.currentTimeMillis());
             setTaskState(TaskState.RUNNING);
+            logger.debug("Running task code now.");
             onRun();
             setTaskState(TaskState.COMPLETED);
         } catch(RuntimeException e) {

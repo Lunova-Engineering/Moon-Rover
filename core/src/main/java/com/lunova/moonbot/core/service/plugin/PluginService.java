@@ -1,21 +1,20 @@
 package com.lunova.moonbot.core.service.plugin;
 
-import com.lunova.moonbot.core.api.plugin.Plugin;
 import com.lunova.moonbot.core.exceptions.JsonDeserializationException;
 import com.lunova.moonbot.core.exceptions.PluginRequestException;
 import com.lunova.moonbot.core.exceptions.ServiceLoadingException;
 import com.lunova.moonbot.core.service.Service;
 import com.lunova.moonbot.core.service.ServiceInfo;
 import com.lunova.moonbot.core.service.executors.ServiceExecutor;
+import com.lunova.moonbot.core.service.plugin.resolver.PluginResolver;
+import com.lunova.moonbot.core.service.plugin.resolver.PluginResolverUtils;
 import com.lunova.moonbot.core.service.tasks.RunnableServiceTask;
 import com.lunova.moonbot.core.service.tasks.TaskPriority;
-import com.lunova.moonbot.core.servold.plugin.loader.PluginLoader;
 import com.lunova.moonbot.core.utility.json.JsonHandler;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -65,9 +64,11 @@ public class PluginService extends Service<ServiceExecutor> {
                       //TODO: Continue verifying information flow path. Clean up code, transition to non hard coded values for testing.
                       //TODO: Ensure information is quickly passed in and out of function to avoid blocking incoming request, consider using Queues.
                       PluginRequest pluginRequest = JsonHandler.deserialize(request.body(), PluginRequest.class);
-                      //PluginResolver resolver = PluginResolverUtils.createDefaultResolver();
-                      //resolver.downloadArtifact(pluginRequest.pluginGroupId(), pluginRequest.pluginArtifactId(), pluginRequest.pluginVersion());
-                      Plugin plugin = PluginLoader.loadPlugin(new File("/Users/drakeforness/Documents/Github/Moon-Bot/plugins/default/target/moon-bot-plugin-default-0.2.0-SNAPSHOT.jar").toURI().toURL());
+                      PluginResolver resolver = PluginResolverUtils.createDefaultResolver();
+                      resolver.downloadArtifact(pluginRequest.pluginGroupId(), pluginRequest.pluginArtifactId(), pluginRequest.pluginVersion());
+
+                      //TODO: need to refactor plugin installation routine and registry after downloading due to massive API changes.
+                      //Plugin plugin = PluginLoader.loadPlugin(new File("/Users/drakeforness/Documents/Github/Moon-Bot/plugins/default/target/moon-bot-plugin-default-0.2.0-SNAPSHOT.jar").toURI().toURL());
                       //plugin.executeInstallRoutine(MoonBotService.getInstance().getBotSession(), "993720567729492080");
 
                       //Execute request

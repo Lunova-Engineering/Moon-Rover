@@ -41,6 +41,8 @@ public abstract class Service<T extends PausableExecutor> {
     }
 
     protected final void shutdown() {
+        if(isPaused())
+            resume();
         onShutdown();
         executor.shutdown();
         this.serviceState = ServiceState.AWAITING_RESTART;
@@ -75,7 +77,12 @@ public abstract class Service<T extends PausableExecutor> {
 
     protected void submit(RunnableServiceTask task) {
         task.setSubmissionTime(System.currentTimeMillis());
-        executor.submit(task);
+        try {
+            executor.submit(task);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
     protected <V> Future<V> submit(CallableServiceTask<V> task) {

@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class ServiceTask implements Comparable<TaskPriority> {
+public abstract class ServiceTask implements Comparable<ServiceTask> {
 //Write two implementations for runnable and callable service tasks to hold common meta data and logs and whanot
 
     private static final Logger logger = LoggerFactory.getLogger(ServiceTask.class);
@@ -21,7 +21,6 @@ public abstract class ServiceTask implements Comparable<TaskPriority> {
     private long startTime;
 
     private long completeTime;
-
 
     public ServiceTask(TaskPriority taskPriority, Service<?> originator) {
         this.taskPriority = taskPriority;
@@ -69,8 +68,8 @@ public abstract class ServiceTask implements Comparable<TaskPriority> {
     }
 
     @Override
-    public int compareTo(@NotNull TaskPriority o) {
-        return Integer.compare(o.ordinal(), taskPriority.ordinal());
+    public int compareTo(@NotNull ServiceTask o) {
+        return Integer.compare(o.getTaskPriority().ordinal(), this.taskPriority.ordinal());
     }
 
 }

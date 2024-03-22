@@ -6,7 +6,7 @@
     </appender>
 
     <!-- Logger for your packages -->
-    <logger name="com.lunova" level="DEBUG" additivity="false">
+    <logger name="com.lunova" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
     </logger>
 

@@ -12,7 +12,7 @@
  * @since 11.11.2023
  */
 module com.lunova.moonbot.core {
-  exports com.lunova.moonbot.core.servold.plugin to com.fasterxml.jackson.databind;
+  exports com.lunova.moonbot.core.service.plugin to com.fasterxml.jackson.databind;
   exports com.lunova.moonbot.core.api.plugin;
   exports com.lunova.moonbot.core.exceptions;
 
@@ -22,12 +22,12 @@ module com.lunova.moonbot.core {
   requires jakarta.xml.bind;
   requires jakarta.activation;
 
-  opens com.lunova.moonbot.core.servold.plugin to
+  opens com.lunova.moonbot.core.service.plugin to
       com.google.gson, org.hibernate.validator;
   opens com.lunova.moonbot.core.api.plugin to
           jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
-  exports com.lunova.moonbot.core.servold.plugin.resolver to com.fasterxml.jackson.databind;
-  opens com.lunova.moonbot.core.servold.plugin.resolver to com.google.gson, org.hibernate.validator;
+  exports com.lunova.moonbot.core.service.plugin.resolver to com.fasterxml.jackson.databind;
+  opens com.lunova.moonbot.core.service.plugin.resolver to com.google.gson, org.hibernate.validator;
   exports com.lunova.moonbot.core.api.plugin.features.settings;
   opens com.lunova.moonbot.core.api.plugin.features.settings to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
   exports com.lunova.moonbot.core.api.plugin.examples;
