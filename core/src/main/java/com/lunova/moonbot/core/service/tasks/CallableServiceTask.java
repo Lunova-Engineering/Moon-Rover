@@ -34,6 +34,16 @@ public abstract class CallableServiceTask<T> extends ServiceTask implements Call
             setTaskState(TaskState.FAILED);
         } finally {
             setCompleteTime(System.currentTimeMillis());
+            StringBuilder logEntry = new StringBuilder();
+            logEntry.append("Task Details - ")
+                    .append("ID: ").append(this.getTaskId())
+                    .append(" Priority: ").append(this.getTaskPriority())
+                    .append(", Originator: ").append(this.getOriginator().getName())
+                    .append(", State: ").append(this.getTaskState())
+                    .append(", Submission Time: ").append(this.getSubmissionTime())
+                    .append(", Start Time: ").append(this.getStartTime())
+                    .append(", Complete Time: ").append(this.getCompleteTime());
+            //logger.debug(logEntry.toString());
         }
         return result;
     }

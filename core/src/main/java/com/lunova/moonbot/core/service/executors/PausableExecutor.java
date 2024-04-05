@@ -4,7 +4,7 @@ import java.util.concurrent.ExecutorService;
 
 public interface PausableExecutor extends ExecutorService {
 
-    abstract void pause();
-    abstract void resume();
-    abstract boolean isPaused();
+    void pause();
+    void resume();
+    boolean isPaused();
 }

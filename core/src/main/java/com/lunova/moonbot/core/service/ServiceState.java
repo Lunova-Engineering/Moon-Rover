@@ -4,7 +4,6 @@ public enum ServiceState {
     NOT_STARTED,
     RUNNING,
     PAUSED,
-    IDLE,
-    AWAITING_RESTART,
-
+    SHUTTING_DOWN,
+    AWAITING_RESTART;
 }

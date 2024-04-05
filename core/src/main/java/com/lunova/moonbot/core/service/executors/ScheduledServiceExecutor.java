@@ -4,7 +4,10 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.*;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -76,38 +79,6 @@ public class ScheduledServiceExecutor extends ScheduledThreadPoolExecutor implem
      */
     public ScheduledServiceExecutor(int corePoolSize, @NotNull ThreadFactory threadFactory, @NotNull RejectedExecutionHandler handler) {
         super(corePoolSize, threadFactory, handler);
-    }
-
-    /**
-     * Modifies or replaces the task used to execute a runnable.
-     * This method can be used to override the concrete
-     * class used for managing internal tasks.
-     * The default implementation simply returns the given task.
-     *
-     * @param runnable the submitted Runnable
-     * @param task     the task created to execute the runnable
-     * @return a task that can execute the runnable
-     * @since 1.6
-     */
-    @Override
-    protected <V> RunnableScheduledFuture<V> decorateTask(Runnable runnable, RunnableScheduledFuture<V> task) {
-        return super.decorateTask(runnable, task);
-    }
-
-    /**
-     * Modifies or replaces the task used to execute a callable.
-     * This method can be used to override the concrete
-     * class used for managing internal tasks.
-     * The default implementation simply returns the given task.
-     *
-     * @param callable the submitted Callable
-     * @param task     the task created to execute the callable
-     * @return a task that can execute the callable
-     * @since 1.6
-     */
-    @Override
-    protected <V> RunnableScheduledFuture<V> decorateTask(Callable<V> callable, RunnableScheduledFuture<V> task) {
-        return super.decorateTask(callable, task);
     }
 
     /**
@@ -225,7 +196,7 @@ public class ScheduledServiceExecutor extends ScheduledThreadPoolExecutor implem
 
     @Override
     public boolean isPaused() {
-        return isPaused && pauseLock.isLocked();
+        return isPaused;
     }
 
 }

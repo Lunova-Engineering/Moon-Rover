@@ -1,4 +1,4 @@
-package com.lunova.moonbot.core.utility.json;
+package com.lunova.moonbot.core.service.files.json;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

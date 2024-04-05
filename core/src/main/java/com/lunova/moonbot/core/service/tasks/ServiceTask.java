@@ -1,14 +1,15 @@
 package com.lunova.moonbot.core.service.tasks;
 
 import com.lunova.moonbot.core.service.Service;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class ServiceTask implements Comparable<ServiceTask> {
+public abstract class ServiceTask implements PriorityTask {
 //Write two implementations for runnable and callable service tasks to hold common meta data and logs and whanot
 
     private static final Logger logger = LoggerFactory.getLogger(ServiceTask.class);
+
+    private static Integer taskCounter = 1;
 
     private final TaskPriority taskPriority;
 
@@ -22,9 +23,13 @@ public abstract class ServiceTask implements Comparable<ServiceTask> {
 
     private long completeTime;
 
+    private final int taskId;
+
+
     public ServiceTask(TaskPriority taskPriority, Service<?> originator) {
         this.taskPriority = taskPriority;
         this.originator = originator;
+        this.taskId = taskCounter++;
     }
 
     public TaskState getTaskState() {
@@ -67,9 +72,13 @@ public abstract class ServiceTask implements Comparable<ServiceTask> {
         this.completeTime = completeTime;
     }
 
+    public int getTaskId() {
+        return taskId;
+    }
+
     @Override
-    public int compareTo(@NotNull ServiceTask o) {
-        return Integer.compare(o.getTaskPriority().ordinal(), this.taskPriority.ordinal());
+    public int getPriority() {
+        return taskPriority.ordinal();
     }
 
 }

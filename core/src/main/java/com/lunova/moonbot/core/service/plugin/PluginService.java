@@ -10,7 +10,7 @@ import com.lunova.moonbot.core.service.plugin.resolver.PluginResolver;
 import com.lunova.moonbot.core.service.plugin.resolver.PluginResolverUtils;
 import com.lunova.moonbot.core.service.tasks.RunnableServiceTask;
 import com.lunova.moonbot.core.service.tasks.TaskPriority;
-import com.lunova.moonbot.core.utility.json.JsonHandler;
+import com.lunova.moonbot.core.service.files.json.JsonHandler;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import static spark.Spark.port;
-import static spark.Spark.post;
+import static spark.Spark.*;
 
 /**
  * Service responsible for managing plugins' lifecycle including loading, registering, and managing
@@ -97,6 +96,12 @@ public class PluginService extends Service<ServiceExecutor> {
           }
         };
       }
+
+  @Override
+  protected void onShutdown() {
+    stop();
+    super.onShutdown();
+  }
 
   @Override
   protected ServiceExecutor createExecutor() {

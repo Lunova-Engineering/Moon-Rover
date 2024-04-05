@@ -17,7 +17,6 @@ public abstract class RunnableServiceTask extends ServiceTask implements Runnabl
         try {
             setStartTime(System.currentTimeMillis());
             setTaskState(TaskState.RUNNING);
-            logger.debug("Running task code now.");
             onRun();
             setTaskState(TaskState.COMPLETED);
         } catch(RuntimeException e) {
@@ -28,13 +27,14 @@ public abstract class RunnableServiceTask extends ServiceTask implements Runnabl
             setCompleteTime(System.currentTimeMillis());
             StringBuilder logEntry = new StringBuilder();
             logEntry.append("Task Details - ")
-                    .append("Priority: ").append(this.getTaskPriority())
+                    .append("ID: ").append(this.getTaskId())
+                    .append(" Priority: ").append(this.getTaskPriority())
                     .append(", Originator: ").append(this.getOriginator().getName())
                     .append(", State: ").append(this.getTaskState())
                     .append(", Submission Time: ").append(this.getSubmissionTime())
                     .append(", Start Time: ").append(this.getStartTime())
                     .append(", Complete Time: ").append(this.getCompleteTime());
-            logger.debug(logEntry.toString());
+            //logger.debug(logEntry.toString());
         }
     }
 

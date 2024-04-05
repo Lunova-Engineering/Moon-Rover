@@ -80,6 +80,12 @@ public class MoonBotService extends Service<ServiceExecutor> {
   }
 
   @Override
+  protected void onShutdown() {
+    botSession.shutdown();
+    super.onShutdown();
+  }
+
+  @Override
   protected ServiceExecutor createExecutor() {
     return new ServiceExecutor(1, 1, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
   }

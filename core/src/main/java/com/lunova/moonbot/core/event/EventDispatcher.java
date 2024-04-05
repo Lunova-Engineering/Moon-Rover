@@ -34,4 +34,5 @@ public class EventDispatcher extends ListenerAdapter {
     // but you might enable it if the parent class's behavior is required in future JDA versions.
     // super.onSlashCommandInteraction(event);
   }
+
 }

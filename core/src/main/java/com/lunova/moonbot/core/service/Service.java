@@ -3,10 +3,13 @@ package com.lunova.moonbot.core.service;
 import com.lunova.moonbot.core.service.executors.PausableExecutor;
 import com.lunova.moonbot.core.service.tasks.CallableServiceTask;
 import com.lunova.moonbot.core.service.tasks.RunnableServiceTask;
+import com.lunova.moonbot.core.service.tasks.ServiceTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionException;
 
 public abstract class Service<T extends PausableExecutor> {
 
@@ -27,65 +30,63 @@ public abstract class Service<T extends PausableExecutor> {
         this.serviceState = ServiceState.NOT_STARTED;
     }
 
-/*    public Service(String name, boolean critical, T executor) {
-        this.name = name;
-        this.critical = critical;
-        this.executor = executor;
-        this.serviceState = ServiceState.NOT_STARTED;
-    }*/
-
-    protected final void shutdownNow() {
-        onShutdownNow();
-        executor.shutdownNow();
-        this.serviceState = ServiceState.AWAITING_RESTART;
+    public final void shutdownNow() {
+        List<ServiceTask> cancelledTasks = executor.shutdownNow().stream()
+                .filter(runnable -> runnable instanceof ServiceTask)
+                .map(runnable -> (ServiceTask) runnable)
+                .toList();
+        onShutdownNow(cancelledTasks);
+        this.serviceState = ServiceState.SHUTTING_DOWN;
     }
 
-    protected final void shutdown() {
-        if(isPaused())
-            resume();
-        onShutdown();
+    public final void shutdown() {
         executor.shutdown();
-        this.serviceState = ServiceState.AWAITING_RESTART;
+        onShutdown();
+        if (isPaused())
+            resume();
+        this.serviceState = ServiceState.SHUTTING_DOWN;
     }
 
-    public boolean isPaused() {
+    public final boolean isPaused() {
         return serviceState.equals(ServiceState.PAUSED) && executor.isPaused();
     }
 
-    public void pause() {
-        logger.info("Service for {} has been paused.", name);
-        onPause();
+    public final void pause() {
         executor.pause();
+        onPause();
         serviceState = ServiceState.PAUSED;
+        logger.info("Service for {} has been paused.", name);
     }
 
-    public void resume() {
-        logger.info("Service for {} has been resumed", name);
-        onResume();
+    public final void resume() {
         executor.resume();
+        onResume();
         serviceState = ServiceState.RUNNING;
+        logger.info("Service for {} has been resumed", name);
     }
 
-    public void restart() {
+    public final void restart() {
         onRestart();
     }
 
-    protected void execute(RunnableServiceTask task) {
-        task.setSubmissionTime(System.currentTimeMillis());
-        executor.execute(task);
-    }
-
-    protected void submit(RunnableServiceTask task) {
+    protected final void execute(RunnableServiceTask task) {
         task.setSubmissionTime(System.currentTimeMillis());
         try {
-            executor.submit(task);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            executor.execute(task);
+        } catch (RejectedExecutionException e) {
+            logger.warn("Exception while submitting task with id {} to {}.", task.getTaskId(), this.name, e);
+        } catch (NullPointerException e) {
+            logger.warn("Exception while submitting task to {}. Task is null.", this.getName(), e);
         }
     }
 
-    protected <V> Future<V> submit(CallableServiceTask<V> task) {
+
+    protected final Future<?> submit(RunnableServiceTask task) throws RejectedExecutionException, NullPointerException {
+        task.setSubmissionTime(System.currentTimeMillis());
+        return executor.submit(task);
+    }
+
+    protected final <V> Future<V> submit(CallableServiceTask<V> task) throws RejectedExecutionException, NullPointerException {
         task.setSubmissionTime(System.currentTimeMillis());
         return executor.submit(task);
     }
@@ -106,7 +107,7 @@ public abstract class Service<T extends PausableExecutor> {
         //empty method for hook to shut down
     }
 
-    protected void onShutdownNow() {
+    protected void onShutdownNow(List<ServiceTask> cancelledTasks) {
         //empty method for hook to immediate shutdown
     }
 
