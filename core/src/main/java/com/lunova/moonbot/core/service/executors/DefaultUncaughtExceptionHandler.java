@@ -6,7 +6,10 @@ import com.lunova.moonbot.core.service.ServiceState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DefaultUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
+
+public class DefaultUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler, RejectedExecutionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultUncaughtExceptionHandler.class);
 
@@ -20,6 +23,11 @@ public class DefaultUncaughtExceptionHandler implements Thread.UncaughtException
     public DefaultUncaughtExceptionHandler(Service<?> service) {
         super();
         this.service = service;
+    }
+
+    @Override
+    public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+        logger.error("Task {} rejected from {}", r.toString(), executor.toString());
     }
 
     public Optional<Service<?>> getService() {

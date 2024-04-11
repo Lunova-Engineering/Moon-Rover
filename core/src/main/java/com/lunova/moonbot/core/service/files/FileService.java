@@ -1,12 +1,8 @@
 package com.lunova.moonbot.core.service.files;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.lunova.moonbot.core.Constants;
-import com.lunova.moonbot.core.service.PausablePriorityBlockingQueue;
 import com.lunova.moonbot.core.service.Service;
-import com.lunova.moonbot.core.service.ServiceInfo;
-import com.lunova.moonbot.core.service.executors.DefaultUncaughtExceptionHandler;
-import com.lunova.moonbot.core.service.executors.ServiceExecutor;
+import com.lunova.moonbot.core.service.executors.*;
 import com.lunova.moonbot.core.service.files.tasks.ReadFileTask;
 import com.lunova.moonbot.core.service.files.tasks.WriteFileTask;
 import com.lunova.moonbot.core.service.tasks.TaskPriority;
@@ -17,18 +13,17 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
 
-@ServiceInfo(name = "File Service", critical = false)
+@ServiceInfo(name = "File Service")
+@ThreadFactoryConfig(nameFormat = "File-Service")
 public class FileService extends Service<ServiceExecutor> {
 
     private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 
     public static final Path TESTING = Paths.get(Constants.CORE_DATA_DIR.toString(), "services", "test");
 
-    public FileService(String name, boolean critical) {
-        super(name, critical);
+    public FileService(String name, boolean critical, ServiceExecutor executor) {
+        super(name, critical, executor);
     }
 
     public <T> void writeFile(Path path, String name, FileFormat format, T data) {
@@ -58,17 +53,10 @@ public class FileService extends Service<ServiceExecutor> {
     }
 
 
-    @Override
-    protected ServiceExecutor createExecutor() {
-        ThreadFactory f = new ThreadFactoryBuilder().setNameFormat(getName().replace(" ", "-"))
-                .setDaemon(false)
-                .setPriority(Thread.NORM_PRIORITY)
-                .setUncaughtExceptionHandler(new DefaultUncaughtExceptionHandler(this))
-                .build();
-        ServiceExecutor executor = new ServiceExecutor(0, 4, 0, TimeUnit.NANOSECONDS, new PausablePriorityBlockingQueue<>(), f);
-        executor.prestartCoreThread();
-        return executor;
-    }
+    //TODO: Use annotations to define executor values and thread factory values
+    //TODO: Create a new class using a facade to create the values for the executor and thread factory and supply them
+    //TODO: Ensure annotations are safe and do the same thing for any objects that are created as parameters in either
+
 
 
 }

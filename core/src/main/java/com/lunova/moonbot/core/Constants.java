@@ -2,6 +2,8 @@ package com.lunova.moonbot.core;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 public final class Constants {
@@ -11,4 +13,6 @@ public final class Constants {
     public static final TimeUnit SERVICE_TIME_UNIT = TimeUnit.MINUTES;
 
     public static final Path CORE_DATA_DIR = Paths.get(System.getProperty("user.dir"), "core", "data");
+
+    public static final ThreadFactory DEFAULT_THREAD_FACTORY = Executors.defaultThreadFactory();
 }

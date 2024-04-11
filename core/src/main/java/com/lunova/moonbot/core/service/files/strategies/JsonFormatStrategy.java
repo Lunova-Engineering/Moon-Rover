@@ -1,7 +1,6 @@
 package com.lunova.moonbot.core.service.files.strategies;
 
 import com.lunova.moonbot.core.exceptions.JsonDeserializationException;
-import com.lunova.moonbot.core.service.Person;
 import com.lunova.moonbot.core.service.files.FormatStrategy;
 import com.lunova.moonbot.core.service.files.codecs.JsonFormatCodec;
 import com.lunova.moonbot.core.service.files.json.JsonHandler;
@@ -49,7 +48,6 @@ public class JsonFormatStrategy extends FormatStrategy {
             }
             // Read the entire file content into a String
             String content = Files.readString(path);
-            Person person = (Person) JsonHandler.deserialize(content, returnType);
             return JsonHandler.deserialize(content, returnType);
         } catch (IOException | JsonDeserializationException e) {
             logger.warn("Error deserializing - {}", path.toString(), e);

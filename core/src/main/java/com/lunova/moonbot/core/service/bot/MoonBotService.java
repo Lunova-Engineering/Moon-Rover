@@ -5,8 +5,10 @@ import com.lunova.moonbot.core.event.EventDispatcher;
 import com.lunova.moonbot.core.exceptions.ConfigurationException;
 import com.lunova.moonbot.core.exceptions.ServiceLoadingException;
 import com.lunova.moonbot.core.service.Service;
-import com.lunova.moonbot.core.service.ServiceInfo;
+import com.lunova.moonbot.core.service.executors.ExecutorConfig;
 import com.lunova.moonbot.core.service.executors.ServiceExecutor;
+import com.lunova.moonbot.core.service.executors.ServiceInfo;
+import com.lunova.moonbot.core.service.executors.ThreadFactoryConfig;
 import com.lunova.moonbot.core.service.tasks.RunnableServiceTask;
 import com.lunova.moonbot.core.service.tasks.TaskPriority;
 import net.dv8tion.jda.api.JDA;
@@ -16,11 +18,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.EnumSet;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 
 @ServiceInfo(name = "Moon Bot Service", critical = true)
+@ExecutorConfig(corePoolSize = 0, maximumPoolSize = 1, keepAliveTime = 0, unit = TimeUnit.NANOSECONDS, daemon = false, priority = Thread.NORM_PRIORITY)
+@ThreadFactoryConfig(nameFormat = "Plugin-Service", daemon = false, priority = Thread.NORM_PRIORITY)
 public class MoonBotService extends Service<ServiceExecutor> {
 
   private static final Logger logger = LoggerFactory.getLogger(MoonBotService.class);
@@ -30,17 +33,9 @@ public class MoonBotService extends Service<ServiceExecutor> {
   /** The JDA session representing the active Discord bot connection. */
   private JDA botSession;
 
-  /**
-   * Protected constructor for MoonBotService. Ensures singleton pattern by limiting instantiation
-   * to within the class.
-   *
-   * @param serviceName The name of the service.
-   * @param critical Flag indicating whether the service is critical.
-   */
-  public MoonBotService(String serviceName, boolean critical) {
-    super(serviceName, critical);
+  public MoonBotService(String name, boolean critical, ServiceExecutor executor) {
+    super(name, critical, executor);
   }
-
 
   /**
    * Returns the current JDA session for the Discord bot.
@@ -73,21 +68,17 @@ public class MoonBotService extends Service<ServiceExecutor> {
                           .build()
                           .awaitReady();
         } catch (ConfigurationException | InterruptedException e) {
-
+            logger.error("Failed to start Moon-Bot service due to an {}.", e.getClass().getSimpleName(), e);
         }
       }
     };
   }
 
+
   @Override
   protected void onShutdown() {
     botSession.shutdown();
     super.onShutdown();
-  }
-
-  @Override
-  protected ServiceExecutor createExecutor() {
-    return new ServiceExecutor(1, 1, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
   }
 
 }

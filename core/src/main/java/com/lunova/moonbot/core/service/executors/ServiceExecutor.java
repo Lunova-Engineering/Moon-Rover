@@ -1,6 +1,5 @@
 package com.lunova.moonbot.core.service.executors;
 
-import com.lunova.moonbot.core.service.PausablePriorityBlockingQueue;
 import com.lunova.moonbot.core.service.tasks.CallableServiceTask;
 import com.lunova.moonbot.core.service.tasks.PriorityFutureTask;
 import com.lunova.moonbot.core.service.tasks.RunnableServiceTask;

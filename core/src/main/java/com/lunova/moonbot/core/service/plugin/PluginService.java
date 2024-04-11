@@ -4,19 +4,18 @@ import com.lunova.moonbot.core.exceptions.JsonDeserializationException;
 import com.lunova.moonbot.core.exceptions.PluginRequestException;
 import com.lunova.moonbot.core.exceptions.ServiceLoadingException;
 import com.lunova.moonbot.core.service.Service;
-import com.lunova.moonbot.core.service.ServiceInfo;
+import com.lunova.moonbot.core.service.executors.ExecutorConfig;
 import com.lunova.moonbot.core.service.executors.ServiceExecutor;
+import com.lunova.moonbot.core.service.executors.ServiceInfo;
+import com.lunova.moonbot.core.service.executors.ThreadFactoryConfig;
+import com.lunova.moonbot.core.service.files.json.JsonHandler;
 import com.lunova.moonbot.core.service.plugin.resolver.PluginResolver;
 import com.lunova.moonbot.core.service.plugin.resolver.PluginResolverUtils;
 import com.lunova.moonbot.core.service.tasks.RunnableServiceTask;
 import com.lunova.moonbot.core.service.tasks.TaskPriority;
-import com.lunova.moonbot.core.service.files.json.JsonHandler;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.PriorityBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 import static spark.Spark.*;
 
@@ -26,15 +25,18 @@ import static spark.Spark.*;
  * appropriately initialized and maintained.
  */
 @ServiceInfo(name = "Plugin Service", critical = true)
+@ExecutorConfig()
+@ThreadFactoryConfig(nameFormat = "Plugin-Service")
 public class PluginService extends Service<ServiceExecutor> {
 
 
   /** Logger for the PluginService class. */
   private static final Logger LOGGER = LoggerFactory.getLogger(PluginService.class);
 
-  public PluginService(String name, boolean critical) {
-    super(name, critical);
+  public PluginService(String name, boolean critical, ServiceExecutor executor) {
+    super(name, critical, executor);
   }
+
 
   /**
    * Initializes the PluginService, setting up the network endpoints for handling plugin actions and
@@ -101,11 +103,6 @@ public class PluginService extends Service<ServiceExecutor> {
   protected void onShutdown() {
     stop();
     super.onShutdown();
-  }
-
-  @Override
-  protected ServiceExecutor createExecutor() {
-    return new ServiceExecutor(1, 1, Integer.MAX_VALUE, TimeUnit.MINUTES, new PriorityBlockingQueue<>());
   }
 
 }

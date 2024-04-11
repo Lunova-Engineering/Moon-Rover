@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 
-public abstract class Service<T extends PausableExecutor> {
+public class Service<T extends PausableExecutor> {
 
     private static final Logger logger = LoggerFactory.getLogger(Service.class);
 
@@ -21,13 +21,13 @@ public abstract class Service<T extends PausableExecutor> {
 
     private final T executor;
 
-    private ServiceState serviceState;
+    private ServiceState serviceState = ServiceState.NOT_STARTED;
 
-    public Service(String name, boolean critical) {
+    //TODO: This is wrong, use T, adapt code, do not cast.
+    public Service(String name, boolean critical, T executor) {
         this.name = name;
         this.critical = critical;
-        this.executor = createExecutor();
-        this.serviceState = ServiceState.NOT_STARTED;
+        this.executor = executor;
     }
 
     public final void shutdownNow() {
@@ -114,8 +114,6 @@ public abstract class Service<T extends PausableExecutor> {
     protected RunnableServiceTask initialize() {
         return null;
     }
-
-    protected abstract T createExecutor();
 
     public T getExecutor() {
         return executor;

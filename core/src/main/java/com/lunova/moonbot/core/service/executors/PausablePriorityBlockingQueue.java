@@ -1,4 +1,4 @@
-package com.lunova.moonbot.core.service;
+package com.lunova.moonbot.core.service.executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.lunova.moonbot.core.service;
+package com.lunova.moonbot.core.service.executors;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

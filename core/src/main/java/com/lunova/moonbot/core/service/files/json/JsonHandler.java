@@ -2,10 +2,16 @@ package com.lunova.moonbot.core.service.files.json;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.PropertyWriter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.lunova.moonbot.core.exceptions.JsonDeserializationException;
@@ -16,8 +22,18 @@ import org.slf4j.LoggerFactory;
 
 public class JsonHandler {
 
+    FilterProvider provider = new SimpleFilterProvider().addFilter("ignoreJDA", new SimpleBeanPropertyFilter() {
+        @Override
+        public void serializeAsField(Object pojo, JsonGenerator jgen, SerializerProvider provider, PropertyWriter writer) throws Exception {
+            if (!writer.getName().equals("jda") || !writer.getName().equals("guild")) {
+                writer.serializeAsField(pojo, jgen, provider);
+            }
+        }
+    });
+
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .enable(SerializationFeature.INDENT_OUTPUT).setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
+            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
             .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
             .registerModules(new GuavaModule(), new Jdk8Module());
 
@@ -45,8 +61,5 @@ public class JsonHandler {
             throw new JsonDeserializationException(e.getMessage(), e);
         }
     }
-
-
-
 
 }
