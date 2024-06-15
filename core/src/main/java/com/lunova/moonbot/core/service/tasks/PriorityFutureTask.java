@@ -30,5 +30,4 @@ public class PriorityFutureTask<V> extends FutureTask<V> implements PriorityTask
     public int getPriority() {
         return task.getPriority();
     }
-
 }

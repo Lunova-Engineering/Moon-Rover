@@ -1,4 +1,4 @@
-package com.lunova.moonbot.core.service.executors;
+package com.lunova.moonbot.core.service;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,5 +10,10 @@ import java.lang.annotation.Target;
 public @interface ServiceInfo {
 
     String name();
+
     boolean critical() default false;
+
+    boolean disabled() default false;
+
+    int priority() default 0;
 }

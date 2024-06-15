@@ -18,5 +18,4 @@ public class SelectionInput<I, O> extends Input<I, O> {
         super(InputFormat.PRE_DEFINED, inputType, label);
         this.inputOptions.addAll(inputOptions.stream().map(Object::toString).toList());
     }
-
 }

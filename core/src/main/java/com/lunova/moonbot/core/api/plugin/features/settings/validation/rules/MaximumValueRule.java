@@ -16,5 +16,4 @@ public abstract class MaximumValueRule<T> extends ValidationRule<T> {
     }
 
     protected abstract boolean validateRule(T target);
-
 }

@@ -29,47 +29,47 @@ package com.lunova.moonbot.core.exceptions;
  */
 public class ServiceLoadingException extends Exception {
 
-  /**
-   * Indicates whether the failure is fatal to the system or service. A fatal failure indicates that
-   * the error is severe enough that continued operation might be undesirable or impossible, and
-   * appropriate action should be taken, possibly including logging the error, alerting
-   * administrators, or shutting down the system.
-   */
-  private final boolean fatal;
+    /**
+     * Indicates whether the failure is fatal to the system or service. A fatal failure indicates
+     * that the error is severe enough that continued operation might be undesirable or impossible,
+     * and appropriate action should be taken, possibly including logging the error, alerting
+     * administrators, or shutting down the system.
+     */
+    private final boolean fatal;
 
-  /**
-   * Constructs a new ServiceLoadingException with the specified detail message. The detail message
-   * is saved for later retrieval by the {@link Throwable#getMessage()} method. This constructor
-   * assumes that the failure is not fatal, defaulting the fatal flag to false.
-   *
-   * @param message the detail message, which provides a description of the exception. It is saved
-   *     for later retrieval by the {@link Throwable#getMessage()} method.
-   */
-  public ServiceLoadingException(String message) {
-    this(message, false);
-  }
+    /**
+     * Constructs a new ServiceLoadingException with the specified detail message. The detail
+     * message is saved for later retrieval by the {@link Throwable#getMessage()} method. This
+     * constructor assumes that the failure is not fatal, defaulting the fatal flag to false.
+     *
+     * @param message the detail message, which provides a description of the exception. It is saved
+     *     for later retrieval by the {@link Throwable#getMessage()} method.
+     */
+    public ServiceLoadingException(String message) {
+        this(message, false);
+    }
 
-  /**
-   * Constructs a new ServiceLoadingException with the specified detail message and fatal flag. The
-   * detail message is saved for later retrieval by the {@link Throwable#getMessage()} method. The
-   * fatal flag indicates the severity of the failure.
-   *
-   * @param message the detail message, which provides a description of the exception. It is saved
-   *     for later retrieval by the {@link Throwable#getMessage()} method.
-   * @param fatal a boolean indicating whether the failure is considered fatal to the system or
-   *     service.
-   */
-  public ServiceLoadingException(String message, boolean fatal) {
-    super(message);
-    this.fatal = fatal;
-  }
+    /**
+     * Constructs a new ServiceLoadingException with the specified detail message and fatal flag.
+     * The detail message is saved for later retrieval by the {@link Throwable#getMessage()} method.
+     * The fatal flag indicates the severity of the failure.
+     *
+     * @param message the detail message, which provides a description of the exception. It is saved
+     *     for later retrieval by the {@link Throwable#getMessage()} method.
+     * @param fatal a boolean indicating whether the failure is considered fatal to the system or
+     *     service.
+     */
+    public ServiceLoadingException(String message, boolean fatal) {
+        super(message);
+        this.fatal = fatal;
+    }
 
-  /**
-   * Returns whether the failure indicated by this exception is considered fatal.
-   *
-   * @return true if the failure is fatal, false otherwise.
-   */
-  public boolean isFatal() {
-    return fatal;
-  }
+    /**
+     * Returns whether the failure indicated by this exception is considered fatal.
+     *
+     * @return true if the failure is fatal, false otherwise.
+     */
+    public boolean isFatal() {
+        return fatal;
+    }
 }

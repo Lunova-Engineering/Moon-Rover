@@ -20,5 +20,4 @@ public abstract class RangeValueRule<T> extends ValidationRule<T> {
     public Number getMax() {
         return max;
     }
-
 }

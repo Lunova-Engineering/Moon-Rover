@@ -10,12 +10,12 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class PausablePriorityBlockingQueue<E> extends PriorityBlockingQueue<E> {
 
-    private static final Logger logger = LoggerFactory.getLogger(PausablePriorityBlockingQueue.class);
+    private static final Logger logger =
+            LoggerFactory.getLogger(PausablePriorityBlockingQueue.class);
 
     private final ReentrantLock pauseLock = new ReentrantLock();
     private final Condition unpaused = pauseLock.newCondition();
     private boolean isPaused = false;
-
 
     public void pause() {
         pauseLock.lock();
@@ -73,5 +73,4 @@ public class PausablePriorityBlockingQueue<E> extends PriorityBlockingQueue<E> {
             pauseLock.unlock();
         }
     }
-
 }

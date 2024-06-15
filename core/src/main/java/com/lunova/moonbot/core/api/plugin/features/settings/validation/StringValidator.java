@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Additional possible validation rules
- * UniquenessContent: Validates that the string is unique within a certain context or dataset (e.g., username, email).
- * ContentValidationRule: More complex content validations that might involve checking against a database or third-party service (e.g., profanity filter, copyright material).
- *
+ * Additional possible validation rules UniquenessContent: Validates that the string is unique
+ * within a certain context or dataset (e.g., username, email). ContentValidationRule: More complex
+ * content validations that might involve checking against a database or third-party service (e.g.,
+ * profanity filter, copyright material).
  */
 public class StringValidator extends Validator<String> {
 
@@ -23,32 +23,43 @@ public class StringValidator extends Validator<String> {
         private final List<ValidationRule<String>> rules = new ArrayList<>();
 
         public Builder setMinimumLength(int minimum) {
-            rules.add(new MinimumValueRule<>(minimum) {
-                @Override
-                public boolean validateRule(String target) {
-                    return target.length() >= getValue().intValue();
-                }
-            });
+            rules.add(
+                    new MinimumValueRule<>(minimum) {
+                        @Override
+                        public boolean validateRule(String target) {
+                            return target.length() >= getValue().intValue();
+                        }
+                    });
             return this;
         }
 
         public Builder setMaximumLength(int maximum) {
-            rules.add(new MaximumValueRule<>(maximum) {
-                @Override
-                public boolean validateRule(String target) {
-                    return target.length() <= getValue().intValue();
-                }
-            });
+            rules.add(
+                    new MaximumValueRule<>(maximum) {
+                        @Override
+                        public boolean validateRule(String target) {
+                            return target.length() <= getValue().intValue();
+                        }
+                    });
             return this;
         }
 
         public Builder setRangeLength(int minimum, int maximum) {
-            rules.add(new RangeValueRule<>(minimum, maximum) {
-                @Override
-                public boolean validateRule(String target) {
-                    return target.length() >= getMin().intValue() && target.length() <= getMax().intValue();
-                }
-            });
+            return setRangeLength(minimum, maximum, true);
+        }
+
+        public Builder setRangeLength(int minimum, int maximum, boolean inclusive) {
+            rules.add(
+                    new RangeValueRule<>(minimum, maximum) {
+                        @Override
+                        public boolean validateRule(String target) {
+                            return inclusive
+                                    ? target.length() >= getMin().intValue()
+                                            && target.length() <= getMax().intValue()
+                                    : target.length() > getMin().intValue()
+                                            && target.length() < getMax().intValue();
+                        }
+                    });
             return this;
         }
 
@@ -66,6 +77,4 @@ public class StringValidator extends Validator<String> {
     public boolean validateTarget(String target) {
         return getRules().stream().allMatch(rule -> rule.validateRule(target));
     }
-
-
 }

@@ -19,33 +19,37 @@ public class NumberValidator<T extends Number> extends Validator<T> {
         private final List<ValidationRule<T>> rules = new ArrayList<>();
 
         public Builder<T> setMinimumLength(T minimum) {
-            rules.add(new MinimumValueRule<>(minimum) {
-                @Override
-                public boolean validateRule(T target) {
-                    return target.doubleValue() >= getValue().doubleValue();
-                }
-            });
+            rules.add(
+                    new MinimumValueRule<>(minimum) {
+                        @Override
+                        public boolean validateRule(T target) {
+                            return target.doubleValue() >= getValue().doubleValue();
+                        }
+                    });
             return this;
         }
 
         public Builder<T> setMaximumLength(T maximum) {
-            rules.add(new MaximumValueRule<>(maximum) {
-                @Override
-                public boolean validateRule(T target) {
-                    return maximum.doubleValue() <= target.doubleValue();
-                }
-            });
+            rules.add(
+                    new MaximumValueRule<>(maximum) {
+                        @Override
+                        public boolean validateRule(T target) {
+                            return maximum.doubleValue() <= target.doubleValue();
+                        }
+                    });
             return this;
         }
 
         public Builder<T> setRangeLength(T minimum, T maximum) {
-            rules.add(new RangeValueRule<>(minimum, maximum) {
+            rules.add(
+                    new RangeValueRule<>(minimum, maximum) {
 
-                @Override
-                public boolean validateRule(Number target) {
-                    return minimum.doubleValue() >= getMin().doubleValue() && maximum.doubleValue() <= getMax().doubleValue();
-                }
-            });
+                        @Override
+                        public boolean validateRule(Number target) {
+                            return minimum.doubleValue() >= getMin().doubleValue()
+                                    && maximum.doubleValue() <= getMax().doubleValue();
+                        }
+                    });
             return this;
         }
 
@@ -53,5 +57,4 @@ public class NumberValidator<T extends Number> extends Validator<T> {
             return new NumberValidator<T>(this);
         }
     }
-
 }

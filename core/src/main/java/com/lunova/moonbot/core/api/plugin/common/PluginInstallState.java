@@ -7,8 +7,8 @@ package com.lunova.moonbot.core.api.plugin.common;
  * specific points and for the system to respond appropriately to changes in state.
  */
 public enum PluginInstallState {
-  /** No installation or uninstallation process is underway. */
-  NONE,
-  INSTALLED,
-  UNINSTALLED;
+    /** No installation or uninstallation process is underway. */
+    NONE,
+    INSTALLED,
+    UNINSTALLED;
 }

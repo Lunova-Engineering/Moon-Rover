@@ -8,8 +8,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ThreadFactoryConfig {
-    String nameFormat() default "";
+    String nameFormat();
+
     boolean daemon() default false;
+
     int priority() default Thread.NORM_PRIORITY;
-    Class<? extends DefaultUncaughtExceptionHandler> exceptionHandler() default DefaultUncaughtExceptionHandler.class;
+
+    Class<? extends DefaultUncaughtExceptionHandler> exceptionHandler() default
+            DefaultUncaughtExceptionHandler.class;
 }

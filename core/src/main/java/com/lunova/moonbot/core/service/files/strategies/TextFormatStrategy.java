@@ -1,7 +1,9 @@
 package com.lunova.moonbot.core.service.files.strategies;
 
+import com.lunova.moonbot.core.service.files.FileOptions;
 import com.lunova.moonbot.core.service.files.FormatStrategy;
 import com.lunova.moonbot.core.service.files.codecs.TextFormatCodec;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,14 +23,19 @@ public class TextFormatStrategy extends FormatStrategy {
     }
 
     @Override
-    public void writeData(Path path, Object data) {
+    public <T> void writeData(Path path, T data, FileOptions options) {
         try {
             if (path.getParent() != null && !Files.exists(path.getParent())) {
                 Files.createDirectories(path.getParent());
             }
 
             // Write data to file in append mode with specified charset
-            try (BufferedWriter out = Files.newBufferedWriter(path, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+            try (BufferedWriter out =
+                    Files.newBufferedWriter(
+                            path,
+                            StandardCharsets.UTF_8,
+                            StandardOpenOption.CREATE,
+                            StandardOpenOption.APPEND)) {
                 out.write(data.toString());
             }
         } catch (Exception e) {
@@ -37,7 +44,7 @@ public class TextFormatStrategy extends FormatStrategy {
     }
 
     @Override
-    public <T> T readData(Path path, Class<T> returnType) {
+    public <T> T readData(Path path, Class<T> returnType, FileOptions options) {
         try {
             return (T) Files.readString(path);
         } catch (IOException e) {
@@ -45,5 +52,4 @@ public class TextFormatStrategy extends FormatStrategy {
             throw new RuntimeException(e);
         }
     }
-
 }

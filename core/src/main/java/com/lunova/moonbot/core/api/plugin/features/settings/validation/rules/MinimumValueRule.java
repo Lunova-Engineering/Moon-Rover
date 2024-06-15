@@ -14,5 +14,4 @@ public abstract class MinimumValueRule<T> extends ValidationRule<T> {
     public Number getValue() {
         return value;
     }
-
 }

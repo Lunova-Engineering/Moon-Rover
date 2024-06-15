@@ -2,6 +2,7 @@ package com.lunova.moonbot.core.service.executors;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.lunova.moonbot.core.service.Service;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,18 +15,28 @@ public class ExecutorBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(ExecutorBuilder.class);
 
-    public static <T extends PausableExecutor> PausableExecutor buildExecutor(Class<Service<T>> serviceClass) {
-        if (!serviceClass.isAnnotationPresent(ExecutorConfig.class) && !serviceClass.isAnnotationPresent(ThreadFactoryConfig.class)) {
-            return new ServiceExecutor(0, 1, 0, TimeUnit.NANOSECONDS, new PriorityBlockingQueue<>(), Executors.defaultThreadFactory());
+    public static <T extends PausableExecutor> PausableExecutor buildExecutor(
+            Class<Service<T>> serviceClass) {
+        if (!serviceClass.isAnnotationPresent(ExecutorConfig.class)
+                && !serviceClass.isAnnotationPresent(ThreadFactoryConfig.class)) {
+            return new ServiceExecutor(
+                    0,
+                    1,
+                    0,
+                    TimeUnit.NANOSECONDS,
+                    new PriorityBlockingQueue<>(),
+                    Executors.defaultThreadFactory());
         }
         ThreadFactory threadFactory = buildThreadFactory(serviceClass);
 
         return buildExecutor(serviceClass, threadFactory);
     }
 
-    private static <T extends PausableExecutor> ThreadFactory buildThreadFactory(Class<Service<T>> serviceClass) {
-        if(serviceClass.isAnnotationPresent(ThreadFactoryConfig.class)) {
-            ThreadFactoryConfig factoryConfig = serviceClass.getAnnotation(ThreadFactoryConfig.class);
+    private static <T extends PausableExecutor> ThreadFactory buildThreadFactory(
+            Class<Service<T>> serviceClass) {
+        if (serviceClass.isAnnotationPresent(ThreadFactoryConfig.class)) {
+            ThreadFactoryConfig factoryConfig =
+                    serviceClass.getAnnotation(ThreadFactoryConfig.class);
             return new ThreadFactoryBuilder()
                     .setNameFormat(factoryConfig.nameFormat())
                     .setPriority(factoryConfig.priority())
@@ -36,12 +47,21 @@ public class ExecutorBuilder {
         return Executors.defaultThreadFactory();
     }
 
-    private static <T extends PausableExecutor> PausableExecutor buildExecutor(Class<Service<T>> serviceClass, ThreadFactory threadFactory) {
-        if(serviceClass.isAnnotationPresent(ExecutorConfig.class)) {
+    private static <T extends PausableExecutor> PausableExecutor buildExecutor(
+            Class<Service<T>> serviceClass, ThreadFactory threadFactory) {
+        if (serviceClass.isAnnotationPresent(ExecutorConfig.class)) {
             ExecutorConfig config = serviceClass.getAnnotation(ExecutorConfig.class);
-            return config.scheduled() ? new ScheduledServiceExecutor(config.corePoolSize(), threadFactory) : new ServiceExecutor(config.corePoolSize(), config.maximumPoolSize(), config.keepAliveTime(), config.unit(), new PausablePriorityBlockingQueue<>(), threadFactory);
+            return config.scheduled()
+                    ? new ScheduledServiceExecutor(config.corePoolSize(), threadFactory)
+                    : new ServiceExecutor(
+                            config.corePoolSize(),
+                            config.maximumPoolSize(),
+                            config.keepAliveTime(),
+                            config.unit(),
+                            new PausablePriorityBlockingQueue<>(),
+                            threadFactory);
         }
-        return new ServiceExecutor(0, 1, 0, TimeUnit.NANOSECONDS, new PriorityBlockingQueue<>(), threadFactory);
+        return new ServiceExecutor(
+                0, 1, 0, TimeUnit.NANOSECONDS, new PriorityBlockingQueue<>(), threadFactory);
     }
-
 }

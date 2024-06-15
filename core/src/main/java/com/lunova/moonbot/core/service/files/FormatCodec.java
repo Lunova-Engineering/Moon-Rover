@@ -8,6 +8,6 @@ public abstract class FormatCodec {
     private static final Logger logger = LoggerFactory.getLogger(FormatCodec.class);
 
     public abstract void encode();
-    public abstract void decode();
 
+    public abstract void decode();
 }

@@ -14,13 +14,13 @@ import org.slf4j.LoggerFactory;
  */
 public class Utilities {
 
-  private static final Logger logger = LoggerFactory.getLogger(Utilities.class);
+    private static final Logger logger = LoggerFactory.getLogger(Utilities.class);
 
-  public static String concat(String ... value) {
-    StringBuilder builder = new StringBuilder();
-    for(String s : value) {
-      builder.append(s);
+    public static String concat(String... value) {
+        StringBuilder builder = new StringBuilder();
+        for (String s : value) {
+            builder.append(s);
+        }
+        return builder.toString();
     }
-    return builder.toString();
-  }
 }

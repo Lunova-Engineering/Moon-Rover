@@ -6,15 +6,15 @@ package com.lunova.moonbot.core.service.plugin;
  * to make them operational, remove them, or change their active status.
  */
 public enum PluginAction {
-  /** Represents the action of installing a plugin into the system. */
-  INSTALL,
+    /** Represents the action of installing a plugin into the system. */
+    INSTALL,
 
-  /** Represents the action of removing a plugin from the system. */
-  UNINSTALL,
+    /** Represents the action of removing a plugin from the system. */
+    UNINSTALL,
 
-  /** Represents the action of enabling a plugin, making it active. */
-  ENABLE,
+    /** Represents the action of enabling a plugin, making it active. */
+    ENABLE,
 
-  /** Represents the action of disabling a plugin, making it inactive. */
-  DISABLE
+    /** Represents the action of disabling a plugin, making it inactive. */
+    DISABLE
 }

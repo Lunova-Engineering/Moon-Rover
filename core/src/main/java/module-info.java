@@ -14,7 +14,6 @@
 open module com.lunova.moonbot.core {
     // Requires
     requires net.dv8tion.jda;
-    requires spark.core;
     requires com.google.gson;
     requires jakarta.xml.bind;
     requires jakarta.activation;
@@ -42,12 +41,27 @@ open module com.lunova.moonbot.core {
     requires com.fasterxml.jackson.datatype.guava;
     requires com.fasterxml.jackson.datatype.jdk8;
     requires reflections;
+    requires org.eclipse.jetty.io;
+    requires org.eclipse.jetty.util;
+    requires org.eclipse.jetty.server;
+    requires org.eclipse.jetty.http;
+    requires org.eclipse.jetty.ee10.servlet;
+    requires jakarta.servlet;
 
     // Exports
+    exports com.lunova.moonbot.core;
+    exports com.lunova.moonbot.core.service;
+    exports com.lunova.moonbot.core.service.tasks;
+    exports com.lunova.moonbot.core.service.executors;
+    exports com.lunova.moonbot.core.service.files;
+    exports com.lunova.moonbot.core.utility.json;
     exports com.lunova.moonbot.core.service.plugin;
     exports com.lunova.moonbot.core.api.plugin;
     exports com.lunova.moonbot.core.exceptions;
     exports com.lunova.moonbot.core.service.plugin.resolver;
+    exports com.lunova.moonbot.core.service.plugin.server;
+    exports com.lunova.moonbot.core.service.plugin.loader;
+    exports com.lunova.moonbot.core.service.plugin.tasks;
     exports com.lunova.moonbot.core.api.plugin.features.settings;
     exports com.lunova.moonbot.core.api.plugin.examples;
     exports com.lunova.moonbot.core.api.plugin.features;
@@ -58,16 +72,16 @@ open module com.lunova.moonbot.core {
     exports com.lunova.moonbot.core.api.plugin.features.settings.input.impl;
     exports com.lunova.moonbot.core.api.plugin.features.settings.validation.rules;
 /*
-    // Opens
-    opens com.lunova.moonbot.core.service.plugin to com.google.gson, org.hibernate.validator;
-    opens com.lunova.moonbot.core.api.plugin to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
-    opens com.lunova.moonbot.core.service.plugin.resolver to com.google.gson, org.hibernate.validator;
-    opens com.lunova.moonbot.core.api.plugin.features.settings to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
-    opens com.lunova.moonbot.core.api.plugin.examples to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
-    opens com.lunova.moonbot.core.api.plugin.features to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
-    opens com.lunova.moonbot.core.api.plugin.common to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
-    opens com.lunova.moonbot.core.api.plugin.features.settings.validation.rules to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
-    opens com.lunova.moonbot.core.api.plugin.features.settings.validation to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
-    opens com.lunova.moonbot.core.api.plugin.features.settings.input to com.fasterxml.jackson.databind, com.google.gson, jakarta.xml.bind;
-    opens com.lunova.moonbot.core.api.plugin.features.settings.input.impl to com.fasterxml.jackson.databind, com.google.gson, jakarta.xml.bind;*/
+// Opens
+opens com.lunova.moonbot.core.service.plugin to com.google.gson, org.hibernate.validator;
+opens com.lunova.moonbot.core.api.plugin to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
+opens com.lunova.moonbot.core.service.plugin.resolver to com.google.gson, org.hibernate.validator;
+opens com.lunova.moonbot.core.api.plugin.features.settings to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
+opens com.lunova.moonbot.core.api.plugin.examples to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
+opens com.lunova.moonbot.core.api.plugin.features to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
+opens com.lunova.moonbot.core.api.plugin.common to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
+opens com.lunova.moonbot.core.api.plugin.features.settings.validation.rules to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
+opens com.lunova.moonbot.core.api.plugin.features.settings.validation to jakarta.xml.bind, com.google.gson, com.fasterxml.jackson.databind;
+opens com.lunova.moonbot.core.api.plugin.features.settings.input to com.fasterxml.jackson.databind, com.google.gson, jakarta.xml.bind;
+opens com.lunova.moonbot.core.api.plugin.features.settings.input.impl to com.fasterxml.jackson.databind, com.google.gson, jakarta.xml.bind;*/
 }

@@ -21,5 +21,4 @@ public class RegexValidationRule extends ValidationRule<String> {
     public Pattern getRegex() {
         return regex;
     }
-
 }

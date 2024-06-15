@@ -12,21 +12,21 @@ package com.lunova.moonbot.core.exceptions;
  */
 public class ConfigurationException extends Exception {
 
-  /** Constructs a {@code PropertyNotFoundException} with a default message. */
-  public ConfigurationException() {
-    this("Property not found.");
-  }
+    /** Constructs a {@code PropertyNotFoundException} with a default message. */
+    public ConfigurationException() {
+        this("Property not found.");
+    }
 
-  /**
-   * Constructs a {@code PropertyNotFoundException} with the specified detail message.
-   *
-   * <p>The detail message is saved for later retrieval by the {@link Throwable#getMessage()}
-   * method.
-   *
-   * @param message the detail message which provides more information about the reason for the
-   *     exception
-   */
-  public ConfigurationException(String message) {
-    super(message);
-  }
+    /**
+     * Constructs a {@code PropertyNotFoundException} with the specified detail message.
+     *
+     * <p>The detail message is saved for later retrieval by the {@link Throwable#getMessage()}
+     * method.
+     *
+     * @param message the detail message which provides more information about the reason for the
+     *     exception
+     */
+    public ConfigurationException(String message) {
+        super(message);
+    }
 }

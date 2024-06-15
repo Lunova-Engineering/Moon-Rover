@@ -1,14 +1,54 @@
 <configuration>
+    <timestamp key="bySecond" datePattern="yyyy/MM_MMM/dd"/>
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <!--<pattern>[%d{HH:mm:ss}] [%thread] [%logger{0}] [%level] - %msg%n</pattern> -->
             <pattern>[%d{HH:mm:ss}] [%thread] [%level] - %msg%n</pattern>
         </encoder>
     </appender>
 
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>core/data/logs/$bySecond/debug.log</file>
+        <encoder>
+            <pattern>[%d{HH:mm:ss}] [%thread] [%level] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Master log file -->
+    <appender name="MASTER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>core/data/logs/${bySecond}/master.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>core/data/logs/%d{yyyy/MM/dd}/master.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{HH:mm:ss}] [%thread] [%level] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Separate log file for each thread -->
+    <appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator>
+            <key>threadName</key>
+            <defaultValue>unknown</defaultValue>
+        </discriminator>
+        <sift>
+            <appender name="FILE-${threadName}" class="ch.qos.logback.core.FileAppender">
+                <file>core/data/logs/${bySecond}/${threadName}/debug.log</file>
+                <encoder>
+                    <pattern>[%d{HH:mm:ss}] [%thread] [%level] - %msg%n</pattern>
+                </encoder>
+                <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                    <level>DEBUG</level>
+                </filter>
+            </appender>
+        </sift>
+    </appender>
     <!-- Logger for your packages -->
     <logger name="com.lunova" level="TRACE" additivity="false">
         <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="MASTER"/>
+        <appender-ref ref="SIFT"/>
+        <!-- Add reference to the new appender -->
+        <!--<appender-ref ref="STRUCTURED"/> -->
     </logger>
 
     <!-- Default logger for third-party libraries -->

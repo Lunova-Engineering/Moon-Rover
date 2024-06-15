@@ -1,6 +1,7 @@
-package com.lunova.moonbot.core.service.files.json;
+package com.lunova.moonbot.core.utility.json;
 
 import jakarta.validation.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,16 +9,15 @@ import java.util.Set;
 
 /**
  * Utility class for validating objects using Jakarta Bean Validator.
- * <p>
- * This class provides a generic method to validate any given object
- * against constraints defined in its class definition.
- * </p>
  *
+ * <p>This class provides a generic method to validate any given object against constraints defined
+ * in its class definition.
  */
 public class JsonGenericValidator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonGenericValidator.class);
-    private static final ValidatorFactory VALIDATOR_FACTORY = Validation.buildDefaultValidatorFactory();
+    private static final ValidatorFactory VALIDATOR_FACTORY =
+            Validation.buildDefaultValidatorFactory();
     private static final Validator VALIDATOR = VALIDATOR_FACTORY.getValidator();
 
     /**
@@ -31,8 +31,7 @@ public class JsonGenericValidator {
     public static <T> void validateObject(T obj) throws ConstraintViolationException {
         Set<ConstraintViolation<T>> violations = VALIDATOR.validate(obj);
         if (!violations.isEmpty()) {
-            if(LOGGER.isDebugEnabled())
-                logViolations(violations);
+            if (LOGGER.isDebugEnabled()) logViolations(violations);
             throw new ConstraintViolationException("Object failed validation check.", violations);
         }
     }
@@ -45,9 +44,12 @@ public class JsonGenericValidator {
      */
     private static <T> void logViolations(Set<ConstraintViolation<T>> violations) {
         LOGGER.debug("Validator Errors:");
-        violations.forEach(violation ->
-                LOGGER.debug("Field: {}, Value: {}, Constraint: {}",
-                        violation.getPropertyPath(), violation.getInvalidValue(), violation.getMessage()));
+        violations.forEach(
+                violation ->
+                        LOGGER.debug(
+                                "Field: {}, Value: {}, Constraint: {}",
+                                violation.getPropertyPath(),
+                                violation.getInvalidValue(),
+                                violation.getMessage()));
     }
-
 }

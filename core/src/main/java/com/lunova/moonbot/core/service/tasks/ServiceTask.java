@@ -1,15 +1,20 @@
 package com.lunova.moonbot.core.service.tasks;
 
 import com.lunova.moonbot.core.service.Service;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public abstract class ServiceTask implements PriorityTask {
-//Write two implementations for runnable and callable service tasks to hold common meta data and logs and whanot
+    // Write two implementations for runnable and callable service tasks to hold common meta data
+    // and
+    // logs and whanot
 
     private static final Logger logger = LoggerFactory.getLogger(ServiceTask.class);
 
-    private static Integer taskCounter = 1;
+    private static final AtomicInteger taskCounter = new AtomicInteger(1);
 
     private final TaskPriority taskPriority;
 
@@ -25,11 +30,10 @@ public abstract class ServiceTask implements PriorityTask {
 
     private final int taskId;
 
-
     public ServiceTask(TaskPriority taskPriority, Service<?> originator) {
         this.taskPriority = taskPriority;
         this.originator = originator;
-        this.taskId = taskCounter++;
+        this.taskId = taskCounter.getAndIncrement();
     }
 
     public TaskState getTaskState() {
@@ -80,5 +84,4 @@ public abstract class ServiceTask implements PriorityTask {
     public int getPriority() {
         return taskPriority.ordinal();
     }
-
 }

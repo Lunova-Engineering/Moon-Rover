@@ -26,18 +26,18 @@ package com.lunova.moonbot.core.exceptions;
  */
 public class PluginRequestException extends Exception {
 
-  /**
-   * Constructs a new PluginRequestException with the specified detail message. The detail message
-   * is saved for later retrieval by the {@link Throwable#getMessage()} method.
-   *
-   * @param message the detail message, which provides a description of the exception. It is saved
-   *     for later retrieval by the {@link Throwable#getMessage()} method.
-   */
-  public PluginRequestException(String message) {
-    super(message);
-  }
+    /**
+     * Constructs a new PluginRequestException with the specified detail message. The detail message
+     * is saved for later retrieval by the {@link Throwable#getMessage()} method.
+     *
+     * @param message the detail message, which provides a description of the exception. It is saved
+     *     for later retrieval by the {@link Throwable#getMessage()} method.
+     */
+    public PluginRequestException(String message) {
+        super(message);
+    }
 
-  public PluginRequestException(String message, Exception e) {
-    super(message, e);
-  }
+    public PluginRequestException(String message, Exception e) {
+        super(message, e);
+    }
 }

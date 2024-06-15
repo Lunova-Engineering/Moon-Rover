@@ -19,6 +19,7 @@ public abstract class FormatStrategy {
         return codec;
     }
 
-    public abstract void writeData(Path path, Object data);
-    public abstract <T> T readData(Path path, Class<T> returnType);
+    public abstract <T> void writeData(Path path, T data, FileOptions options);
+
+    public abstract <T> T readData(Path path, Class<T> returnType, FileOptions options);
 }

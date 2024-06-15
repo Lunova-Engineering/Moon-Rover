@@ -15,10 +15,10 @@ public class FlagStateRule extends ValidationRule<Boolean> {
         return flag;
     }
 
-    //TODO: Investigate for ways to provide custom logic to ensure correct flag being set based on XYZ conditions.
+    // TODO: Investigate for ways to provide custom logic to ensure correct flag being set based on
+    // XYZ conditions.
     @Override
     public boolean validateRule(Boolean target) {
         return flag == target;
     }
-
 }

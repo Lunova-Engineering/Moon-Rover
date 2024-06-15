@@ -5,8 +5,7 @@ import com.lunova.moonbot.core.service.files.strategies.TextFormatStrategy;
 
 public enum FileFormat {
     TXT("text/plain", "txt", new TextFormatStrategy()),
-    JSON("application/json", "json", new JsonFormatStrategy());
-
+    JSON("application/json", "json", new JsonFormatStrategy()),;
     /*    LOG,
     MP3,
     MP4,

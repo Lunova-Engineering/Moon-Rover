@@ -1,18 +1,18 @@
 package com.lunova.moonbot.core.service.files.strategies;
 
 import com.lunova.moonbot.core.exceptions.JsonDeserializationException;
+import com.lunova.moonbot.core.service.files.FileOptions;
 import com.lunova.moonbot.core.service.files.FormatStrategy;
 import com.lunova.moonbot.core.service.files.codecs.JsonFormatCodec;
-import com.lunova.moonbot.core.service.files.json.JsonHandler;
+import com.lunova.moonbot.core.utility.json.JsonHandler;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 
 public class JsonFormatStrategy extends FormatStrategy {
 
@@ -23,16 +23,18 @@ public class JsonFormatStrategy extends FormatStrategy {
     }
 
     @Override
-    public void writeData(Path path, Object data) {
+    public <T> void writeData(Path path, T data, FileOptions options) {
         try {
-            data = JsonHandler.serialize(data);
+            String serialized = JsonHandler.serialize(data);
 
             if (path.getParent() != null && !Files.exists(path.getParent())) {
                 Files.createDirectories(path.getParent());
             }
+
             // Write data to file in append mode with specified charset
-            try (BufferedWriter out = Files.newBufferedWriter(path, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
-                out.write(data.toString());
+            try (BufferedWriter out =
+                    Files.newBufferedWriter(path, options.getCharset(), options.getOptions())) {
+                out.write(serialized);
                 out.newLine();
             }
         } catch (Exception e) {
@@ -41,7 +43,7 @@ public class JsonFormatStrategy extends FormatStrategy {
     }
 
     @Override
-    public <T> T readData(Path path, Class<T> returnType) {
+    public <T> T readData(Path path, Class<T> returnType, FileOptions options) {
         try {
             if (!Files.exists(path)) {
                 throw new IOException("File does not exist.");
@@ -54,6 +56,4 @@ public class JsonFormatStrategy extends FormatStrategy {
             throw new RuntimeException(e);
         }
     }
-
-
 }

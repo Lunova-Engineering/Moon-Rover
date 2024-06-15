@@ -1,108 +1,82 @@
 package com.lunova.moonbot.core.service.plugin;
 
-import com.lunova.moonbot.core.exceptions.JsonDeserializationException;
-import com.lunova.moonbot.core.exceptions.PluginRequestException;
 import com.lunova.moonbot.core.exceptions.ServiceLoadingException;
 import com.lunova.moonbot.core.service.Service;
-import com.lunova.moonbot.core.service.executors.ExecutorConfig;
+import com.lunova.moonbot.core.service.ServiceInfo;
+import com.lunova.moonbot.core.service.ServiceManager;
 import com.lunova.moonbot.core.service.executors.ServiceExecutor;
-import com.lunova.moonbot.core.service.executors.ServiceInfo;
 import com.lunova.moonbot.core.service.executors.ThreadFactoryConfig;
-import com.lunova.moonbot.core.service.files.json.JsonHandler;
-import com.lunova.moonbot.core.service.plugin.resolver.PluginResolver;
-import com.lunova.moonbot.core.service.plugin.resolver.PluginResolverUtils;
-import com.lunova.moonbot.core.service.tasks.RunnableServiceTask;
-import com.lunova.moonbot.core.service.tasks.TaskPriority;
-import jakarta.validation.ConstraintViolationException;
+import com.lunova.moonbot.core.service.files.FileFormat;
+import com.lunova.moonbot.core.service.files.FileService;
+import com.lunova.moonbot.core.service.plugin.server.PluginServer;
+import org.eclipse.aether.artifact.Artifact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static spark.Spark.*;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Map;
 
 /**
  * Service responsible for managing plugins' lifecycle including loading, registering, and managing
  * plugins. It handles the network endpoints for plugin actions and ensures that plugins are
  * appropriately initialized and maintained.
  */
-@ServiceInfo(name = "Plugin Service", critical = true)
-@ExecutorConfig()
+@ServiceInfo(name = "Plugin Service", critical = true, disabled = false)
 @ThreadFactoryConfig(nameFormat = "Plugin-Service")
 public class PluginService extends Service<ServiceExecutor> {
 
+    /** Logger for the PluginService class. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(PluginService.class);
 
-  /** Logger for the PluginService class. */
-  private static final Logger LOGGER = LoggerFactory.getLogger(PluginService.class);
+    private final PluginServer pluginServer;
 
-  public PluginService(String name, boolean critical, ServiceExecutor executor) {
-    super(name, critical, executor);
-  }
+    public PluginService(String name, boolean critical, ServiceExecutor executor) {
+        super(name, critical, executor);
+        this.pluginServer = new PluginServer();
+    }
 
+    /**
+     * Initializes the PluginService, setting up the network endpoints for handling plugin actions
+     * and configuring the plugins' environment.
+     *
+     * @throws ServiceLoadingException If the initialization of the service fails.
+     */
+    @Override
+    protected void initialize() {
+        PluginServer.startServer();
+    }
 
-  /**
-   * Initializes the PluginService, setting up the network endpoints for handling plugin actions and
-   * configuring the plugins' environment.
-   *
-   * @throws ServiceLoadingException If the initialization of the service fails.
-   */
-  @Override
-  protected RunnableServiceTask initialize() {
-    return new RunnableServiceTask(TaskPriority.IMMEDIATE, this) {
-      @Override
-      protected void onRun() {
-            try {
-              //int port = Integer.parseInt(BotConfiguration.getProperty("WEB_SERVER_PORT"));
-              int port = 8080;
-              //TODO: Add specific settings exception to catch block.
-              port(port);
-              post("/plugin-action",
-                  (request, response) -> {
+    /*  public Map<Path, Artifact> collectArtifacts(String directoryPath) throws IOException {
+      Map<Path, Artifact> artifacts = new HashMap<>();
 
-                    try {
-                      if(request.body().isBlank()) {
-                        throw new PluginRequestException("Plugin request body is empty.");
-                      }
+      Files.walk(Paths.get(directoryPath))
+              .filter(Files::isRegularFile)
+              .filter(path -> path.toString().endsWith(".jar"))
+              .forEach(
+                      path -> {
+                        String[] parts = path.toString().split(File.separator);
+                        String version = parts[parts.length - 2];
+                        String artifactId = parts[parts.length - 3];
+                        String groupId =
+                                String.join(
+                                        ".", Arrays.asList(parts).subList(parts.length - 4, parts.length - 3));
+                        Artifact artifact = new DefaultArtifact(groupId, artifactId, "jar", version);
+                        artifacts.put(path, artifact);
+                      });
+      writeManifest(artifacts, "core/data/plugins/manifest.json");
 
-                      //TODO: Continue verifying information flow path. Clean up code, transition to non hard coded values for testing.
-                      //TODO: Ensure information is quickly passed in and out of function to avoid blocking incoming request, consider using Queues.
-                      PluginRequest pluginRequest = JsonHandler.deserialize(request.body(), PluginRequest.class);
-                      PluginResolver resolver = PluginResolverUtils.createDefaultResolver();
-                      resolver.downloadArtifact(pluginRequest.pluginGroupId(), pluginRequest.pluginArtifactId(), pluginRequest.pluginVersion());
+      return artifacts;
+    }*/
 
-                      //TODO: need to refactor plugin installation routine and registry after downloading due to massive API changes.
-                      //Plugin plugin = PluginLoader.loadPlugin(new File("/Users/drakeforness/Documents/Github/Moon-Bot/plugins/default/target/moon-bot-plugin-default-0.2.0-SNAPSHOT.jar").toURI().toURL());
-                      //plugin.executeInstallRoutine(MoonBotService.getInstance().getBotSession(), "993720567729492080");
+    public void writeManifest(Map<Path, Artifact> artifacts, String manifestPath)
+            throws IOException {
+        ServiceManager.getService(FileService.class)
+                .writeFile(Path.of(manifestPath), "manifest", FileFormat.JSON, artifacts);
+    }
 
-                      //Execute request
-                      //check for plugin in class path + cache
-                      //if not found submit download request
-                      //once jar is obtained load jar
-                      //continue executing request
-                      //install, uninstall, disable, enable, on correct server
-
-                    } catch(JsonDeserializationException e) {
-                      response.status(500);
-                      LOGGER.error(e.getMessage());
-                      LOGGER.debug(e.getMessage(), e);
-                    } catch (PluginRequestException | ConstraintViolationException e) {
-                      response.status(400);
-                      LOGGER.error(e.getMessage());
-                      LOGGER.debug(e.getMessage(), e);
-                    }
-
-                    return response;
-                  });
-                } catch (Exception e) {
-                  LOGGER.error(e.getMessage(), e);
-                  //throw new ServiceLoadingException("Failed to start web server while initializing plugin service.");
-                }
-          }
-        };
-      }
-
-  @Override
-  protected void onShutdown() {
-    stop();
-    super.onShutdown();
-  }
-
+    @Override
+    protected void onShutdown() {
+        super.onShutdown();
+    }
 }

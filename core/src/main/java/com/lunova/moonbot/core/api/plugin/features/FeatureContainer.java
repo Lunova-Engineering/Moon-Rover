@@ -7,13 +7,15 @@ import com.lunova.moonbot.core.api.plugin.features.settings.SettingGroup;
 
 import java.util.Iterator;
 
-//@JsonSerialize(using = FeatureContainerSerializer.class)
+// @JsonSerialize(using = FeatureContainerSerializer.class)
 public final class FeatureContainer implements FeatureComponent {
 
     @JsonProperty("name")
     private final String name;
+
     @JsonProperty("features")
     private final ImmutableSet<Feature> features;
+
     @JsonProperty("settingGroup")
     private final SettingGroup settings;
 
@@ -32,7 +34,7 @@ public final class FeatureContainer implements FeatureComponent {
             return this;
         }
 
-        public Builder addFeature(Feature ... features) {
+        public Builder addFeature(Feature... features) {
             builder.add(features);
             return this;
         }
@@ -59,7 +61,6 @@ public final class FeatureContainer implements FeatureComponent {
         public FeatureContainer build() {
             return new FeatureContainer(this);
         }
-
     }
 
     private FeatureContainer(Builder builder) {
@@ -80,5 +81,4 @@ public final class FeatureContainer implements FeatureComponent {
     public Optional<SettingGroup> getSettingGroup() {
         return Optional.fromNullable(settings);
     }
-
 }

@@ -9,5 +9,4 @@ public class JsonSerializationException extends Exception {
     public JsonSerializationException(String message, Throwable t) {
         super(message, t);
     }
-
 }

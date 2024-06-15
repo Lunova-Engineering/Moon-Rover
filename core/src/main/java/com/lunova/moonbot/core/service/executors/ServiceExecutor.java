@@ -4,19 +4,21 @@ import com.lunova.moonbot.core.service.tasks.CallableServiceTask;
 import com.lunova.moonbot.core.service.tasks.PriorityFutureTask;
 import com.lunova.moonbot.core.service.tasks.RunnableServiceTask;
 import com.lunova.moonbot.core.service.tasks.ServiceTask;
+
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-//TODO: Note - The reason the first task always executes first without regard to priority values is most likely due to the pause function
-// acquires the task to execute prior to recognizing that it is paused then proceeds to wait until being unpaused and executing the runnable
+// TODO: Note - The reason the first task always executes first without regard to priority values is
+// most likely due to the pause function
+// acquires the task to execute prior to recognizing that it is paused then proceeds to wait until
+// being unpaused and executing the runnable
 public class ServiceExecutor extends ThreadPoolExecutor implements PausableExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(ServiceExecutor.class);
@@ -27,28 +29,58 @@ public class ServiceExecutor extends ThreadPoolExecutor implements PausableExecu
 
     private boolean isPaused;
 
-
-    public ServiceExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, @NotNull TimeUnit unit, @NotNull BlockingQueue<Runnable> workQueue) {
+    public ServiceExecutor(
+            int corePoolSize,
+            int maximumPoolSize,
+            long keepAliveTime,
+            @NotNull TimeUnit unit,
+            @NotNull BlockingQueue<Runnable> workQueue) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
     }
 
-    public ServiceExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, @NotNull TimeUnit unit, @NotNull BlockingQueue<Runnable> workQueue, @NotNull ThreadFactory threadFactory) {
+    public ServiceExecutor(
+            int corePoolSize,
+            int maximumPoolSize,
+            long keepAliveTime,
+            @NotNull TimeUnit unit,
+            @NotNull BlockingQueue<Runnable> workQueue,
+            @NotNull ThreadFactory threadFactory) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory);
     }
 
-    public ServiceExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, @NotNull TimeUnit unit, @NotNull BlockingQueue<Runnable> workQueue, @NotNull RejectedExecutionHandler handler) {
+    public ServiceExecutor(
+            int corePoolSize,
+            int maximumPoolSize,
+            long keepAliveTime,
+            @NotNull TimeUnit unit,
+            @NotNull BlockingQueue<Runnable> workQueue,
+            @NotNull RejectedExecutionHandler handler) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, handler);
     }
 
-    public ServiceExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, @NotNull TimeUnit unit, @NotNull BlockingQueue<Runnable> workQueue, @NotNull ThreadFactory threadFactory, @NotNull RejectedExecutionHandler handler) {
-        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
+    public ServiceExecutor(
+            int corePoolSize,
+            int maximumPoolSize,
+            long keepAliveTime,
+            @NotNull TimeUnit unit,
+            @NotNull BlockingQueue<Runnable> workQueue,
+            @NotNull ThreadFactory threadFactory,
+            @NotNull RejectedExecutionHandler handler) {
+        super(
+                corePoolSize,
+                maximumPoolSize,
+                keepAliveTime,
+                unit,
+                workQueue,
+                threadFactory,
+                handler);
     }
 
     @Override
     public void pause() {
         pauseLock.lock();
-        if(getQueue() instanceof PausablePriorityBlockingQueue)
-            ((PausablePriorityBlockingQueue) getQueue()).pause();
+        if (getQueue() instanceof PausablePriorityBlockingQueue)
+            ((PausablePriorityBlockingQueue<?>) getQueue()).pause();
         try {
             isPaused = true;
         } finally {
@@ -59,8 +91,8 @@ public class ServiceExecutor extends ThreadPoolExecutor implements PausableExecu
     @Override
     public void resume() {
         pauseLock.lock();
-        if(getQueue() instanceof PausablePriorityBlockingQueue)
-            ((PausablePriorityBlockingQueue) getQueue()).resume();
+        if (getQueue() instanceof PausablePriorityBlockingQueue)
+            ((PausablePriorityBlockingQueue<?>) getQueue()).resume();
         try {
             isPaused = false;
             unpaused.signalAll();
@@ -99,8 +131,6 @@ public class ServiceExecutor extends ThreadPoolExecutor implements PausableExecu
         super.beforeExecute(t, r);
     }
 
-
-
     @Override
     protected void afterExecute(Runnable r, Throwable t) {
         super.afterExecute(r, t);
@@ -110,7 +140,6 @@ public class ServiceExecutor extends ThreadPoolExecutor implements PausableExecu
     protected void terminated() {
         super.terminated();
     }
-
 
     @Override
     protected <T> RunnableFuture<T> newTaskFor(Runnable runnable, T value) {
@@ -126,27 +155,24 @@ public class ServiceExecutor extends ThreadPoolExecutor implements PausableExecu
         return super.newTaskFor(callable);
     }
 
+    @Override
     public BlockingQueue<ServiceTask> getTaskQueue() {
         return getQueue().stream()
-                .flatMap(runnable -> {
-                    if (runnable instanceof ServiceTask) {
-                        // Directly cast and return as stream if it's a ServiceTask
-                        return Stream.of((ServiceTask) runnable);
-                    } else if (runnable instanceof PriorityFutureTask) {
-                        // If it's a PriorityFutureTask, extract the ServiceTask and return as stream
-                        return Stream.of(((PriorityFutureTask<?>) runnable).getTask());
-                    }
-                    // Filter out non-matching types by returning an empty stream
-                    return Stream.empty();
-                })
-                .collect(Collectors.toCollection(LinkedBlockingQueue::new)); // Collect into a new BlockingQueue
+                .flatMap(
+                        runnable -> {
+                            if (runnable instanceof ServiceTask) {
+                                // Directly cast and return as stream if it's a ServiceTask
+                                return Stream.of((ServiceTask) runnable);
+                            } else if (runnable instanceof PriorityFutureTask) {
+                                // If it's a PriorityFutureTask, extract the ServiceTask and return
+                                // as stream
+                                return Stream.of(((PriorityFutureTask<?>) runnable).getTask());
+                            }
+                            // Filter out non-matching types by returning an empty stream
+                            return Stream.empty();
+                        })
+                .collect(
+                        Collectors.toCollection(
+                                LinkedBlockingQueue::new)); // Collect into a new BlockingQueue
     }
-
-    public ArrayList<ServiceTask> getTaskList() {
-        return  null;
-    }
-
-
-
-
 }
