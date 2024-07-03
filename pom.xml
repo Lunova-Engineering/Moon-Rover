@@ -17,7 +17,6 @@
     <modules>
         <module>core</module>
         <module>plugins</module>
-        <module>network</module>
     </modules>
 
     <!-- Java version -->
@@ -145,7 +144,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <configLocation>google_checks.xml</configLocation>
+                    <configLocation>resources/google_checks.xml</configLocation>
                     <skip>true</skip>
                 </configuration>
             </plugin>
@@ -166,11 +165,11 @@
                 </executions>
                 <configuration>
                     <skip>true</skip>
-                    <!-- Security level to fail building on. 5 is directly in the middle.
+                     <!--Security level to fail building on. 5 is directly in the middle.-->
                     <failBuildOnCVSS>5</failBuildOnCVSS>
                     <suppressionFiles>
-                        <suppressionFile>OSWAP_suppression.xml</suppressionFile>
-                    </suppressionFiles> -->
+                        <suppressionFile>resources/OSWAP_suppression.xml</suppressionFile>
+                    </suppressionFiles>
                 </configuration>
             </plugin>
 

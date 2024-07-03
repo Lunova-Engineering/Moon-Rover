@@ -29,11 +29,8 @@ public class PluginService extends Service<ServiceExecutor> {
     /** Logger for the PluginService class. */
     private static final Logger LOGGER = LoggerFactory.getLogger(PluginService.class);
 
-    private final PluginServer pluginServer;
-
     public PluginService(String name, boolean critical, ServiceExecutor executor) {
         super(name, critical, executor);
-        this.pluginServer = new PluginServer();
     }
 
     /**

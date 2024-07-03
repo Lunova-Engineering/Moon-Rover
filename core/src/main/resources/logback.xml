@@ -6,12 +6,12 @@
         </encoder>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+<!--    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>core/data/logs/$bySecond/debug.log</file>
         <encoder>
             <pattern>[%d{HH:mm:ss}] [%thread] [%level] - %msg%n</pattern>
         </encoder>
-    </appender>
+    </appender>-->
 
     <!-- Master log file -->
     <appender name="MASTER" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -43,7 +43,7 @@
         </sift>
     </appender>
     <!-- Logger for your packages -->
-    <logger name="com.lunova" level="TRACE" additivity="false">
+    <logger name="com.lunova" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="MASTER"/>
         <appender-ref ref="SIFT"/>
@@ -52,7 +52,7 @@
     </logger>
 
     <!-- Default logger for third-party libraries -->
-    <root level="WARN">
+    <root level="ERROR">
         <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>
