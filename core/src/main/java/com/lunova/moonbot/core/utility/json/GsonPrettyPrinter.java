@@ -1,9 +1,8 @@
 package com.lunova.moonbot.core.utility.json;
 
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.core.util.Separators;
 
 import java.io.IOException;
@@ -22,8 +21,10 @@ public class GsonPrettyPrinter extends DefaultPrettyPrinter {
     @Override
     public GsonPrettyPrinter createInstance() {
         if (getClass() != GsonPrettyPrinter.class) {
-            throw new IllegalStateException("Failed `createInstance()`: " + getClass().getName()
-                    + " does not override method; it has to");
+            throw new IllegalStateException(
+                    "Failed `createInstance()`: "
+                            + getClass().getName()
+                            + " does not override method; it has to");
         }
         return new GsonPrettyPrinter(this);
     }

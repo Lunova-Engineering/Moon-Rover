@@ -14,5 +14,4 @@ public class AbsentValueRule<T> extends ValidationRule<T> {
     public boolean validateRule(Object target) {
         return !Objects.isNull(target);
     }
-
 }

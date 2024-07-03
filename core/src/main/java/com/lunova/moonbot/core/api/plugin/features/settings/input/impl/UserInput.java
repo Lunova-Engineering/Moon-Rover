@@ -9,5 +9,4 @@ public class UserInput<I, O> extends Input<I, O> {
     public UserInput(InputType inputType, String label) {
         super(InputFormat.USER_DEFINED, inputType, label);
     }
-
 }

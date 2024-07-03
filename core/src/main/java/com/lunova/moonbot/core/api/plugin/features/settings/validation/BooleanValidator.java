@@ -6,7 +6,7 @@ import com.lunova.moonbot.core.api.plugin.features.settings.validation.rules.Fla
 import java.util.ArrayList;
 import java.util.List;
 
-public class BooleanValidator extends Validator<Boolean>{
+public class BooleanValidator extends Validator<Boolean> {
 
     private BooleanValidator(Builder builder) {
         super("BOOLEAN_VALIDATOR", DataType.BOOLEAN, builder.rules);
@@ -24,7 +24,5 @@ public class BooleanValidator extends Validator<Boolean>{
         public BooleanValidator build() {
             return new BooleanValidator(this);
         }
-
     }
-
 }

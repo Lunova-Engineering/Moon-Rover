@@ -7,19 +7,20 @@ import com.lunova.moonbot.core.api.plugin.features.settings.validation.rules.Abs
 import java.util.List;
 
 /**
- * subclass implementations requiring extra rules
- * For STRING:
+ * subclass implementations requiring extra rules For STRING:
  *
- * UniquenessRule: Validates that the string is unique within a certain context or dataset (e.g., username, email).
- * ContentValidationRule: More complex content validations that might involve checking against a database or third-party service (e.g., profanity filter, copyright material).
+ * <p>UniquenessRule: Validates that the string is unique within a certain context or dataset (e.g.,
+ * username, email). ContentValidationRule: More complex content validations that might involve
+ * checking against a database or third-party service (e.g., profanity filter, copyright material).
  * For NUMBER:
  *
- * BusinessLogicValidationRule: Validates the number against business-specific rules that require server-side data or logic (e.g., inventory checks, budget limits).
- * For ARRAY:
+ * <p>BusinessLogicValidationRule: Validates the number against business-specific rules that require
+ * server-side data or logic (e.g., inventory checks, budget limits). For ARRAY:
  *
- * ContentUniquenessRule: Ensures all selected items in a multi-select are unique or meet certain criteria not verifiable on the client-side.
+ * <p>ContentUniquenessRule: Ensures all selected items in a multi-select are unique or meet certain
+ * criteria not verifiable on the client-side.
  *
- * copied and pasted from CGPT because am lazy...
+ * <p>copied and pasted from CGPT because am lazy...
  *
  * @param <T>
  */
@@ -27,8 +28,10 @@ public abstract class Validator<T> {
 
     @JsonProperty("identifier")
     private final String identifier;
+
     @JsonProperty("type")
     private final DataType dataType;
+
     @JsonProperty("rules")
     private final List<ValidationRule<T>> rules;
 

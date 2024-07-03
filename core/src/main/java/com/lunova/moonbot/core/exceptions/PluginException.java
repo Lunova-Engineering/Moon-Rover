@@ -27,17 +27,18 @@ package com.lunova.moonbot.core.exceptions;
  */
 public class PluginException extends Exception {
 
-  /**
-   * Constructs a new PluginException with the specified detail message and cause. The detail
-   * message is saved for later retrieval by the {@link Throwable#getMessage()} method. The cause is
-   * saved for later retrieval by the {@link Throwable#getCause()} method.
-   *
-   * @param message the detail message, which provides a description of the exception. It is saved
-   *     for later retrieval by the {@link Throwable#getMessage()} method.
-   * @param e the cause (which is saved for later retrieval by the {@link Throwable#getCause()}
-   *     method). A null value is permitted, and indicates that the cause is nonexistent or unknown.
-   */
-  public PluginException(String message, Exception e) {
-    super(message, e);
-  }
+    /**
+     * Constructs a new PluginException with the specified detail message and cause. The detail
+     * message is saved for later retrieval by the {@link Throwable#getMessage()} method. The cause
+     * is saved for later retrieval by the {@link Throwable#getCause()} method.
+     *
+     * @param message the detail message, which provides a description of the exception. It is saved
+     *     for later retrieval by the {@link Throwable#getMessage()} method.
+     * @param e the cause (which is saved for later retrieval by the {@link Throwable#getCause()}
+     *     method). A null value is permitted, and indicates that the cause is nonexistent or
+     *     unknown.
+     */
+    public PluginException(String message, Exception e) {
+        super(message, e);
+    }
 }

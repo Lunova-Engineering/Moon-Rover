@@ -11,23 +11,23 @@ import com.lunova.moonbot.core.api.plugin.features.settings.input.impl.UserInput
 import com.lunova.moonbot.core.api.plugin.features.settings.transformation.Transformation;
 import com.lunova.moonbot.core.api.plugin.features.settings.validation.Validator;
 
-//@JsonSerialize(using = InputSerializer.class)
+// @JsonSerialize(using = InputSerializer.class)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = SelectionInput.class),
     @JsonSubTypes.Type(value = UserInput.class),
     @JsonSubTypes.Type(value = RangeSliderInput.class),
     @JsonSubTypes.Type(value = ToggleInput.class)
-        })
-public class Input<II, IO>  {
-//TODO: Protect this class from modification, user should not be able to alter this class instance in the object
+})
+public class Input<II, IO> {
+    // TODO: Protect this class from modification, user should not be able to alter this class
+    // instance in the object
 
     private final InputFormat format;
     private final InputType type;
     private final String label;
 
+    @JsonIgnore private Transformation<II, IO> transformation;
 
-    @JsonIgnore
-    private Transformation<II, IO> transformation;
     @JsonProperty("validations")
     private Validator<II> validator;
 
@@ -65,5 +65,4 @@ public class Input<II, IO>  {
     public InputType getInputType() {
         return type;
     }
-
 }

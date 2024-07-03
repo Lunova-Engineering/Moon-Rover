@@ -3,9 +3,8 @@ package com.lunova.moonbot.core.api.plugin.features.settings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableSet;
 
-//@JsonSerialize(using = SettingGroupSerializer.class)
+// @JsonSerialize(using = SettingGroupSerializer.class)
 public class SettingGroup {
-
 
     @JsonProperty("settings")
     private final ImmutableSet<Setting<?>> settings;
@@ -19,7 +18,7 @@ public class SettingGroup {
             return this;
         }
 
-        public Builder withSetting(Setting<?> ... settings) {
+        public Builder withSetting(Setting<?>... settings) {
             builder.add(settings);
             return this;
         }
@@ -28,7 +27,6 @@ public class SettingGroup {
             settings = builder.build();
             return new SettingGroup(this);
         }
-
     }
 
     private SettingGroup(Builder builder) {
@@ -38,5 +36,4 @@ public class SettingGroup {
     public ImmutableSet<Setting<?>> getSettings() {
         return settings;
     }
-
 }

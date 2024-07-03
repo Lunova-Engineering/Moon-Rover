@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum InputType {
 
-    //User Inputs
+    // User Inputs
     TEXT_FIELD(DataType.STRING),
     PASSWORD(DataType.STRING),
     EMAIL(DataType.STRING),
@@ -16,15 +16,15 @@ public enum InputType {
     TIME(DataType.STRING),
     NUMBER_INPUT(DataType.NUMBER),
 
-    //Range Inputs;
+    // Range Inputs;
     RANGE_SLIDER(DataType.NUMBER),
 
-    //Selection Inputs
+    // Selection Inputs
     DROP_DOWN(DataType.STRING),
     MULTI_SELECT_DROP_DOWN(DataType.ARRAY),
     RADIO_BUTTONS(DataType.STRING),
 
-    //Toggle Inputs
+    // Toggle Inputs
     TOGGLE_SWITCH(DataType.BOOLEAN),
     CHECKBOX(DataType.BOOLEAN);
 

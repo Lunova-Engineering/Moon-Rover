@@ -9,8 +9,10 @@ public class RangeSliderInput<I, O> extends Input<I, O> {
 
     @JsonProperty("min")
     private final Number min;
+
     @JsonProperty("max")
     private final Number max;
+
     @JsonProperty("step")
     private final Number step;
 
@@ -20,5 +22,4 @@ public class RangeSliderInput<I, O> extends Input<I, O> {
         this.max = max;
         this.step = step;
     }
-
 }
